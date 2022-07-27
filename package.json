@@ -1,0 +1,52 @@
+{
+  "name": "kamyroll",
+  "version": "0.2.0",
+  "description": "Tauri app that uses the Kamyroll API to watch animes",
+  "keywords": [
+    "vite",
+    "tauri",
+    "vue",
+    "vuetify",
+    "desktop"
+  ],
+  "scripts": {
+    "lint": "exit 0;",
+    "serve": "vite --port 3000",
+    "serve:native": "VITE_HTTP_HANDLER=NATIVE vite --port 8080",
+    "serve:tauri": "tauri dev",
+    "build:web": "vite build",
+    "build": "VITE_HTTP_HANDLER=NATIVE vite build && tauri build --debug"
+  },
+  "dependencies": {
+    "@egoist/vue-emotion": "^0.6.2",
+    "@emotion/core": "^11.0.0",
+    "@emotion/styled": "^11.9.3",
+    "@mdi/font": "6.7.96",
+    "@tauri-apps/api": "^1.0.1",
+    "artplayer": "^4.5.3",
+    "hls.js": "^1.1.5",
+    "roboto-fontface": "0.10.0",
+    "twin.macro": "^2.8.2",
+    "vue": "3.2.36",
+    "vue-global-api": "0.4.1",
+    "vue-router": "4.0.15",
+    "vuetify": "3.0.0-alpha.11"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.0.2",
+    "@vitejs/plugin-vue": "2.3.3",
+    "@vuetify/vite-plugin": "1.0.0-alpha.11",
+    "autoprefixer": "^10.4.7",
+    "postcss": "^8.4.14",
+    "sass": "1.51.0",
+    "sass-loader": "13.0.0",
+    "tailwindcss": "^3.1.2",
+    "video.js": "^7.19.2",
+    "vite": "2.9.9"
+  },
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/Bilnaa/kamyroll-tauri/"
+  },
+  "license": "ISC"
+}
