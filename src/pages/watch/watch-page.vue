@@ -1,5 +1,4 @@
 <script setup>
-import Banner from '../../components/banner.vue';
 import {fetch ,Body} from '@tauri-apps/api/http';
 import Artplayer from 'artplayer';
 import Hls from 'hls.js';
@@ -7,7 +6,6 @@ import Hls from 'hls.js';
 </script>
 
 <template>
-        <Banner></Banner>
         <div id="player" style="width:510px;height: 350px;"></div>
 </template>
 
