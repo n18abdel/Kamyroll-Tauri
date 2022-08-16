@@ -1,82 +1,120 @@
 <script setup>
-function trendingAnime(title, slug, url, image, description, rating, episodes, status, aired, aired_start, aired_end,type){
-    this.title = title;
-    this.slug = slug;
-    this.url = url;
-    this.image = image;
-    this.description = description;
-    this.rating = rating;
-    this.episodes = episodes;
-    this.status = status;
-    this.aired = aired;
-    this.aired_start = aired_start;
-    this.aired_end = aired_end;
-    this.type = type;
-}
-function getFile(url){
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, false);
-    xhr.send(null);
-    return xhr.responseText;
-}
-function getTrending() {
-    const array = [];
-    const response =  getFile('https://kitsu.io/api/edge/trending/anime');
-    const json = JSON.parse(response);
-    for(var i = 0; i < json.data.length; i++){
-        var anime = json.data[i];
-        var show  = anime.attributes;
-        var title = show.titles.en;
-        if(title == undefined){
-            title = show.titles.en_jp;
-        }
-        var slug = show.slug;
-        var url = 'url';
-        var image = show.posterImage.medium;
-        var description = show.synopsis;
-        var rating = show.averageRating;
-        var episodes = show.episodeCount;
-        if(episodes == undefined){
-            episodes = 0;
-        }
-        var status = show.status;
-        var aired = show.startDate;
-        var aired_start = show.startDate;
-        var aired_end = show.endDate;
-        if(aired_end == undefined){
-            aired_end = 'N/A';
-        }
-        var type = show.showType
-        array.push(new trendingAnime(title, slug, url, image, description, rating, episodes, status, aired, aired_start, aired_end,type));
-    }
-    return array;
-}
-var trending = getTrending();
+import {fetch ,Body} from '@tauri-apps/api/http';
 </script>
-
 <template>
-<div class="trending">
-    <v-card v-for="item in trending">
-        <v-card-text style="
-    opacity: 1;
-">
-            <v-row>
-                <v-col cols="2">
-                    <img :src="item.image" :alt="item.title" class="rounded-3xl shadow-lg" />
-                </v-col>
-                <v-col cols="10">
-                    <h1 class="text-3xl font-bold">
-                        {{item.title}}
-                    </h1>
-                    <p class ="text-black-400 max-h-40 overflow-y-hidden">
-                        {{item.description}}
-                    </p>
-                    <v-btn color="primary" :to="'/anime/'+item.slug" class="mt-3">
-                        View
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-card-text>
-    </v-card>
-</div>
+<article class="erc-hero-card" :id="trending[random].id">
+                <div class="erc-hero-card-background-overlay bottom-angled"><span
+                        class="background-gradient"></span><img class="background-image" :src="trending[random].image"
+                        :alt="trending[random].title"></div>
+                <div class="foreground">
+                    <div class="main-image-wrapper-link">
+                        <div class="main-image-wrapper"><a class="poster-hover-layer" :href="trending[random].link">to
+                                series</a><img :src="trending[random].image" class="c-content-image"
+                                :alt="trending[random].title"></div>
+                    </div>
+                    <section class="info"><a class="title-link" :href="trending[random].link">
+                            <h1 class="title">{{trending[random].title}}</h1>
+                        </a>
+                        <div class="additional-information">
+                            <div class="c-meta-tags media-tag-group"><span class="c-meta-tags__type">Series</span><span
+                                    class="c-meta-tags__language">Subtitled</span></div>
+                        </div>
+                        <p class="description">{{trending[random].description}}</p>
+                        <div class="watch-actions"><a role="button" tabindex="0"
+                                class="go-watch c-button -type-one-weak" data-t="watching-btn"
+                                :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
+                                    <polygon points="0 0 0 20 20 10"></polygon>
+                                </svg><span>Start Watching</span></a></div>
+                    </section>
+                </div>
+
+            </article>
+
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            trending: null,
+            random: null
+        }
+    },
+    beforeCreate: async function () {
+        function Trending(title, link, image,description,status,id) {
+            this.title = title;
+            this.link = link;
+            this.image = image;
+            this.description = description;
+            this.status = status;
+            this.id = id;
+        }
+
+        
+
+        function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
+        
+
+        const url = 'https://graphql.anilist.co/';
+
+        const params = {
+                query: `{
+                            Page(page: 1, perPage: 15) {
+                                media(type: ANIME, sort: TRENDING_DESC, status: RELEASING) {
+                                id
+                                title {
+                                    romaji
+                                    english
+                                    native
+                                }
+                                coverImage {
+                                    large
+                                }
+                                externalLinks {
+                                    id
+                                    site
+                                    url
+                                }
+                                description
+                                status
+                                }
+                            }
+                    }`
+        };
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: Body.text(JSON.stringify(params))
+        });
+        console.log(JSON.stringify(response.data));
+
+        let trends = [];
+        for (var x = 0; x < response.data.data.Page.media.length; x++) {
+            let tMedia = response.data.data.Page.media[x];
+            let providers= tMedia.externalLinks;
+            var id = '';
+            for (const provider of providers){
+                if(provider.site == 'VRV'){
+                    id = provider.url.split('/')[4];
+                }
+            }
+            if(id != ''){
+                const link = '/anime/' + id;
+                trends.push(new Trending(tMedia.title.romaji, link, tMedia.coverImage.large, tMedia.description, tMedia.status, id));
+            }
+        }
+        this.trending = trends;
+        this.random = '' + getRandomInt(0,trends.length);
+
+    }
+}
+</script>

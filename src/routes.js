@@ -1,17 +1,20 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory
+} from "vue-router";
 
 import HomePage from './pages/home/home-page.vue';
 import List from './pages/contact/list-page.vue';
 import Anime from './pages/anime/info-page.vue';
 import Error from './pages/error/error-page.vue';
 import Watch from './pages/watch/watch-page.vue';
+import Search from './pages/search/search-page.vue';
 
 
 
 export default createRouter({
   history: createWebHistory(),
-  routes: [
-    {
+  routes: [{
       path: '/',
       component: HomePage
     },
@@ -24,8 +27,12 @@ export default createRouter({
       component: Anime
     },
     {
-      path:'/watch/:id',
+      path: '/watch/:id',
       component: Watch
+    },
+    {
+      path: '/search/',
+      component: Search
     }
 
   ]

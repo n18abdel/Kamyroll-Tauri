@@ -6,7 +6,11 @@ export default defineConfig({
   plugins: [
     vue(),
     vuetify({
-      autoImport: true
+      autoImport: true,
+      theme:{
+        dark:true
+      }
+      
     })
   ],
   define: {
