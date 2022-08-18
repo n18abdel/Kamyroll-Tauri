@@ -1,5 +1,6 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
+let query = ref("");
 
 </script>
 <template>
@@ -9,8 +10,8 @@ import {fetch ,Body} from '@tauri-apps/api/http';
                 <div class="erc-search-field">
                     <div class="content">
                         <form class="search-input-wrapper state-narrow">
-                            <input type="text" v-model:="query" placeholder="Rechercher" class="search-input">
-                            <button class="search-button" type="sumbit">
+                            <input type="text" v-model="query" placeholder="Rechercher" class="search-input" @keydown.enter.prevent="search">
+                            <button class="search-button" type="sumbit" @click="search">
                                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     data-t="search-svg">
                                     <path
@@ -31,7 +32,7 @@ import {fetch ,Body} from '@tauri-apps/api/http';
                                         :href="anime.link"></a>
                                     <div class="search-card-content">
                                         <div class="thumbnail">
-                                            <img :src="anime.image" class="c-content-image" :alt="title">
+                                            <img :src="anime.image" class="c-content-image" :alt="anime.title">
 
                                         </div>
                                         <section class="info">
@@ -70,8 +71,7 @@ import {fetch ,Body} from '@tauri-apps/api/http';
 export default { 
     data(){
         return{
-            results:null,
-            query:null
+            results:null
         }
     },
     methods:{
@@ -129,6 +129,7 @@ export default {
                 }
             this.results = null;
             const results = [];
+            let query = document.querySelector('.search-input').value;
             const token = await this.getToken();
             const options = {
                 headers: {
@@ -136,7 +137,7 @@ export default {
                     'Authorization': `Bearer ${token.access_token}`,
                 }
             };
-            const request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${this.query}&limit=100&channel_id=crunchyroll`,options);
+            const request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${query}&limit=100&channel_id=crunchyroll`,options);
             console.log(request);
             const response = request.data;
             const data = response;
