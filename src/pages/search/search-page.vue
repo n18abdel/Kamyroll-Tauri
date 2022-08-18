@@ -8,8 +8,8 @@ import {fetch ,Body} from '@tauri-apps/api/http';
             <div class="search-header-wrapper state-search-results">
                 <div class="erc-search-field">
                     <div class="content">
-                        <form class="search-input-wrapper state-narrow" @submit.prevent="search">
-                            <input type="text" v-model="query" placeholder="Rechercher" class="search-input">
+                        <form class="search-input-wrapper state-narrow">
+                            <input type="text" v-model:="query" placeholder="Rechercher" class="search-input">
                             <button class="search-button" type="sumbit">
                                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     data-t="search-svg">
@@ -46,8 +46,8 @@ import {fetch ,Body} from '@tauri-apps/api/http';
                                             </div>
                                             <p class="channel-name">Crunchyroll</p>
                                             <div class="c-meta-tags annotation">
-                                               <span v-if="anime.is_subbed" class="c-meta-tags__language">Sub</span>
-                                               <span v-else-if="anime.is_dubbed" class="c-meta-tags__language">Dub</span>
+                                               <span v-if="anime.is_subbed && !anime.is_dubbed" class="c-meta-tags__language">Sub</span>
+                                               <span v-else-if="anime.is_dubbed && !anime.is_subbed" class="c-meta-tags__language">Dub</span>
                                                <span v-else-if="anime.is_subbed && anime.is_dubbed" class="c-meta-tags__language">Sub | Dub</span>
                                                <span v-else class="c-meta-tags__language">Unknown</span>
                                             </div>
