@@ -144,7 +144,7 @@ export default {
             for (const anime of data.items) {
                 for (const item of anime.items) {
                     var title = item.title;
-                    var image = item.images.poster_tall.pop().source;
+                    var image = item.images.poster_tall[0].source;
                     var desc = item.descripion;
                     var type = item.media_type;
                     console.log(type);
