@@ -107,12 +107,14 @@
     </div>
 </template>
 <script>
+import { token } from '../../scripts/token.js';
+import { channelId } from '../../scripts/channel_id'; 
   export default {
     data() {
       return {
         meta:null,
         episodes: null,
-        slug : window.location.href.split('/').pop()
+        slug : window.location.href.split('/').pop(),
       }
     },
     beforeMount: async function () {
@@ -140,33 +142,9 @@
         this.link = link;
         this.headers = headers;
       }
-      async function getToken() {
-        const url = 'https://kamyroll.herokuapp.com/auth/v1/token';
-        const headers = {
-          'Authorization': 'Basic vrvluizpdr2eby+RjSKM17dOLacExxq1HAERdxQDO6+2pHvFHTKKnByPD7b6kZVe1dJXifb6SG5NWMz49ABgJA==',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        };
-        try {
-          var body = Body.text(
-            'refresh_token=IV%2BFtTI%2BSYR0d5CQy2KOc6Q06S6aEVPIjZdWA6mmO7nDWrMr04cGjSkk4o6urP%2F6yDmE4yzccSX%2FrP%2FOIgDgK4ildzNf2G%2FpPS9Ze1XbEyJAEUyN%2BoKT7Gs1PhVTFdz%2FvYXvxp%2FoZmLWQGoGgSQLwgoRqnJddWjqk0ageUbgT1FwLazdL3iYYKdNN98BqGFbs%2Fbaeqqa8aFre5SzF%2F4G62y201uLnsElgd07OAh1bnJOy8PTNHpGqEBxxbo1VENqtYilG9ZKY18nEz8vLPQBbin%2FIIEjKITjSa%2BLvSDQt%2F0AaxCkhClNDUX2uUZ8q7fKuSDisJtEyIFDXtuZGFhaaA%3D%3D&grant_type=refresh_token&scope=offline_access'
-          )
-          const response = await fetch(url, {
-            method: "POST",
-            body: body,
-            headers: headers
-
-          })
-          console.log(response);
-          let result = response.data;
-          return result;
-        } catch (e) {
-          console.log(e);
-        }
-      }
-      const token = await getToken();
       const slug = this.slug;
-      async function getMetadata(slug){
-        const url = `https://kamyroll.herokuapp.com/content/v1/media?id=${slug}&channel_id=crunchyroll&locale=en-US`
+      async function getMetadata(slug,channel){
+        const url = `https://kamyroll.herokuapp.com/content/v1/media?id=${slug}&channel_id=${channel}`
         const options = {
           headers: {
             'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
@@ -176,6 +154,7 @@
         }
         let response = await fetch(url, options)
         let result = response.data;
+        console.log(result);
         const title = result.title;
         const image = result.images.poster_tall.pop().source;
         let description = result.description;
@@ -190,7 +169,8 @@
         return new infoAnime(title, slug, image, description, is_dubbed, is_subbed, is_mature, is_simulcast,maturity_ratings);
         }
       const episodes = [];
-      const url = `https://kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=crunchyroll&locale=en-US`;
+      console.log(channelId.id)
+      const url = `https://kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=${channelId.id}&locale=en-US`;
       const options = {
         headers: {
           'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
@@ -204,10 +184,15 @@
       if (url.includes('seasons')) {
         for (const season of result.items) {
           for (const epi of season.episodes) {
+            if(epi.episode != 'Bande Annonce'){
             var titre = epi.title;
             var id = epi.id;
             var desc = epi.description;
-            var image = epi.images.thumbnail[2].source;
+            try{
+              var image = epi.images.thumbnail[2].source;
+            }catch(e){
+              var image = epi.images.thumbnail[0].source;
+            }
             var link = '/watch/' + id;
             var headers = {
               'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
@@ -215,10 +200,11 @@
             };
             link = new ModuleRequest(link, headers);
             episodes.push(new Episode(titre, link, desc, image));
+            }
           }
         }
         console.log(episodes);
-        this.meta = await getMetadata(slug);
+        this.meta = await getMetadata(slug,channelId.id);
         this.episodes = episodes;
         
       }

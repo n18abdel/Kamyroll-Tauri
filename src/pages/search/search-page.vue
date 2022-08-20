@@ -45,7 +45,7 @@ let query = ref("");
                                                     <span v-else-if="anime.episode_count<=1" class="series-info-elem episodes-number">{{anime.episode_count}} Episode</span>
                                                 </div>
                                             </div>
-                                            <p class="channel-name">Crunchyroll</p>
+                                            <p class="channel-name">{{channel}}</p>
                                             <div class="c-meta-tags annotation">
                                                <span v-if="anime.is_subbed && !anime.is_dubbed" class="c-meta-tags__language">Sub</span>
                                                <span v-else-if="anime.is_dubbed && !anime.is_subbed" class="c-meta-tags__language">Dub</span>
@@ -68,10 +68,13 @@ let query = ref("");
 </template>
 
 <script>
+import { token } from '/src/scripts/token.js';
+import { channelId } from '../../scripts/channel_id';
 export default { 
     data(){
         return{
-            results:null
+            results:null,
+            channel: channelId.id
         }
     },
     methods:{
@@ -87,28 +90,6 @@ export default {
         this.is_mature = is_mature;
         this.is_simulcast = is_simulcast;
         this.maturity_ratings = maturity_ratings;
-      },
-        async getToken() {
-        const url = 'https://kamyroll.herokuapp.com/auth/v1/token';
-        const headers = {
-          'Authorization': 'Basic vrvluizpdr2eby+RjSKM17dOLacExxq1HAERdxQDO6+2pHvFHTKKnByPD7b6kZVe1dJXifb6SG5NWMz49ABgJA==',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        };
-        try {
-          var body = Body.text(
-            'refresh_token=IV%2BFtTI%2BSYR0d5CQy2KOc6Q06S6aEVPIjZdWA6mmO7nDWrMr04cGjSkk4o6urP%2F6yDmE4yzccSX%2FrP%2FOIgDgK4ildzNf2G%2FpPS9Ze1XbEyJAEUyN%2BoKT7Gs1PhVTFdz%2FvYXvxp%2FoZmLWQGoGgSQLwgoRqnJddWjqk0ageUbgT1FwLazdL3iYYKdNN98BqGFbs%2Fbaeqqa8aFre5SzF%2F4G62y201uLnsElgd07OAh1bnJOy8PTNHpGqEBxxbo1VENqtYilG9ZKY18nEz8vLPQBbin%2FIIEjKITjSa%2BLvSDQt%2F0AaxCkhClNDUX2uUZ8q7fKuSDisJtEyIFDXtuZGFhaaA%3D%3D&grant_type=refresh_token&scope=offline_access'
-          )
-          const response = await fetch(url, {
-            method: "POST",
-            body: body,
-            headers: headers
-
-          })
-          let result = response.data;
-          return result;
-        } catch (e) {
-          console.log(e);
-        }
       },
         async search() {
             const finalData = (title, image, desc, type, maturity_ratings, link, is_dubbed, is_subbed, is_mature, is_simulcast,season_count,episode_count) => {
@@ -130,15 +111,13 @@ export default {
             this.results = null;
             const results = [];
             let query = document.querySelector('.search-input').value;
-            const token = await this.getToken();
             const options = {
                 headers: {
                     'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
                     'Authorization': `Bearer ${token.access_token}`,
                 }
             };
-            const request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${query}&limit=100&channel_id=crunchyroll`,options);
-            console.log(request);
+            const request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${query}&limit=100&channel_id=${channelId.id}`,options);
             const response = request.data;
             const data = response;
             for (const anime of data.items) {
