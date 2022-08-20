@@ -1,4 +1,5 @@
 import{fetch,Body} from "@tauri-apps/api/http";
+import {reactive} from 'vue';
 
 async function getToken() {
     const url = 'https://kamyroll.herokuapp.com/auth/v1/token';
@@ -25,4 +26,4 @@ async function getToken() {
 
 
 
-export const token = await getToken();
+export const token = await getToken()

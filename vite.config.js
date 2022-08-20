@@ -21,4 +21,11 @@ export default defineConfig({
   	  inlineDynamicImports: true
   	}
   },
+  build: {
+    target: [
+      'edge89',
+      'safari15',
+    ]
+  }
+
 });
