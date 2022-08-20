@@ -1,5 +1,5 @@
 <script setup>
-import {fetch ,Body} from '@tauri-apps/api/http';
+import {fetch ,Body,ResponseType} from '@tauri-apps/api/http';
 import Artplayer from 'artplayer';
 import Hls from 'hls.js';
 
@@ -10,13 +10,16 @@ import Hls from 'hls.js';
 </template>
 
 <script>
+import { token } from '/src/scripts/token.js';
+import { channelId } from '../../scripts/channel_id'; 
 export default {
     data() {
         return {
             videos: null,
             subs: null,
             id: window.location.href.split('/').pop(),
-            lang: navigator.language
+            lang: navigator.language,
+            channel_id : channelId
         }
     },
     methods: {
@@ -29,7 +32,7 @@ export default {
             return quality;
         },
     },
-    created: async function () {
+    beforeMount: async function () {
         function Videos(quality, link) {
             this.html = quality;
             this.url = link;
@@ -49,55 +52,65 @@ export default {
             }
         }
 
-        async function getToken() {
-            const url = 'https://kamyroll.herokuapp.com/auth/v1/token';
-            const headers = {
-                'Authorization': 'Basic vrvluizpdr2eby+RjSKM17dOLacExxq1HAERdxQDO6+2pHvFHTKKnByPD7b6kZVe1dJXifb6SG5NWMz49ABgJA==',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            };
-            try {
-                var body = Body.text('refresh_token=IV%2BFtTI%2BSYR0d5CQy2KOc6Q06S6aEVPIjZdWA6mmO7nDWrMr04cGjSkk4o6urP%2F6yDmE4yzccSX%2FrP%2FOIgDgK4ildzNf2G%2FpPS9Ze1XbEyJAEUyN%2BoKT7Gs1PhVTFdz%2FvYXvxp%2FoZmLWQGoGgSQLwgoRqnJddWjqk0ageUbgT1FwLazdL3iYYKdNN98BqGFbs%2Fbaeqqa8aFre5SzF%2F4G62y201uLnsElgd07OAh1bnJOy8PTNHpGqEBxxbo1VENqtYilG9ZKY18nEz8vLPQBbin%2FIIEjKITjSa%2BLvSDQt%2F0AaxCkhClNDUX2uUZ8q7fKuSDisJtEyIFDXtuZGFhaaA%3D%3D&grant_type=refresh_token&scope=offline_access')
-                const response = await fetch(url, {
-                    method: "POST",
-                    body: body,
-                    headers: headers
-
-                });
-                let result = response.data;;
-                return result;
-            } catch (e) {
-                console.log(e);
-            }
-        }
-        async function getVideos(id) {
+        async function getVideos(channel,id) {
             let videos = [];
             var streams = '';
-            const url = 'https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=crunchyroll&id=' + id + '&locale=en-US&type=adaptive_hls&format=vtt';
-            var token = await getToken();
+            const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=vtt`;
+
             const headers = {
                 'Authorization': 'Bearer ' + token.access_token,
                 'Content-Type': 'application/x-www-form-urlencoded',
             };
             try {
-                const response = await fetch(url, {
-                    method: "GET",
-                    headers: headers
-                });
-                let result = response.data;
-                for (streams of result.streams) {
-                    var quality = streams.audio_locale + ' ' + streams.hardsub_locale;
-                    var link = streams.url;
-                    videos.push(new Videos(quality, link));
+                if(channel == 'crunchyroll'){
+                    const response = await fetch(url, {
+                        method: "GET",
+                        headers: headers
+                    });
+                    let result = response.data;
+                    console.log(result);
+                    for (streams of result.streams) {
+                        var quality = streams.audio_locale + ' ' + streams.hardsub_locale;
+                        var link = streams.url;
+                        videos.push(new Videos(quality, link));
+                    }
+                } else if(channel == 'animedigitalnetwork'){
+                    const response = await fetch(url, {
+                        method: "GET",
+                        headers: headers
+                    });
+                    let result = response.data;
+                    for (streams of result.streams) {
+                        var quality = streams.audio_locale + ' ' + streams.hardsub_locale;
+                        var link = streams.url;
+                        var videorequest = await fetch(link, {
+                            method: "GET",
+                            responseType: ResponseType.Text
+                        });
+                        var videoresult = videorequest.data;
+                        var lines = videoresult.split('\n');
+                        for (var x = 0; x < lines.length; x++) {
+                            var line = lines[x];
+                            if (line.includes('EXT-X-STREAM-INF:PROGRAM-ID=1')) {
+                                console.log(line);
+                                var quality1 = quality +' '+ line.split('RESOLUTION=')[1].match(/(\d)+x+(\d)+/g)[0];
+                                var videoLink = lines[x + 1];
+                                videos.push(new Videos(quality1, videoLink));
+                            }
+                        }
+                    }
+                } else if (channel =='neko-sama'){
+                    //not implemented yet
                 }
                 return videos;
             } catch (e) {
                 console.log(e);
             }
         }
-        async function getSubs(id) {
+        async function getSubs(channel,id) {
             let subtitles = [];
-            const url = 'https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=crunchyroll&id=' + id + '&locale=en-US&type=adaptive_hls&format=ass';
-            var token = await getToken();
+            const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=ass`;
+
             const headers = {
                 'Authorization': 'Bearer ' + token.access_token,
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -108,21 +121,30 @@ export default {
                     headers: headers
                 });
                 let result = response.data;
-                for (streams of result.subtitles) {
-                    var lang = streams.locale;
-                    var link = streams.url;
-                    subtitles.push(new Subs(lang, link, 'ass'));
+                if(result.subtitles.length >= 1){
+                    for(let subs of result.subtitles){
+                        var lang = subs.locale;
+                        var link = subs.url;
+                        if(link.includes('kamyroll')){
+                            link = 'https://corsproxy.io/?' + encodeURIComponent(link);
+                        }
+                        var type = subs.format;
+                        subtitles.push(new Subs(lang, link, type));
+                    }
+                }else{
+                    console.log('no subs');
+                    subtitles.push(new Subs('No subtitles', '', ''));
                 }
                 return subtitles;
+                
             } catch (e) {
                 console.log(e);
             }
         }
-        var subs = await getSubs(this.id);
-        this.subs = subs;
-        var streams = await getVideos(this.id);
+        var streams = await getVideos(channelId.id,this.id);
         this.videos = streams;
-        console.log(subs);
+        var subs = await getSubs(channelId.id,this.id);
+        this.subs = subs;
         var art = new Artplayer({
             url: this.videos.reverse()[0].url,
             container: '#player',
@@ -143,7 +165,6 @@ export default {
             autoPlayback: true,
             airplay: true,
             theme: '#23ade5',
-            lang: 'fr-FR',
             customType: {
                 m3u8: function (video, url) {
                     if (Hls.isSupported()) {
@@ -165,11 +186,11 @@ export default {
                 crossOrigin: 'anonymous',
             },
             quality: this.videos,
-            subtitle: getValueFromKey(this.subs, 'en-US'),
+            subtitle: subs[0],
             settings: [{
                 width: 200,
                 html: 'Subtitle',
-                tooltip: getValueFromKey(this.subs, 'en-US').html,
+                tooltip: subs[0].html,
                 icon: '<img width="22" heigth="22" src="https://artplayer.org/assets/img/subtitle.svg">',
                 selector: [{
                         html: 'Display',
@@ -181,30 +202,12 @@ export default {
                             return !item.switch;
                         },
                     },
-                    // create new items from subs 
                     ...subs.map(sub => {
-                        if (sub.html == 'en-US') {
                             return {
                                 html: sub.html,
-                                url: 'https://corsproxy.io/?' + sub.url,
+                                url:  sub.url,
                                 type: 'ass',
-                                default: true,
-                                style: {
-                                    color: '#fe9200',
-                                    fontSize: '20px',
-                                }
                             }
-                        } else {
-                            return {
-                                html: sub.html,
-                                url: 'https://corsproxy.io/?' + sub.url,
-                                type: 'ass',
-                                style: {
-                                    color: '#fe9200',
-                                    fontSize: '20px',
-                                }
-                            }
-                        }
                     })
 
                 ],
@@ -215,14 +218,6 @@ export default {
                     return item.html;
                 },
             }],
-        })
-        art.on('ready', () => {
-            // the subtitle url is empty
-            console.log(art.subtitle.url)
-        });
-
-        art.on('subtitleSwitch', (url) => {
-            console.log(url)
         });
     },
 }

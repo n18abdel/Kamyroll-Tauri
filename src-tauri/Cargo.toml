@@ -1,6 +1,6 @@
 [package]
 name = "Kamyroll"
-version = "0.2.3"
+version = "0.2.4"
 description = "A tauri app for the Kamyroll project"
 authors = ["Nabil"]
 license = ""
