@@ -115,10 +115,11 @@ import { channelId } from '../../scripts/channel_id';
         meta:null,
         episodes: null,
         slug : window.location.href.split('/').pop(),
+
       }
     },
-    beforeMount: async function () {
-       function infoAnime(title,  url, image, description, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
+    beforeMount: async function () {    
+      function infoAnime(title,  url, image, description, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
         this.title = title;
         this.url = url;
         this.image = image;
@@ -143,18 +144,17 @@ import { channelId } from '../../scripts/channel_id';
         this.headers = headers;
       }
       const slug = this.slug;
-      async function getMetadata(slug,channel){
-        const url = `https://kamyroll.herokuapp.com/content/v1/media?id=${slug}&channel_id=${channel}`
+      async function getMetadata(slug){
+        const url = `https://kamyroll.herokuapp.com/content/v1/media?id=${slug}&channel_id=animedigitalnetwork`
         const options = {
           headers: {
-            'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
-            'Authorization': `Bearer ${token.access_token}`,
+            // 'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
+            'Authorization': `Bearer ${token.access_token}`
           },
           method: "GET",
         }
-        let response = await fetch(url, options)
+        let response = await fetch(url, options);
         let result = response.data;
-        console.log(result);
         const title = result.title;
         const image = result.images.poster_tall.pop().source;
         let description = result.description;
@@ -169,8 +169,7 @@ import { channelId } from '../../scripts/channel_id';
         return new infoAnime(title, slug, image, description, is_dubbed, is_subbed, is_mature, is_simulcast,maturity_ratings);
         }
       const episodes = [];
-      console.log(channelId.id)
-      const url = `https://kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=${channelId.id}&locale=en-US`;
+      const url = `https://kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=animedigitalnetwork`;
       const options = {
         headers: {
           'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
@@ -180,7 +179,6 @@ import { channelId } from '../../scripts/channel_id';
       }
       const response = await fetch(url, options);
       const result = response.data;
-      console.log(result)
       if (url.includes('seasons')) {
         for (const season of result.items) {
           for (const epi of season.episodes) {
@@ -193,18 +191,17 @@ import { channelId } from '../../scripts/channel_id';
             }catch(e){
               var image = epi.images.thumbnail[0].source;
             }
-            var link = '/watch/' + id;
+            var link = '/adn/watch/' + id;
             var headers = {
-              'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
-              'Authorization': `Bearer ${token.access_token}`,
+              // 'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
+              'Authorization': `Bearer ${token.access_token}`
             };
             link = new ModuleRequest(link, headers);
             episodes.push(new Episode(titre, link, desc, image));
             }
           }
         }
-        console.log(episodes);
-        this.meta = await getMetadata(slug,channelId.id);
+        this.meta = await getMetadata(slug);
         this.episodes = episodes;
         
       }

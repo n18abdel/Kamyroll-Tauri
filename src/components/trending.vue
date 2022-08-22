@@ -1,5 +1,6 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
+import { channelId } from '../scripts/channel_id';
 </script>
 <template>
 <article class="erc-hero-card" :id="trending[random].id">
@@ -58,8 +59,6 @@ export default {
                 max = Math.floor(max);
                 return Math.floor(Math.random() * (max - min)) + min;
             }
-        
-
         const url = 'https://graphql.anilist.co/';
 
         const params = {
@@ -95,7 +94,6 @@ export default {
             },
             body: Body.text(JSON.stringify(params))
         });
-        console.log(JSON.stringify(response.data));
 
         let trends = [];
         for (var x = 0; x < response.data.data.Page.media.length; x++) {
@@ -108,13 +106,12 @@ export default {
                 }
             }
             if(id != ''){
-                const link = '/anime/' + id;
+                const link = "/crunchyroll/"+id;
                 trends.push(new Trending(tMedia.title.romaji, link, tMedia.coverImage.large, tMedia.description, tMedia.status, id));
+                }
             }
-        }
         this.trending = trends;
         this.random = '' + getRandomInt(0,trends.length);
-
     }
 }
 </script>

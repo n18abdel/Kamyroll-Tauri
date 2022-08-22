@@ -1,6 +1,6 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
-let query = ref("");
+import { channelId } from '../../scripts/channel_id';
 
 </script>
 <template>
@@ -45,7 +45,7 @@ let query = ref("");
                                                     <span v-else-if="anime.episode_count<=1" class="series-info-elem episodes-number">{{anime.episode_count}} Episode</span>
                                                 </div>
                                             </div>
-                                            <p class="channel-name">{{channel}}</p>
+                                            <p class="channel-name">{{channelId.id}}</p>
                                             <div class="c-meta-tags annotation">
                                                <span v-if="anime.is_subbed && !anime.is_dubbed" class="c-meta-tags__language">Sub</span>
                                                <span v-else-if="anime.is_dubbed && !anime.is_subbed" class="c-meta-tags__language">Dub</span>
@@ -69,12 +69,11 @@ let query = ref("");
 
 <script>
 import { token } from '/src/scripts/token.js';
-import { channelId } from '../../scripts/channel_id';
+
 export default { 
     data(){
         return{
             results:null,
-            channel: channelId.id
         }
     },
     methods:{
@@ -132,7 +131,14 @@ export default {
                     } else{
                         var metadata = item.series_metadata;
                     }
-                    var link = '/anime/' + item.id;
+                    var link = "";
+                    if(channelId.id=="animedigitalnetwork"){
+                        link = '/adn/' + item.id;
+                    } else if (channelId.id=="neko-sama"){
+                        link = '/neko-sama/' + item.id;
+                    } else if(channelId.id=="crunchyroll"){
+                        link = '/crunchyroll/' + item.id;
+                    }
                     var maturity_ratings = metadata.maturity_ratings;
                     var is_dubbed = metadata.is_dubbed;
                     var is_subbed = metadata.is_subbed;
