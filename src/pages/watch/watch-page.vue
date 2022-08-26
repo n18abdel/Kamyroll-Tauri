@@ -3,6 +3,7 @@ import {fetch ,Body,ResponseType} from '@tauri-apps/api/http';
 import Artplayer from 'artplayer';
 import Hls from 'hls.js';
 import { pStreamExtractor } from '../../scripts/pstreamextractor';
+import loading from '/src/assets/loading.svg';
 </script>
 
 <template>
@@ -215,7 +216,7 @@ export default {
             airplay: true,
             theme: '#f00',
             icons: {
-                loading: '<img src="/src/assets/loading.svg">',
+                loading: `<img src="${loading}">`,
                 state: '<img width="150" heigth="150" src="https://artplayer.org/assets/img/state.svg">',
                 indicator: '<img width="16" heigth="16" src="https://artplayer.org/assets/img/indicator.svg">',
             },
