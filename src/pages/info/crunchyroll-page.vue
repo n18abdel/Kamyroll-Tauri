@@ -185,7 +185,7 @@ import { channelId } from '../../scripts/channel_id';
         for (const season of result.items) {
           for (const epi of season.episodes) {
             if(epi.episode != 'Bande Annonce'){
-            var titre = epi.title;
+            var titre = epi.episode + ': '+ epi.title;
             var id = epi.id;
             var desc = epi.description;
             try{
