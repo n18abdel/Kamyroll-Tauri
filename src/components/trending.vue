@@ -1,6 +1,7 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
 import { channelId } from '../scripts/channel_id';
+import { invoke } from '@tauri-apps/api/tauri'
 </script>
 <template>
 <article class="erc-hero-card" :id="trending[random].id">
@@ -100,6 +101,9 @@ export default {
             let tMedia = response.data.data.Page.media[x];
             let providers= tMedia.externalLinks;
             var id = '';
+            var description = tMedia.description;
+            //replace all the html tags with empty string
+            description = description.replace(/<(?:.|\n)*?>/gm, '');
             for (const provider of providers){
                 if(provider.site == 'VRV'){
                     id = provider.url.split('/')[4];
@@ -112,6 +116,7 @@ export default {
             }
         this.trending = trends;
         this.random = '' + getRandomInt(0,trends.length);
+        invoke('close_splashscreen')
     }
 }
 </script>
