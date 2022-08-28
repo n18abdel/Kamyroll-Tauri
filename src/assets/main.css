@@ -14289,7 +14289,7 @@ body.state-scroll-fixed {
 
 .erc-hero-card-background-overlay.bottom-angled:after,
 .erc-hero-card-background-overlay.top-angled:before {
-    background-image: url(/vrvweb/assets/svg/hero_lead_triangle.svg)
+    background-image: url(/src/assets/hero_lead_triangle.svg)
 }
 
 .erc-hero-card-background-overlay .background-gradient {
