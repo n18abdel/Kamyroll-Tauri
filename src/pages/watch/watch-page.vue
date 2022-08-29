@@ -4,6 +4,8 @@ import Artplayer from 'artplayer';
 import Hls from 'hls.js';
 import { pStreamExtractor } from '../../scripts/pstreamextractor';
 import loading from '/src/assets/loading.svg';
+import { invoke } from '@tauri-apps/api/tauri'
+import { Command } from '@tauri-apps/api/shell'
 </script>
 
 <template>
@@ -112,6 +114,10 @@ export default {
                         }
                     }
                 } else if (window.location.href.includes('/nekosama/')) {
+                    // invoke('execute');
+                    const command = Command.sidecar('proxy/pstream/main');
+                    const output = await command.execute();
+                    console.log(output);
                     const response = await fetch(url, {
                         method: "GET",
                         headers: headers
@@ -119,7 +125,7 @@ export default {
                     let result = response.data;
                     const quality = result.streams[0].audio_locale + ' ' + result.streams[0].hardsub_locale;
                     const pstreamlink = result.streams[0].url;
-                    const pstream = await pStreamExtractor(pstreamlink);
+                    const pstream = await pStreamExtractor(pstreamlink.replace('https://www.pstream.net',' http://localhost:5000'));
                     // var videorequest = await fetch(pstream, {
                     //     method: "GET",
                     //     responseType: ResponseType.Text,
@@ -225,21 +231,14 @@ export default {
             },
             customType: {
                 m3u8: function (video, url) {
-                    if (Hls.isSupported()) {
-                        if (window.location.href.includes('nekosama')) {
-                            var config = {
-                                xhrSetup: function (xhr, url) {
-                                    xhr.setRequestHeader('Accept', '*/*');
-                                    xhr.setRequestHeader('Accept-Language', '*/*');
-                                    xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-                                    xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36');
-                                    xhr.open('GET', url,true);
-                                },
-                            };
-                        } else {
-                            var config = {}
+                    const config = {
+                        xhrSetup: function (xhr,url) {
+                            xhr.withCredentials = true;
+                            xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+                            xhr.open('GET', url);
                         }
-
+                    }
+                    if (Hls.isSupported()) {
                         if (hls) hls.destroy();
                         hls = new Hls({
                             config
@@ -307,6 +306,9 @@ export default {
                 position: 'right',
                 html: 'Quality',
                 tooltip: 'Choose your quality',
+                style: {
+                    "padding-right": "10px"
+                },
                 selector: hls.levels.map((item, index) => {
                     return {
                         html: item.height + 'P',

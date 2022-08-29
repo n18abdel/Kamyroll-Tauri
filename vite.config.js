@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from '@vuetify/vite-plugin';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [
@@ -22,6 +23,13 @@ export default defineConfig({
   	}
   },
   build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        'splashscreen.html': resolve(__dirname, 'splashscreen.html'),
+
+      }
+    },
     target: [
       'edge89',
       'safari15',

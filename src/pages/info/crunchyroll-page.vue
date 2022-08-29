@@ -89,7 +89,9 @@
                         <div class="details-metadata">
                           <div class="c-meta-tags media-tag-group">
                             <span class="c-meta-tags__type">Episode</span>
-                            <span class="c-meta-tags__language">Subtitled</span>
+                            <span v-if="episode.is_subbed" class="c-meta-tags__language">Sub</span>
+                            <span v-else-if="episode.is_dubbed" class="c-meta-tags__language">Dub</span>
+                            <span v-else-if="episode.is_subbed==true && meta.is_dubbed==true" class="c-meta-tags__language">Sub | Dub</span>
                           </div>
                         </div>
                       </section>
@@ -133,11 +135,13 @@ import { channelId } from '../../scripts/channel_id';
         this.is_simulcast = is_simulcast;
         this.maturity_ratings = maturity_ratings;
       }
-      function Episode(title, url, description, poster) {
+      function Episode(title, url, description, poster,is_dubbed,is_subbed) {
         this.title = title;
         this.url = url;
         this.description = description;
         this.poster = poster;
+        this.is_dubbed = is_dubbed;
+        this.is_subbed = is_subbed;
       }
 
       function ModuleRequest(link, headers) {
@@ -199,7 +203,10 @@ import { channelId } from '../../scripts/channel_id';
               'Authorization': `Bearer ${token.access_token}`,
             };
             link = new ModuleRequest(link, headers);
-            episodes.push(new Episode(titre, link, desc, image));
+            var is_dubbed = epi.is_dubbed;
+            var is_subbed = epi.is_subbed;
+            episodes.push(new Episode(titre, link, desc, image, is_dubbed, is_subbed));
+            }
             }
           }
         }
@@ -208,6 +215,5 @@ import { channelId } from '../../scripts/channel_id';
         this.episodes = episodes;
         
       }
-    },
-  }
+    }
 </script>
