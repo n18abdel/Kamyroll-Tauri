@@ -116,7 +116,7 @@ export default {
             }
         this.trending = trends;
         this.random = '' + getRandomInt(0,trends.length);
-        invoke('close_splashscreen')
+        invoke('close_splashscreen');
     }
 }
 </script>

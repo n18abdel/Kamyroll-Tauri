@@ -4,6 +4,8 @@ import Artplayer from 'artplayer';
 import Hls from 'hls.js';
 import { pStreamExtractor } from '../../scripts/pstreamextractor';
 import loading from '/src/assets/loading.svg';
+import { invoke } from '@tauri-apps/api/tauri'
+import { Command } from '@tauri-apps/api/shell'
 </script>
 
 <template>
@@ -112,6 +114,10 @@ export default {
                         }
                     }
                 } else if (window.location.href.includes('/nekosama/')) {
+                    // invoke('execute');
+                    const command = Command.sidecar('proxy/pstream/main');
+                    const output = await command.execute();
+                    console.log(output);
                     const response = await fetch(url, {
                         method: "GET",
                         headers: headers
@@ -300,6 +306,9 @@ export default {
                 position: 'right',
                 html: 'Quality',
                 tooltip: 'Choose your quality',
+                style: {
+                    "padding-right": "10px"
+                },
                 selector: hls.levels.map((item, index) => {
                     return {
                         html: item.height + 'P',

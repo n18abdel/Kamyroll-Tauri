@@ -26,7 +26,7 @@
         "icons/icon.ico"
       ],
       "resources": [],
-      "externalBin": [],
+      "externalBin": ["proxy/pstream/main"],
       "copyright": "Nabil 2022",
       "category": "DeveloperTool",
       "shortDescription": "",
@@ -54,6 +54,15 @@
       "http": {
         "all": true,
         "scope": ["https://**", "http://**"]
+      },
+      "shell": {
+        "sidecar": true,
+        "scope": [
+          {
+            "name": "proxy/pstream/main",
+            "sidecar": true
+          }
+        ]
       }
     },
     "windows": [

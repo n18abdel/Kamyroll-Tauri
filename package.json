@@ -24,6 +24,7 @@
     "@mdi/font": "6.7.96",
     "@tauri-apps/api": "^1.0.1",
     "artplayer": "^4.5.3",
+    "execa": "^6.1.0",
     "hls.js": "^1.1.5",
     "roboto-fontface": "0.10.0",
     "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#dev",
