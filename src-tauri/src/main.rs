@@ -9,6 +9,7 @@
 use tauri::{
   Manager,
 };
+use tauri_plugin_store::PluginBuilder;
 
 
 // Create the command:
@@ -28,6 +29,8 @@ fn main() {
   tauri::Builder::default()
     // Add this line
     .invoke_handler(tauri::generate_handler![close_splashscreen])
+    .plugin(tauri_plugin_window_state::Builder::default().build())
+    .plugin(PluginBuilder::default().build())
     .run(tauri::generate_context!())
     .expect("failed to run app");
 }
