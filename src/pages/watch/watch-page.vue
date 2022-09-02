@@ -115,7 +115,7 @@ export default {
                     }
                 } else if (window.location.href.includes('/nekosama/')) {
                     const command = Command.sidecar('proxy/pstream/main');
-                    const output = await command.execute();
+                    const output =  command.execute();
                     console.log(output);
                     const response = await fetch(url, {
                         method: "GET",
@@ -123,8 +123,9 @@ export default {
                     });
                     let result = response.data;
                     const quality = result.streams[0].audio_locale + ' ' + result.streams[0].hardsub_locale;
-                    const pstreamlink = result.streams[0].url;
-                    const pstream = await pStreamExtractor(pstreamlink.replace('https://www.pstream.net',' http://localhost:5000'));
+                    const pstreamlink = result.streams[0].url.replace('https://www.pstream.net',' http://localhost:5000');
+                    console.log(pstreamlink);
+                    const pstream = await pStreamExtractor(pstreamlink); 
                     // var videorequest = await fetch(pstream, {
                     //     method: "GET",
                     //     responseType: ResponseType.Text,
@@ -145,7 +146,7 @@ export default {
                             
                     //     }
                     // }
-                    videos.push(new Videos(quality,pstream));
+                    videos.push(new Videos(quality,pstream)); 
                 }
                 return videos;
             } catch (e) {
