@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "Kamyroll",
-    "version": "0.2.7"
+    "version": "0.2.8"
   },
   "build": {
     "distDir": "../dist",
@@ -70,6 +70,7 @@
         "title": "Kamyroll",
         "width": 1280,
         "height": 720,
+        "center": true,
         "resizable": true,
         "fullscreen": false
       },
@@ -77,6 +78,7 @@
       "width": 400,
       "height": 200,
       "decorations": false,
+      "center": true,
       "url": "splashscreen.html",
       "label": "splashscreen"
     }
