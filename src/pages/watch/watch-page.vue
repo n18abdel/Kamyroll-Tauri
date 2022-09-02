@@ -9,7 +9,7 @@ import { Command } from '@tauri-apps/api/shell'
 </script>
 
 <template>
-        <div id="player" style="width:510px;height: 350px;"></div>
+        <div id="player"></div>
 </template>
 
 <script>
@@ -114,7 +114,6 @@ export default {
                         }
                     }
                 } else if (window.location.href.includes('/nekosama/')) {
-                    // invoke('execute');
                     const command = Command.sidecar('proxy/pstream/main');
                     const output = await command.execute();
                     console.log(output);
@@ -194,9 +193,7 @@ export default {
             var subs = await getSubs(this.channel_id, this.id);
             this.subs = subs;
         } else {
-            subs = [new Subs('No subtitles', '', {
-                
-            }, '')];
+            subs = [new Subs('No subtitles', '', {}, '')];
             this.subs = subs;
         }
         var hls = null;
@@ -214,6 +211,7 @@ export default {
             playbackRate: true,
             aspectRatio: true,
             fullscreen: true,
+            fullscreenWeb: true,
             subtitleOffset: true,
             miniProgressBar: true,
             mutex: true,
@@ -231,18 +229,9 @@ export default {
             },
             customType: {
                 m3u8: function (video, url) {
-                    const config = {
-                        xhrSetup: function (xhr,url) {
-                            xhr.withCredentials = true;
-                            xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-                            xhr.open('GET', url);
-                        }
-                    }
                     if (Hls.isSupported()) {
                         if (hls) hls.destroy();
-                        hls = new Hls({
-                            config
-                        });
+                        hls = new Hls();
                         hls.loadSource(url);
                         hls.attachMedia(video);
                     } else {
@@ -302,6 +291,7 @@ export default {
             }],
         });
         art.on('ready', () => {
+            art.fullscreenWeb = true;
             art.controls.add({
                 position: 'right',
                 html: 'Quality',
@@ -366,16 +356,23 @@ export default {
 
 <style scoped>
 #player{
+    /* fullscreen */
+    width: 100%;
+    height: 100%;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    padding: 10px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    /* fullscreen but let the header appear */
+    overflow: visible;
+    
 }
 
 #player > .art-video-player .art-subtitle {
     font-size: 50px !important;
 }
+
+
 
 
 
