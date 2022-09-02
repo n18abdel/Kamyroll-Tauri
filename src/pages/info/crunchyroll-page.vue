@@ -121,7 +121,7 @@ import { channelId } from '../../scripts/channel_id';
       }
     },
     beforeMount: async function () {
-       channelId.crunchyroll();
+      channelId.crunchyroll()
        function infoAnime(title,  url, image, description, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
         this.title = title;
         this.url = url;

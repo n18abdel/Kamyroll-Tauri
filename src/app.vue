@@ -4,8 +4,8 @@ import banner from './components/banner.vue'
 </script>
 
 <template>
+  <banner></banner>
   <v-app>
-    <banner></banner>
     <v-main>
       <router-view />
     </v-main>
