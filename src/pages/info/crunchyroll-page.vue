@@ -119,7 +119,9 @@ import { token } from '../../scripts/token.js';
         slug : window.location.href.split('/').pop(),
       }
     },
-    beforeMount: async function () {
+    beforeMount: async function () {  
+      localStorage.setItem('channel', 'crunchyroll');
+      
        function infoAnime(title,  url, image, description, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
         this.title = title;
         this.url = url;

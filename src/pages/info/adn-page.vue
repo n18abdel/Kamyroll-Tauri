@@ -118,7 +118,7 @@ import { token } from '../../scripts/token.js';
       }
     },
     beforeMount: async function () {    
-      
+      localStorage.setItem('channel', 'animedigitalnetwork');
       function infoAnime(title,  url, image, description, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
         this.title = title;
         this.url = url;
