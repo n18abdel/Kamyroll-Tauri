@@ -7,7 +7,6 @@
 // import Requester from '../../components/requester.vue';
 import Trending from '../../components/trending.vue';
 import DarkModeToggle from '../../components/DarkModeToggle.vue';
-import { channelId } from '../../scripts/channel_id';
 
 
 // listen to an event from the backend

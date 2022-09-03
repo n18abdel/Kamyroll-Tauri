@@ -1,44 +1,15 @@
 <script setup>
-    import { channelId } from '../scripts/channel_id';
-    
-    
-    </script>
+    import {chan,channels,setChannel} from '../scripts/channel_id';
+</script>
     
     <template>
     
-        <select name="channel-id" id="channel-id" v-model="channelId.id" @change="changeId($event)">
-            <option value="crunchyroll">crunchyroll</option>
-            <option value="animedigitalnetwork" >ADN</option>
-            <option value="neko-sama">neko-sama</option>
+        <select name="channel-id" id="channel-id" v-model="chan" @change="setChannel($event.target.value)">
+            <option v-for="prov of channels" :value="prov.name">{{prov.label}}</option>
         </select>
             
     </template>
     
-    <script>
-    export default {
-        methods: {
-            changeId(id) {
-             if(id=="animedigitalnetwork"){
-                channelId.adn()
-             } else if (id=="crunchyroll"){
-                channelId.crunchyroll()
-             } else if (id=="neko-sama"){
-                channelId.neko()
-             }
-        },
-            crunchyroll() {
-                console.log(channel)
-                channelId.id = 'crunchyroll';
-            },
-            adn() {
-                channelId.id = 'animedigitalnetwork';
-            },
-            neko() {
-                this.channelId = 'neko-sama';
-            }
-        }
-    }
-    </script>
     <style scoped>
     
        #channel-id {
@@ -46,10 +17,11 @@
             height: 100%;
             border: none;
             border-radius: 0;
-            color: rgb(255, 255, 255);
+            color: white;
             font-size: 1.5rem;
             font-weight: bold;
             padding: 0.5rem;
+            background-color: #1b1a26;
             outline: none;
             -webkit-appearance: none;
             -moz-appearance: none;

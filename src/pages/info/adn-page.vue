@@ -108,7 +108,6 @@
 </template>
 <script>
 import { token } from '../../scripts/token.js';
-import { channelId } from '../../scripts/channel_id'; 
   export default {
     data() {
       return {
@@ -119,7 +118,7 @@ import { channelId } from '../../scripts/channel_id';
       }
     },
     beforeMount: async function () {    
-      channelId.adn();
+      localStorage.setItem('channel', 'animedigitalnetwork');
       function infoAnime(title,  url, image, description, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
         this.title = title;
         this.url = url;

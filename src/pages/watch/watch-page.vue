@@ -68,7 +68,7 @@ export default {
         async function getVideos(channel, id) {
             let videos = [];
             var streams = '';
-            const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=vtt`;
+            const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=ass`;
 
             const headers = {
                 'Authorization': 'Bearer ' + token.access_token,
@@ -114,17 +114,15 @@ export default {
                         }
                     }
                 } else if (window.location.href.includes('/nekosama/')) {
-                    const command = Command.sidecar('proxy/pstream/main');
-                    const output = await command.execute();
-                    console.log(output);
                     const response = await fetch(url, {
                         method: "GET",
                         headers: headers
                     });
                     let result = response.data;
                     const quality = result.streams[0].audio_locale + ' ' + result.streams[0].hardsub_locale;
-                    const pstreamlink = result.streams[0].url;
-                    const pstream = await pStreamExtractor(pstreamlink.replace('https://www.pstream.net',' http://localhost:5000'));
+                    const pstreamlink = result.streams[0].url.replace('https://www.pstream.net',' http://localhost:5000');
+                    console.log(pstreamlink);
+                    const pstream = await pStreamExtractor(pstreamlink); 
                     // var videorequest = await fetch(pstream, {
                     //     method: "GET",
                     //     responseType: ResponseType.Text,
@@ -145,7 +143,7 @@ export default {
                             
                     //     }
                     // }
-                    videos.push(new Videos(quality,pstream));
+                    videos.push(new Videos(quality,pstream)); 
                 }
                 return videos;
             } catch (e) {
@@ -173,8 +171,11 @@ export default {
                             link = 'https://corsproxy.io/?' + encodeURIComponent(link);
                         }
                         var type = subs.format;
-                        var style = {};
-                        subtitles.push(new Subs(lang, link, style, type));
+                        var style = { color: '#fe9200',
+                        fontSize: '20px'};
+                        var finalData = new Subs(lang, link, style, type);
+                        subtitles.push(finalData);
+                        console.log(finalData);
                     }
                 } else {
                     subtitles.push(new Subs('No subtitles', '', style, ''));
@@ -185,8 +186,6 @@ export default {
                 console.log(e);
             }
         }
-        console.log(this.channel_id);
-        console.log(this.id);
         var streams = await getVideos(this.channel_id, this.id);
         this.videos = streams;
         if (!window.location.href.includes('/nekosama/')) {
@@ -203,11 +202,12 @@ export default {
             volume: 0.5,
             isLive: false,
             muted: false,
-            fastForward: true,
             autoplay: false,
-            autoSize: false,
-            autoMini: true,
+            pip: true,
+            screenshot: true,
             setting: true,
+            loop: true,
+            flip: true,
             playbackRate: true,
             aspectRatio: true,
             fullscreen: true,
@@ -215,7 +215,7 @@ export default {
             subtitleOffset: true,
             miniProgressBar: true,
             mutex: true,
-            backdrop: true,
+            playsInline: true,
             autoPlayback: true,
             airplay: true,
             theme: '#f00',
@@ -277,7 +277,8 @@ export default {
                         return {
                             html: sub.html,
                             url: sub.url,
-                            type: sub.type
+                            type: 'ass',
+                            style: sub.style
                         }
                     })
 
@@ -290,14 +291,16 @@ export default {
                 },
             }],
         });
+        art.on('subtitleSwitch', (url) => {
+            console.log(url)
+        });
         art.on('ready', () => {
             art.fullscreenWeb = true;
             art.controls.add({
                 position: 'right',
                 html: 'Quality',
-                tooltip: 'Choose your quality',
                 style: {
-                    "padding-right": "10px"
+                    "padding-left": "10px"
                 },
                 selector: hls.levels.map((item, index) => {
                     return {

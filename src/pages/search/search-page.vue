@@ -1,6 +1,5 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
-import { channelId } from '../../scripts/channel_id';
 
 </script>
 <template>
@@ -10,7 +9,7 @@ import { channelId } from '../../scripts/channel_id';
                 <div class="erc-search-field">
                     <div class="content">
                         <form class="search-input-wrapper state-narrow">
-                            <input type="text" v-model="query" placeholder="Rechercher" class="search-input" @keydown.enter.prevent="search">
+                            <input type="text" placeholder="Rechercher" class="search-input" @keydown.enter.prevent="search">
                             <button class="search-button" type="sumbit" @click="search">
                                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     data-t="search-svg">
@@ -45,7 +44,7 @@ import { channelId } from '../../scripts/channel_id';
                                                     <span v-else-if="anime.episode_count<=1" class="series-info-elem episodes-number">{{anime.episode_count}} Episode</span>
                                                 </div>
                                             </div>
-                                            <p class="channel-name">{{channelId.id}}</p>
+                                            <p class="channel-name">{{chan()}}</p>
                                             <div class="c-meta-tags annotation">
                                                <span v-if="anime.is_subbed && !anime.is_dubbed" class="c-meta-tags__language">Sub</span>
                                                <span v-else-if="anime.is_dubbed && !anime.is_subbed" class="c-meta-tags__language">Dub</span>
@@ -73,10 +72,13 @@ import { token } from '/src/scripts/token.js';
 export default { 
     data(){
         return{
-            results:null,
+            results:null
         }
     },
     methods:{
+        chan(){
+            return localStorage.getItem('channel');
+        },
          infoAnime(title,  url, image, description, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
         this.title = title;
         this.url = url;
@@ -116,7 +118,8 @@ export default {
                     'Authorization': `Bearer ${token.access_token}`,
                 }
             };
-            const request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${query}&limit=100&channel_id=${channelId.id}`,options);
+            var chan = localStorage.getItem('channel');
+            const request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${query}&limit=100&channel_id=${chan}`,options);
             const response = request.data;
             const data = response;
             for (const anime of data.items) {
@@ -132,11 +135,11 @@ export default {
                         var metadata = item.series_metadata;
                     }
                     var link = "";
-                    if(channelId.id=="animedigitalnetwork"){
+                    if(chan=="animedigitalnetwork"){
                         link = '/adn/' + item.id;
-                    } else if (channelId.id=="neko-sama"){
+                    } else if (chan=="neko-sama"){
                         link = '/neko-sama/' + item.id;
-                    } else if(channelId.id=="crunchyroll"){
+                    } else if(chan=="crunchyroll"){
                         link = '/crunchyroll/' + item.id;
                     }
                     var maturity_ratings = metadata.maturity_ratings;

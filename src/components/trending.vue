@@ -1,6 +1,5 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
-import { channelId } from '../scripts/channel_id';
 import { invoke } from '@tauri-apps/api/tauri'
 </script>
 <template>
@@ -103,7 +102,7 @@ export default {
             var id = '';
             var description = tMedia.description;
             //replace all the html tags with empty string
-            description = description.replace(/<(?:.|\n)*?>/gm, '');
+            description = description.replace(/<(?:.|\n)*?>/gm, '').trim();
             for (const provider of providers){
                 if(provider.site == 'VRV'){
                     id = provider.url.split('/')[4];
@@ -111,7 +110,7 @@ export default {
             }
             if(id != ''){
                 const link = "/crunchyroll/"+id;
-                trends.push(new Trending(tMedia.title.romaji, link, tMedia.coverImage.large, tMedia.description, tMedia.status, id));
+                trends.push(new Trending(tMedia.title.romaji, link, tMedia.coverImage.large,description, tMedia.status, id));
                 }
             }
         this.trending = trends;
