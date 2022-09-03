@@ -4,13 +4,13 @@ version = 3
 
 [[package]]
 name = "Kamyroll"
-version = "0.2.7"
+version = "0.2.8"
 dependencies = [
+ "command-group",
  "serde",
  "serde_json",
- "tauri",
+ "tauri 1.0.5 (git+https://github.com/tauri-apps/tauri)",
  "tauri-build",
- "tauri-plugin-store",
  "tauri-plugin-window-state",
 ]
 
@@ -91,9 +91,9 @@ dependencies = [
 
 [[package]]
 name = "attohttpc"
-version = "0.19.1"
+version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "262c3f7f5d61249d8c00e5546e2685cd15ebeeb1bc0f3cc5449350a1cb07319e"
+checksum = "6ca359af0239b00307656f0d6520fab5997a068cdfcfdb424e5466a3ea7958c5"
 dependencies = [
  "flate2",
  "http",
@@ -323,6 +323,16 @@ checksum = "2a604e93b79d1808327a6fca85a6f2d69de66461e7620f5a4cbf5fb4d1d7c948"
 dependencies = [
  "bytes",
  "memchr",
+]
+
+[[package]]
+name = "command-group"
+version = "1.0.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f7a8a86f409b4a59df3a3e4bee2de0b83f1755fdd2a25e3a9684c396fc4bed2c"
+dependencies = [
+ "nix",
+ "winapi",
 ]
 
 [[package]]
@@ -587,6 +597,15 @@ name = "embed_plist"
 version = "1.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4ef6b89e5b37196644d8796de5268852ff179b44e96276cf4290264843743bb7"
+
+[[package]]
+name = "encoding_rs"
+version = "0.8.31"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9852635589dc9f9ea1b6fe9f05b50ef208c85c834a562f0c6abb1c475736ec2b"
+dependencies = [
+ "cfg-if",
+]
 
 [[package]]
 name = "fastrand"
@@ -1519,6 +1538,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e4a24736216ec316047a1fc4252e27dabb04218aa4a3f37c6e7ddbf1f9782b54"
 
 [[package]]
+name = "nix"
+version = "0.22.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e4916f159ed8e5de0082076562152a76b7a1f64a01fd9d1e0fea002c37624faf"
+dependencies = [
+ "bitflags",
+ "cc",
+ "cfg-if",
+ "libc",
+ "memoffset",
+]
+
+[[package]]
 name = "nodrop"
 version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2084,6 +2116,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "raw-window-handle"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed7e3d950b66e19e0c372f3fa3fbbcf85b1746b571f74e0c2af6042a5c93420a"
+dependencies = [
+ "cty",
+]
+
+[[package]]
 name = "redox_syscall"
 version = "0.2.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2556,6 +2597,52 @@ dependencies = [
  "core-foundation",
  "core-graphics",
  "crossbeam-channel",
+ "dispatch",
+ "gdk",
+ "gdk-pixbuf",
+ "gdk-sys",
+ "gdkx11-sys",
+ "gio",
+ "glib",
+ "glib-sys",
+ "gtk",
+ "image",
+ "instant",
+ "jni 0.19.0",
+ "lazy_static",
+ "libc",
+ "log",
+ "ndk",
+ "ndk-context",
+ "ndk-sys",
+ "objc",
+ "once_cell",
+ "parking_lot",
+ "paste",
+ "png 0.17.5",
+ "raw-window-handle 0.4.3",
+ "scopeguard",
+ "serde",
+ "unicode-segmentation",
+ "uuid 1.1.2",
+ "windows",
+ "windows-implement",
+ "x11-dl",
+]
+
+[[package]]
+name = "tao"
+version = "0.13.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a2093fa6bba3cc0c185b21c900de1b757e66637e78848cbcdda967b836d8c0ec"
+dependencies = [
+ "bitflags",
+ "cairo-rs",
+ "cc",
+ "cocoa",
+ "core-foundation",
+ "core-graphics",
+ "crossbeam-channel",
  "dirs-next",
  "dispatch",
  "gdk",
@@ -2581,7 +2668,7 @@ dependencies = [
  "parking_lot",
  "paste",
  "png 0.17.5",
- "raw-window-handle",
+ "raw-window-handle 0.5.0",
  "scopeguard",
  "serde",
  "unicode-segmentation",
@@ -2609,7 +2696,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e1a56a8b125069c2682bd31610109b4436c050c74447bee1078217a0325c1add"
 dependencies = [
  "anyhow",
- "attohttpc",
  "cocoa",
  "dirs-next",
  "embed_plist",
@@ -2624,10 +2710,56 @@ dependencies = [
  "ignore",
  "objc",
  "once_cell",
+ "percent-encoding",
+ "rand 0.8.5",
+ "raw-window-handle 0.4.3",
+ "semver 1.0.12",
+ "serde",
+ "serde_json",
+ "serde_repr",
+ "serialize-to-javascript",
+ "state",
+ "tar",
+ "tauri-macros 1.0.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tauri-runtime 0.10.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tauri-runtime-wry 0.10.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tauri-utils 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tempfile",
+ "thiserror",
+ "tokio",
+ "url",
+ "uuid 1.1.2",
+ "webkit2gtk",
+ "webview2-com",
+ "windows",
+]
+
+[[package]]
+name = "tauri"
+version = "1.0.5"
+source = "git+https://github.com/tauri-apps/tauri#5790218fb6e68d35f984d80d71f653d62f377dfb"
+dependencies = [
+ "anyhow",
+ "attohttpc",
+ "cocoa",
+ "dirs-next",
+ "embed_plist",
+ "encoding_rs",
+ "flate2",
+ "futures",
+ "futures-lite",
+ "glib",
+ "glob",
+ "gtk",
+ "heck 0.4.0",
+ "http",
+ "ignore",
+ "objc",
+ "once_cell",
  "os_pipe",
  "percent-encoding",
  "rand 0.8.5",
- "raw-window-handle",
+ "raw-window-handle 0.5.0",
  "regex",
  "semver 1.0.12",
  "serde",
@@ -2637,10 +2769,10 @@ dependencies = [
  "shared_child",
  "state",
  "tar",
- "tauri-macros",
- "tauri-runtime",
- "tauri-runtime-wry",
- "tauri-utils",
+ "tauri-macros 1.0.4 (git+https://github.com/tauri-apps/tauri)",
+ "tauri-runtime 0.10.2 (git+https://github.com/tauri-apps/tauri)",
+ "tauri-runtime-wry 0.10.2 (git+https://github.com/tauri-apps/tauri)",
+ "tauri-utils 1.0.3 (git+https://github.com/tauri-apps/tauri)",
  "tempfile",
  "thiserror",
  "tokio",
@@ -2663,7 +2795,7 @@ dependencies = [
  "json-patch",
  "semver 1.0.12",
  "serde_json",
- "tauri-utils",
+ "tauri-utils 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "winres",
 ]
 
@@ -2681,12 +2813,36 @@ dependencies = [
  "png 0.17.5",
  "proc-macro2",
  "quote",
+ "semver 1.0.12",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tauri-utils 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "thiserror",
+ "time",
+ "uuid 1.1.2",
+ "walkdir",
+]
+
+[[package]]
+name = "tauri-codegen"
+version = "1.0.4"
+source = "git+https://github.com/tauri-apps/tauri#5790218fb6e68d35f984d80d71f653d62f377dfb"
+dependencies = [
+ "base64",
+ "brotli",
+ "ico",
+ "json-patch",
+ "plist",
+ "png 0.17.5",
+ "proc-macro2",
+ "quote",
  "regex",
  "semver 1.0.12",
  "serde",
  "serde_json",
  "sha2",
- "tauri-utils",
+ "tauri-utils 1.0.3 (git+https://github.com/tauri-apps/tauri)",
  "thiserror",
  "time",
  "uuid 1.1.2",
@@ -2703,20 +2859,21 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
- "tauri-codegen",
- "tauri-utils",
+ "tauri-codegen 1.0.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tauri-utils 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
-name = "tauri-plugin-store"
-version = "0.0.0"
-source = "git+https://github.com/tauri-apps/tauri-plugin-store#67530781d86b73fae4ee03c17f43c76f09ae3400"
+name = "tauri-macros"
+version = "1.0.4"
+source = "git+https://github.com/tauri-apps/tauri#5790218fb6e68d35f984d80d71f653d62f377dfb"
 dependencies = [
- "log",
- "serde",
- "serde_json",
- "tauri",
- "thiserror",
+ "heck 0.4.0",
+ "proc-macro2",
+ "quote",
+ "syn",
+ "tauri-codegen 1.0.4 (git+https://github.com/tauri-apps/tauri)",
+ "tauri-utils 1.0.3 (git+https://github.com/tauri-apps/tauri)",
 ]
 
 [[package]]
@@ -2727,7 +2884,7 @@ checksum = "2f15dab0be2ce3ce8a57d0d2de17d201d0c2f3230d68981ff3f0942684de03eb"
 dependencies = [
  "bincode",
  "serde",
- "tauri",
+ "tauri 1.0.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror",
 ]
 
@@ -2741,10 +2898,30 @@ dependencies = [
  "http",
  "http-range",
  "infer",
- "raw-window-handle",
+ "raw-window-handle 0.4.3",
  "serde",
  "serde_json",
- "tauri-utils",
+ "tauri-utils 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "thiserror",
+ "uuid 1.1.2",
+ "webview2-com",
+ "windows",
+]
+
+[[package]]
+name = "tauri-runtime"
+version = "0.10.2"
+source = "git+https://github.com/tauri-apps/tauri#5790218fb6e68d35f984d80d71f653d62f377dfb"
+dependencies = [
+ "gtk",
+ "http",
+ "http-range",
+ "infer",
+ "rand 0.8.5",
+ "raw-window-handle 0.5.0",
+ "serde",
+ "serde_json",
+ "tauri-utils 1.0.3 (git+https://github.com/tauri-apps/tauri)",
  "thiserror",
  "uuid 1.1.2",
  "webview2-com",
@@ -2761,14 +2938,33 @@ dependencies = [
  "gtk",
  "percent-encoding",
  "rand 0.8.5",
- "raw-window-handle",
- "tauri-runtime",
- "tauri-utils",
+ "raw-window-handle 0.4.3",
+ "tauri-runtime 0.10.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tauri-utils 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "uuid 1.1.2",
  "webkit2gtk",
  "webview2-com",
  "windows",
- "wry",
+ "wry 0.19.0",
+]
+
+[[package]]
+name = "tauri-runtime-wry"
+version = "0.10.2"
+source = "git+https://github.com/tauri-apps/tauri#5790218fb6e68d35f984d80d71f653d62f377dfb"
+dependencies = [
+ "cocoa",
+ "gtk",
+ "percent-encoding",
+ "rand 0.8.5",
+ "raw-window-handle 0.5.0",
+ "tauri-runtime 0.10.2 (git+https://github.com/tauri-apps/tauri)",
+ "tauri-utils 1.0.3 (git+https://github.com/tauri-apps/tauri)",
+ "uuid 1.1.2",
+ "webkit2gtk",
+ "webview2-com",
+ "windows",
+ "wry 0.20.2",
 ]
 
 [[package]]
@@ -2776,6 +2972,32 @@ name = "tauri-utils"
 version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "12ff4b68d9faeb57c9c727bf58c9c9768d2b67d8e84e62ce6146e7859a2e9c6b"
+dependencies = [
+ "brotli",
+ "ctor",
+ "glob",
+ "heck 0.4.0",
+ "html5ever",
+ "json-patch",
+ "kuchiki",
+ "memchr",
+ "phf 0.10.1",
+ "proc-macro2",
+ "quote",
+ "semver 1.0.12",
+ "serde",
+ "serde_json",
+ "serde_with",
+ "thiserror",
+ "url",
+ "walkdir",
+ "windows",
+]
+
+[[package]]
+name = "tauri-utils"
+version = "1.0.3"
+source = "git+https://github.com/tauri-apps/tauri#5790218fb6e68d35f984d80d71f653d62f377dfb"
 dependencies = [
  "brotli",
  "ctor",
@@ -3380,7 +3602,39 @@ dependencies = [
  "once_cell",
  "serde",
  "serde_json",
- "tao",
+ "tao 0.12.2",
+ "thiserror",
+ "url",
+ "webkit2gtk",
+ "webkit2gtk-sys",
+ "webview2-com",
+ "windows",
+ "windows-implement",
+]
+
+[[package]]
+name = "wry"
+version = "0.20.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ea48fb3b68ab76f62837bfcea63baed9a185dbec9c14d4e5d70033e22fefffd2"
+dependencies = [
+ "block",
+ "cocoa",
+ "core-graphics",
+ "crossbeam-channel",
+ "gdk",
+ "gio",
+ "glib",
+ "gtk",
+ "http",
+ "libc",
+ "log",
+ "objc",
+ "objc_id",
+ "once_cell",
+ "serde",
+ "serde_json",
+ "tao 0.13.3",
  "thiserror",
  "url",
  "webkit2gtk",
