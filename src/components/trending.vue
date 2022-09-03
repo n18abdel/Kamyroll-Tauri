@@ -102,7 +102,7 @@ export default {
             var id = '';
             var description = tMedia.description;
             //replace all the html tags with empty string
-            description = description.replace(/<(?:.|\n)*?>/gm, '');
+            description = description.replace(/<(?:.|\n)*?>/gm, '').trim();
             for (const provider of providers){
                 if(provider.site == 'VRV'){
                     id = provider.url.split('/')[4];
