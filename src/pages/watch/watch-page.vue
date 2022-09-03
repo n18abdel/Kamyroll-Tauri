@@ -68,7 +68,7 @@ export default {
         async function getVideos(channel, id) {
             let videos = [];
             var streams = '';
-            const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=vtt`;
+            const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=ass`;
 
             const headers = {
                 'Authorization': 'Bearer ' + token.access_token,
@@ -114,9 +114,6 @@ export default {
                         }
                     }
                 } else if (window.location.href.includes('/nekosama/')) {
-                    const command = Command.sidecar('proxy/pstream/main');
-                    const output =  command.execute();
-                    console.log(output);
                     const response = await fetch(url, {
                         method: "GET",
                         headers: headers
@@ -174,8 +171,11 @@ export default {
                             link = 'https://corsproxy.io/?' + encodeURIComponent(link);
                         }
                         var type = subs.format;
-                        var style = {};
-                        subtitles.push(new Subs(lang, link, style, type));
+                        var style = { color: '#fe9200',
+                        fontSize: '20px'};
+                        var finalData = new Subs(lang, link, style, type);
+                        subtitles.push(finalData);
+                        console.log(finalData);
                     }
                 } else {
                     subtitles.push(new Subs('No subtitles', '', style, ''));
@@ -186,8 +186,6 @@ export default {
                 console.log(e);
             }
         }
-        console.log(this.channel_id);
-        console.log(this.id);
         var streams = await getVideos(this.channel_id, this.id);
         this.videos = streams;
         if (!window.location.href.includes('/nekosama/')) {
@@ -204,11 +202,12 @@ export default {
             volume: 0.5,
             isLive: false,
             muted: false,
-            fastForward: true,
             autoplay: false,
-            autoSize: false,
-            autoMini: true,
+            pip: true,
+            screenshot: true,
             setting: true,
+            loop: true,
+            flip: true,
             playbackRate: true,
             aspectRatio: true,
             fullscreen: true,
@@ -216,7 +215,7 @@ export default {
             subtitleOffset: true,
             miniProgressBar: true,
             mutex: true,
-            backdrop: true,
+            playsInline: true,
             autoPlayback: true,
             airplay: true,
             theme: '#f00',
@@ -278,7 +277,8 @@ export default {
                         return {
                             html: sub.html,
                             url: sub.url,
-                            type: sub.type
+                            type: 'ass',
+                            style: sub.style
                         }
                     })
 
@@ -291,14 +291,16 @@ export default {
                 },
             }],
         });
+        art.on('subtitleSwitch', (url) => {
+            console.log(url)
+        });
         art.on('ready', () => {
             art.fullscreenWeb = true;
             art.controls.add({
                 position: 'right',
                 html: 'Quality',
-                tooltip: 'Choose your quality',
                 style: {
-                    "padding-right": "10px"
+                    "padding-left": "10px"
                 },
                 selector: hls.levels.map((item, index) => {
                     return {
