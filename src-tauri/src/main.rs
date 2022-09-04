@@ -7,7 +7,7 @@
 
 
 use tauri::{
-  api::process::{Command, CommandEvent},
+  api::process::{Command},
   Manager,
   CustomMenuItem,
    SystemTray, 
@@ -15,9 +15,9 @@ use tauri::{
    SystemTrayMenuItem,
    SystemTrayEvent
 };
-/* use std::process::Command as StdCommand;*/
-
-
+use std::process::Command as StdCommand;
+use std::io::{BufReader};
+use command_group::CommandGroup;
 
 
 #[tauri::command]
@@ -30,17 +30,13 @@ async fn close_splashscreen(window: tauri::Window) {
   window.get_window("main").unwrap().show().unwrap();
 }
 
-
-
-
-
 fn main() {
-  let hide = CustomMenuItem::new("hide".to_string(), "Hide");
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+  let hide = CustomMenuItem::new("hide".to_string(), "Hide");
   let tray_menu = SystemTrayMenu::new()
-    .add_item(quit)
+    .add_item(hide)
     .add_native_item(SystemTrayMenuItem::Separator)
-    .add_item(hide);
+    .add_item(quit);
   tauri::Builder::default()
   .system_tray(SystemTray::new().with_menu(tray_menu))
   .on_system_tray_event(|app, event| match event {
@@ -64,6 +60,8 @@ fn main() {
         ..
     } => {
         println!("system tray received a double click");
+        let window = app.get_window("main").unwrap();
+        window.get_window("main").unwrap().show().unwrap();
     }
     SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
         "quit" => {
@@ -77,30 +75,27 @@ fn main() {
     },
     _ => {}
 })
-  .setup(|app| {
-    let window = app.get_window("main").unwrap();
-    tauri::async_runtime::spawn(async move {
-      let (mut rx, mut child) = Command::new_sidecar("main")
-        .expect("failed to setup `proxy` sidecar")
-        .spawn()
-        .expect("failed to spawn `proxy` sidecar");
-      let mut i = 0;
-      while let Some(event) = rx.recv().await {
-        if let CommandEvent::Stdout(line) = event {
-          window
-            .emit("message", Some(format!("'{}'", line)))
-            .expect("failed to emit event");
-          i += 1;
-          if i == 4 {
-            child.write("message from Rust\n".as_bytes()).unwrap();
-            i = 0;
+.setup(|_app| {
+  tauri::async_runtime::spawn(async move {
+    let tauri_cmd = Command::new_sidecar("main").expect("failed to setup `proxy` sidecar");
+    let mut std_cmd = StdCommand::from(tauri_cmd);
+    let mut child = std_cmd 
+      .group_spawn() // !
+      .expect("failed to spawn `proxy` sidecar");
+    let mut stdout = BufReader::new(child.inner().stdout.take().unwrap());
+    let mut buf = Vec::new();
+    loop {
+      buf.clear();
+      match tauri::utils::io::read_line(&mut stdout, &mut buf) {
+          Ok(_n) => {
+              let _line = String::from_utf8_lossy(&buf);
           }
-        }
+          Err(_e) => panic!("idk something bad happened"),
       }
-    });
-    
-    Ok(())
-  })
+    }
+  });
+  Ok(())
+})
     .invoke_handler(tauri::generate_handler![close_splashscreen])
     .run(tauri::generate_context!())
     .expect("failed to run app");
