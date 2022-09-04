@@ -1,6 +1,6 @@
 {
   "name": "kamyroll",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "description": "Tauri app that uses the Kamyroll API to watch animes",
   "keywords": [
     "vite",
