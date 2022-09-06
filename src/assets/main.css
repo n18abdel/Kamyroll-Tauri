@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+body::-webkit-scrollbar {
+    width: 12px;
+   
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: red;
+    border-radius: 10px;
+}
+
 html {
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
