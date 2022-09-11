@@ -23,11 +23,19 @@ const channels = reactive([
     { name: ANIMEDIGITALNETWORK, label: 'Anime Digital Network' },
 ]);
 
+const getChannelinUse = (chan) => {
+    for (var i = 0; i < channels.length; i++) {
+        if (channels[i].name == chan) {
+            return channels[i].label;
+        }
+    }
+}
 
 
 export  {       
     chan,
     channels,
     setChannel,
-    channel
+    channel,
+    getChannelinUse
 }

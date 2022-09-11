@@ -1,6 +1,6 @@
 {
   "name": "kamyroll",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Tauri app that uses the Kamyroll API to watch animes",
   "keywords": [
     "vite",
@@ -23,7 +23,7 @@
     "@emotion/styled": "^11.9.3",
     "@mdi/font": "6.7.96",
     "@tauri-apps/api": "^1.0.1",
-    "artplayer": "^4.5.3",
+    "artplayer": "^4.5.4",
     "execa": "^6.1.0",
     "hls.js": "^1.1.5",
     "roboto-fontface": "0.10.0",
