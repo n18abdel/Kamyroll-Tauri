@@ -3,10 +3,16 @@
     fetch,
     Body
   } from '@tauri-apps/api/http';
+  import loading from '../../assets/loading.svg';
 </script>
 
 <template>
-    <div class="backdrop-blur-sm hover:backdrop-blur-lg">
+    <div class="loading" v-if="episodes == null">
+        <div class="loading__spinner">
+            <img :src="loading" alt="loading">
+        </div>
+    </div>
+    <div v-if="episodes != null" class="backdrop-blur-sm hover:backdrop-blur-lg">
       <div class="series-page-container">
         <div class="content">
           <div class="series-metadata">
@@ -119,14 +125,14 @@ import { token } from '../../scripts/token.js';
         slug : window.location.href.split('/').pop(),
       }
     },
-    beforeMount: async function () {  
+    beforeMount: async function () {     
       localStorage.setItem('channel', 'crunchyroll');
-      
-       function infoAnime(title,  url, image, description, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
+      function infoAnime(title,  url, image, description, type, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
         this.title = title;
         this.url = url;
         this.image = image;
         this.description = description;
+        this.type = type;
         this.episodes = episodes;
         this.status = status;
         this.is_dubbed = is_dubbed;
@@ -135,13 +141,11 @@ import { token } from '../../scripts/token.js';
         this.is_simulcast = is_simulcast;
         this.maturity_ratings = maturity_ratings;
       }
-      function Episode(title, url, description, poster,is_dubbed,is_subbed) {
+      function Episode(title, url, description, poster) {
         this.title = title;
         this.url = url;
         this.description = description;
         this.poster = poster;
-        this.is_dubbed = is_dubbed;
-        this.is_subbed = is_subbed;
       }
 
       function ModuleRequest(link, headers) {
@@ -149,6 +153,7 @@ import { token } from '../../scripts/token.js';
         this.headers = headers;
       }
       const slug = this.slug;
+      let episodes = [];
       async function getMetadata(slug){
         const url = `https://kamyroll.herokuapp.com/content/v1/media?id=${slug}&channel_id=crunchyroll`;
         const options = {
@@ -163,6 +168,8 @@ import { token } from '../../scripts/token.js';
         const title = result.title;
         const image = result.images.poster_tall.pop().source;
         let description = result.description;
+        let type = result.__class__;
+        console.log(type);
         if(description==''){
           description = 'No description was given for this show'
         }
@@ -171,10 +178,16 @@ import { token } from '../../scripts/token.js';
         const is_mature = result.is_mature;
         const is_simulcast = result.is_simulcast;
         const maturity_ratings = result.maturity_ratings;
-        return new infoAnime(title, slug, image, description, is_dubbed, is_subbed, is_mature, is_simulcast,maturity_ratings);
+        return new infoAnime(title, slug, image, description,type, is_dubbed, is_subbed, is_mature, is_simulcast,maturity_ratings);
         }
-      const episodes = [];
-      const url = `https://kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=crunchyroll&locale=en-US`;
+      let url = "";
+      this.meta = await getMetadata(slug);
+      if(this.meta.type == 'movie_listing'){
+        url = `https://kamyroll.herokuapp.com/content/v1/movies?id=${slug}&channel_id=crunchyroll`;
+      }else{
+        url= `https://kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=crunchyroll`; 
+      }
+      
       const options = {
         headers: {
           'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
@@ -184,12 +197,11 @@ import { token } from '../../scripts/token.js';
       }
       const response = await fetch(url, options);
       const result = response.data;
-      console.log(result);
-      if (url.includes('seasons')) {
+      if (this.meta.type == 'series') {
         for (const season of result.items) {
           for (const epi of season.episodes) {
             if(epi.episode != 'Bande Annonce'){
-            var titre = epi.episode + ': '+ epi.title;
+            var titre = epi.title;
             var id = epi.id;
             var desc = epi.description;
             try{
@@ -203,17 +215,35 @@ import { token } from '../../scripts/token.js';
               'Authorization': `Bearer ${token.access_token}`,
             };
             link = new ModuleRequest(link, headers);
-            var is_dubbed = epi.is_dubbed;
-            var is_subbed = epi.is_subbed;
-            episodes.push(new Episode(titre, link, desc, image, is_dubbed, is_subbed));
-            }
+            let finalData = new Episode(titre, link, desc, image);
+            
+            episodes.push(finalData);
             }
           }
         }
-        this.meta = await getMetadata(slug);
-
-        this.episodes = episodes;
-        
+      } else if(this.meta.type == 'movie_listing'){
+        console.log(result);
+        for (const epi of result.items) {
+          var titre = epi.title;
+          var id = epi.id;
+          var desc = epi.description;
+          try{
+            var image = epi.images.thumbnail[2].source;
+          }catch(e){
+            var image = epi.images.thumbnail[0].source;
+          }
+          var link = '/crunchyroll/watch/' + id;
+          var headers = {
+            'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
+            'Authorization': `Bearer ${token.access_token}`,
+          };
+          link = new ModuleRequest(link, headers);
+          let finalData = new Episode(titre, link, desc, image);
+          
+          episodes.push(finalData);
+        }
       }
+      this.episodes = episodes; 
     }
+}
 </script>
