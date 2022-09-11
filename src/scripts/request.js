@@ -1,5 +1,7 @@
+// Language: javascript
+// Path: src\scripts\request.js
 import {fetch,Body} from "@tauri-apps/api/http";
-async function ModuleRequest (url,method,headers,responsetype){
+async function ModuleRequest (url,method,body,headers,responsetype){
     if(responsetype==undefined){
         responsetype = 'json'
     }
@@ -7,7 +9,7 @@ async function ModuleRequest (url,method,headers,responsetype){
         method: method,
         body: Body.text(body),
         headers: headers,
-        responseType: responsetype
+        responseType: responsetype,
     })
     let result = response.data;
     return result;
