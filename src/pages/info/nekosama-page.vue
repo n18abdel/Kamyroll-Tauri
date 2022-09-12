@@ -68,6 +68,14 @@
                         <h3 class="series-title">{{ meta.title }}</h3>
                         <h2 class="episode-title">{{ episodes[0].title }}</h2>
                         <p class="episode-description">{{ episodes[0].description }}</p>
+                        <div class="details-metadata">
+                          <div class="c-meta-tags media-tag-group">
+                            <span class="c-meta-tags__type" v-if="meta.type == 'series'">Episode</span>
+                            <span class="c-meta-tags__type" v-else-if="meta.type == 'movie_listing'">Movie</span>
+                            <span class="c-meta-tags__language" v-if="episodes[0].is_subbed">Subtitled</span>
+                            <span class="c-meta-tags__language" v-else-if="episodes[0].is_dubbed">Dubbed</span>
+                          </div>
+                        </div>
                       </section>
                     </article>
                   </div>
@@ -94,8 +102,10 @@
                         <p class="episode-description">{{ episode.description }}</p>
                         <div class="details-metadata">
                           <div class="c-meta-tags media-tag-group">
-                            <span class="c-meta-tags__type">Episode</span>
-                            <span class="c-meta-tags__language">Subtitled</span>
+                            <span class="c-meta-tags__type" v-if="meta.type == 'series'">Episode</span>
+                            <span class="c-meta-tags__type" v-else-if="meta.type == 'movie_listing'">Movie</span>
+                            <span class="c-meta-tags__language" v-if="episode.is_subbed">Subtitled</span>
+                            <span class="c-meta-tags__language" v-else-if="episode.is_dubbed">Dubbed</span>
                           </div>
                         </div>
                       </section>
@@ -137,11 +147,13 @@ import { token } from '../../scripts/token.js';
         this.is_simulcast = is_simulcast;
         this.maturity_ratings = maturity_ratings;
       }
-      function Episode(title, url, description, poster) {
+      function Episode(title, url, description, poster,is_subbed,is_dubbed) {
         this.title = title;
         this.url = url;
         this.description = description;
         this.poster = poster;
+        this.is_subbed = is_subbed;
+        this.is_dubbed = is_dubbed;
       }
 
       function ModuleRequest(link, headers) {
@@ -165,7 +177,6 @@ import { token } from '../../scripts/token.js';
         const image = result.images.poster_tall.pop().source;
         let description = result.description;
         let type = result.__class__;
-        console.log(type);
         if(description==''){
           description = 'No description was given for this show'
         }
@@ -193,50 +204,60 @@ import { token } from '../../scripts/token.js';
       }
       const response = await fetch(url, options);
       const result = response.data;
+      console.log(result);
       if (this.meta.type == 'series') {
-        for (const season of result.items) {
+        for (const season of result.items.reverse()) {
           for (const epi of season.episodes) {
             if(epi.episode != 'Bande Annonce'){
-            var titre = epi.title;
-            var id = epi.id;
-            var desc = epi.description;
+            let titre = epi.title;
+            let id = epi.id;
+            let desc = epi.description;
+            let image = "";
             try{
-              var image = epi.images.thumbnail[2].source;
+             image = epi.images.thumbnail[2].source;
             }catch(e){
-              var image = epi.images.thumbnail[0].source;
+             image = epi.images.thumbnail[0].source;
             }
-            var link = '/nekosama/watch/' + id;
-            var headers = {
+            let link = '/nekosama/watch/' + id;
+            let headers = {
               'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
               'Authorization': `Bearer ${token.access_token}`,
             };
             link = new ModuleRequest(link, headers);
-            let finalData = new Episode(titre, link, desc, image);
-            
-            episodes.push(finalData);
+            if(id.includes('vf')){
+              titre += ' (VF)';
+              episodes.push(new Episode(titre, link, desc, image, false, true));
+            }else{
+              titre += ' (VOSTFR)';
+              episodes.push(new Episode(titre, link, desc, image, true, false));
+            }
             }
           }
         }
       } else if(this.meta.type == 'movie_listing'){
-        console.log(result);
-        for (const epi of result.items) {
-          var titre = epi.title;
-          var id = epi.id;
-          var desc = epi.description;
+        for (const epi of result.items.reverse()) {
+          let titre = epi.title;
+          let id = epi.id;
+          let desc = epi.description;
+          let image = "";
           try{
-            var image = epi.images.thumbnail[2].source;
+            image = epi.images.thumbnail[2].source;
           }catch(e){
-            var image = epi.images.thumbnail[0].source;
+            image = epi.images.thumbnail[0].source;
           }
-          var link = '/nekosama/watch/' + id;
-          var headers = {
+          let link = '/nekosama/watch/' + id;
+          let headers = {
             'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
             'Authorization': `Bearer ${token.access_token}`,
           };
           link = new ModuleRequest(link, headers);
-          let finalData = new Episode(titre, link, desc, image);
-          
-          episodes.push(finalData);
+          if(id.includes('vf')){
+              titre += ' (VF)';
+              episodes.push(new Episode(titre, link, desc, image, false, true));
+            }else{
+              titre += ' (VOSTFR)';
+              episodes.push(new Episode(titre, link, desc, image, true, false));
+            }
         }
       }
       this.episodes = episodes; 

@@ -68,6 +68,15 @@
                         <h3 class="series-title">{{ meta.title }}</h3>
                         <h2 class="episode-title">{{ episodes[0].title }}</h2>
                         <p class="episode-description">{{ episodes[0].description }}</p>
+                        <div class="details-metadata">
+                          <div class="c-meta-tags media-tag-group">
+                            <span class="c-meta-tags__type" v-if="meta.type == 'series'">Episode</span>
+                            <span class="c-meta-tags__type" v-else-if="meta.type == 'movie_listing'">Movie</span>
+                            <span v-if="episodes[0].is_subbed" class="c-meta-tags__language">Sub</span>
+                            <span v-else-if="episodes[0].is_dubbed" class="c-meta-tags__language">Dub</span>
+                            <span v-else-if="episodes[0].is_subbed && episodes[0].is_dubbed" class="c-meta-tags__language">Sub | Dub</span>
+                          </div>
+                        </div>
                       </section>
                     </article>
                   </div>
@@ -94,10 +103,11 @@
                         <p class="episode-description">{{ episode.description }}</p>
                         <div class="details-metadata">
                           <div class="c-meta-tags media-tag-group">
-                            <span class="c-meta-tags__type">Episode</span>
+                            <span class="c-meta-tags__type" v-if="meta.type == 'series'">Episode</span>
+                            <span class="c-meta-tags__type" v-else-if="meta.type == 'movie_listing'">Movie</span>
                             <span v-if="episode.is_subbed" class="c-meta-tags__language">Sub</span>
                             <span v-else-if="episode.is_dubbed" class="c-meta-tags__language">Dub</span>
-                            <span v-else-if="episode.is_subbed==true && meta.is_dubbed==true" class="c-meta-tags__language">Sub | Dub</span>
+                            <span v-else-if="episode.is_subbed==true && episode.is_dubbed==true" class="c-meta-tags__language">Sub | Dub</span>
                           </div>
                         </div>
                       </section>
@@ -141,11 +151,13 @@ import { token } from '../../scripts/token.js';
         this.is_simulcast = is_simulcast;
         this.maturity_ratings = maturity_ratings;
       }
-      function Episode(title, url, description, poster) {
+      function Episode(title, url, description, poster,is_dubbed,is_subbed) {
         this.title = title;
         this.url = url;
         this.description = description;
         this.poster = poster;
+        this.is_dubbed = is_dubbed;
+        this.is_subbed= is_subbed;
       }
 
       function ModuleRequest(link, headers) {
@@ -169,7 +181,6 @@ import { token } from '../../scripts/token.js';
         const image = result.images.poster_tall.pop().source;
         let description = result.description;
         let type = result.__class__;
-        console.log(type);
         if(description==''){
           description = 'No description was given for this show'
         }
@@ -195,28 +206,32 @@ import { token } from '../../scripts/token.js';
         },
         method: "GET",
       }
-      const response = await fetch(url, options);
-      const result = response.data;
+      let response = await fetch(url, options);
+      let result = response.data;
+      console.log(result);
       if (this.meta.type == 'series') {
-        for (const season of result.items) {
-          for (const epi of season.episodes) {
+        for (let season of result.items) {
+          for (let epi of season.episodes) {
             if(epi.episode != 'Bande Annonce'){
-            var titre = epi.title;
-            var id = epi.id;
-            var desc = epi.description;
+            let titre = `S${epi.season_number} Episode ${epi.episode}: `+epi.title;
+            console.log(titre);
+            let id = epi.id;
+            let desc = epi.description;
+            let image = "";
             try{
-              var image = epi.images.thumbnail[2].source;
+              image = epi.images.thumbnail[1].source;
             }catch(e){
-              var image = epi.images.thumbnail[0].source;
+              image = epi.images.thumbnail[0].source;
             }
-            var link = '/crunchyroll/watch/' + id;
-            var headers = {
+            let link = '/crunchyroll/watch/' + id;
+            let headers = {
               'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
               'Authorization': `Bearer ${token.access_token}`,
             };
             link = new ModuleRequest(link, headers);
-            let finalData = new Episode(titre, link, desc, image);
-            
+            let is_dubbed = epi.is_dubbed;
+            let is_subbed = epi.is_subbed;
+            let finalData = new Episode(titre, link, desc, image,is_dubbed,is_subbed);
             episodes.push(finalData);
             }
           }
@@ -228,7 +243,7 @@ import { token } from '../../scripts/token.js';
           var id = epi.id;
           var desc = epi.description;
           try{
-            var image = epi.images.thumbnail[2].source;
+            var image = epi.images.thumbnail[1].source;
           }catch(e){
             var image = epi.images.thumbnail[0].source;
           }
@@ -238,8 +253,9 @@ import { token } from '../../scripts/token.js';
             'Authorization': `Bearer ${token.access_token}`,
           };
           link = new ModuleRequest(link, headers);
-          let finalData = new Episode(titre, link, desc, image);
-          
+          let is_dubbed = epi.is_dubbed;
+          let is_subbed = epi.is_subbed;
+          let finalData = new Episode(titre, link, desc, image,is_dubbed,is_subbed);
           episodes.push(finalData);
         }
       }
