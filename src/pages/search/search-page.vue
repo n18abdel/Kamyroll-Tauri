@@ -1,7 +1,7 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
 import {getChannelinUse} from '../../scripts/channel_id';
-import loading from '/../src/assets/loading.svg';
+import loading from '/src/assets/loading.svg';
 
 </script>
 <template>
@@ -120,15 +120,17 @@ export default {
             let query = document.querySelector('.search-input').value;
             if(query.length>0){
             const options = {
+                method: 'GET',
                 headers: {
                     'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
                     'Authorization': `Bearer ${token.access_token}`,
                 }
             };
-            var chan = localStorage.getItem('channel');
-            const request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${query}&limit=100&channel_id=${chan}`,options);
-            const response = request.data;
-            const data = response;
+            let chan = localStorage.getItem('channel');
+            let request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${query.replace(' ','+')}&limit=100&channel_id=${chan}`,options);
+            let response = request.data;
+            console.log(response,query);
+            let data = response;
             for (const anime of data.items) {
                 for (const item of anime.items) {
                     var title = item.title;
