@@ -1,104 +1,98 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
 import { invoke } from '@tauri-apps/api/tauri'
-import loading from '../assets/loading.svg';
 </script>
 
 
 <template>
-  <Suspense>
-    <template v-if="channel=='crunchyroll'" #default>
-        <article  class="erc-hero-card" :id="trending[random].id">
-                        <div class="erc-hero-card-background-overlay bottom-angled"><span
-                                class="background-gradient"></span><img class="background-image" :src="trending[random].bannerImage"
+    <Suspense>
+        <template v-if="channel=='crunchyroll'" #default>
+            <article class="erc-hero-card" :id="trending[random].id">
+                <div class="erc-hero-card-background-overlay bottom-angled"><span
+                        class="background-gradient"></span><img class="background-image"
+                        :src="trending[random].bannerImage" :alt="trending[random].title"></div>
+                <div class="foreground">
+                    <div class="main-image-wrapper-link">
+                        <div class="main-image-wrapper"><a class="poster-hover-layer" :href="trending[random].link">to
+                                series</a><img :src="trending[random].image" class="c-content-image"
                                 :alt="trending[random].title"></div>
-                        <div class="foreground">
-                            <div class="main-image-wrapper-link">
-                                <div class="main-image-wrapper"><a class="poster-hover-layer" :href="trending[random].link">to
-                                        series</a><img :src="trending[random].image" class="c-content-image"
-                                        :alt="trending[random].title"></div>
-                            </div>
-                            <section class="info"><a class="title-link" :href="trending[random].link">
-                                    <h1 class="title">{{trending[random].title}}</h1>
-                                </a>
-                                <div class="additional-information">
-                                    <div class="c-meta-tags media-tag-group"><span class="c-meta-tags__type">Series</span><span
-                                            class="c-meta-tags__language">Subtitled</span></div>
-                                </div>
-                                <p class="description">{{trending[random].description}}</p>
-                                <div class="watch-actions"><a role="button" tabindex="0"
-                                        class="go-watch c-button -type-one-weak" data-t="watching-btn"
-                                        :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
-                                            <polygon points="0 0 0 20 20 10"></polygon>
-                                        </svg><span>Start Watching</span></a></div>
-                            </section>
+                    </div>
+                    <section class="info"><a class="title-link" :href="trending[random].link">
+                            <h1 class="title">{{trending[random].title}}</h1>
+                        </a>
+                        <div class="additional-information">
+                            <div class="c-meta-tags media-tag-group"><span class="c-meta-tags__type">Series</span><span
+                                    class="c-meta-tags__language">Subtitled</span></div>
                         </div>
+                        <p class="description">{{trending[random].description}}</p>
+                        <div class="watch-actions"><a role="button" tabindex="0"
+                                class="go-watch c-button -type-one-weak" data-t="watching-btn"
+                                :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
+                                    <polygon points="0 0 0 20 20 10"></polygon>
+                                </svg><span>Start Watching</span></a></div>
+                    </section>
+                </div>
 
-                    </article>
+            </article>
         </template>
         <template v-if="channel=='neko-sama'" #default>
-        <article  class="erc-hero-card" :id="trending[random].id">
-                        <div class="erc-hero-card-background-overlay bottom-angled"><span
-                                class="background-gradient"></span><img class="background-image" :src="trending[random].bannerImage"
+            <article class="erc-hero-card" :id="trending[random].id">
+                <div class="erc-hero-card-background-overlay bottom-angled"><span
+                        class="background-gradient"></span><img class="background-image"
+                        :src="trending[random].bannerImage" :alt="trending[random].title"></div>
+                <div class="foreground">
+                    <div class="main-image-wrapper-link">
+                        <div class="main-image-wrapper"><a class="poster-hover-layer" :href="trending[random].link">to
+                                series</a><img :src="trending[random].image" class="c-content-image"
                                 :alt="trending[random].title"></div>
-                        <div class="foreground">
-                            <div class="main-image-wrapper-link">
-                                <div class="main-image-wrapper"><a class="poster-hover-layer" :href="trending[random].link">to
-                                        series</a><img :src="trending[random].image" class="c-content-image"
-                                        :alt="trending[random].title"></div>
-                            </div>
-                            <section class="info"><a class="title-link" :href="trending[random].link">
-                                    <h1 class="title">{{trending[random].title}}</h1>
-                                </a>
-                                <div class="additional-information">
+                    </div>
+                    <section class="info"><a class="title-link" :href="trending[random].link">
+                            <h1 class="title">{{trending[random].title}}</h1>
+                        </a>
+                        <div class="additional-information">
 
-                                </div>
-                                <p class="description">{{trending[random].description}}</p>
-                                <div class="watch-actions"><a role="button" tabindex="0"
-                                        class="go-watch c-button -type-one-weak" data-t="watching-btn"
-                                        :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
-                                            <polygon points="0 0 0 20 20 10"></polygon>
-                                        </svg><span>Start Watching</span></a></div>
-                            </section>
                         </div>
-                    </article>
+                        <p class="description">{{trending[random].description}}</p>
+                        <div class="watch-actions"><a role="button" tabindex="0"
+                                class="go-watch c-button -type-one-weak" data-t="watching-btn"
+                                :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
+                                    <polygon points="0 0 0 20 20 10"></polygon>
+                                </svg><span>Start Watching</span></a></div>
+                    </section>
+                </div>
+            </article>
         </template>
         <template v-if="channel=='animedigitalnetwork'" #default>
-        <article  class="erc-hero-card" :id="trending[random].id">
-                        <div class="erc-hero-card-background-overlay bottom-angled"><span
-                                class="background-gradient"></span><img class="background-image" :src="trending[random].bannerImage"
+            <article class="erc-hero-card" :id="trending[random].id">
+                <div class="erc-hero-card-background-overlay bottom-angled"><span
+                        class="background-gradient"></span><img class="background-image"
+                        :src="trending[random].bannerImage" :alt="trending[random].title"></div>
+                <div class="foreground">
+                    <div class="main-image-wrapper-link">
+                        <div class="main-image-wrapper"><a class="poster-hover-layer" :href="trending[random].link">to
+                                series</a><img :src="trending[random].image" class="c-content-image"
                                 :alt="trending[random].title"></div>
-                        <div class="foreground">
-                            <div class="main-image-wrapper-link">
-                                <div class="main-image-wrapper"><a class="poster-hover-layer" :href="trending[random].link">to
-                                        series</a><img :src="trending[random].image" class="c-content-image"
-                                        :alt="trending[random].title"></div>
-                            </div>
-                            <section class="info"><a class="title-link" :href="trending[random].link">
-                                    <h1 class="title">{{trending[random].title}}</h1>
-                                </a>
-                                <div class="additional-information">
+                    </div>
+                    <section class="info"><a class="title-link" :href="trending[random].link">
+                            <h1 class="title">{{trending[random].title}}</h1>
+                        </a>
+                        <div class="additional-information">
 
-                                </div>
-                                <p class="description">{{trending[random].description}}</p>
-                                <div class="watch-actions"><a role="button" tabindex="0"
-                                        class="go-watch c-button -type-one-weak" data-t="watching-btn"
-                                        :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
-                                            <polygon points="0 0 0 20 20 10"></polygon>
-                                        </svg><span>Start Watching</span></a></div>
-                            </section>
                         </div>
-                    </article>
+                        <p class="description">{{trending[random].description}}</p>
+                        <div class="watch-actions"><a role="button" tabindex="0"
+                                class="go-watch c-button -type-one-weak" data-t="watching-btn"
+                                :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
+                                    <polygon points="0 0 0 20 20 10"></polygon>
+                                </svg><span>Start Watching</span></a></div>
+                    </section>
+                </div>
+            </article>
         </template>
-  </Suspense>
-  <div class="loading" v-if="trending.length == 0">
-        <div class="loading__spinner">
-            <img :src="loading" alt="loading">
-        </div>
-    </div>
+    </Suspense>
 </template>
 
 <script>
