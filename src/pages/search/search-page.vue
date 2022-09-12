@@ -1,6 +1,7 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
 import {getChannelinUse} from '../../scripts/channel_id';
+import loading from '/../src/assets/loading.svg';
 
 </script>
 <template>
@@ -23,7 +24,8 @@ import {getChannelinUse} from '../../scripts/channel_id';
                 </div>
             </div>
             <div class="search-results-wrapper state-search-results">
-                <div class="content">
+                <div class="loading"></div>
+                <div class="content" v-if="results != null">
                     <div class="search-result-collection">
                         <div class="search-card-list">
                             <div v-for="anime of results" class="search-series-movie-card">
@@ -95,6 +97,8 @@ export default {
         this.maturity_ratings = maturity_ratings;
       },
         async search() {
+            let spinner= document.querySelector('.loading');
+            spinner.innerHTML = `<div class="loading__spinner"><img src="${loading}" alt="loading"></div>`
             const finalData = (title, image, desc, type, maturity_ratings, link, is_dubbed, is_subbed, is_mature, is_simulcast,season_count,episode_count) => {
                     return {
                         title: title,
@@ -115,7 +119,6 @@ export default {
             const results = [];
             let query = document.querySelector('.search-input').value;
             if(query.length>0){
-
             const options = {
                 headers: {
                     'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
@@ -162,7 +165,8 @@ export default {
                 }
                 
             }
-            console.log(results);
+            // delete loading element
+            spinner.innerHTML = "";
             this.results = results;
         }
 }
