@@ -4,11 +4,15 @@ import Artplayer from 'artplayer';
 import Hls from 'hls.js';
 import { pStreamExtractor } from '../../scripts/pstreamextractor';
 import loading from '/src/assets/loading.svg';
-import { invoke } from '@tauri-apps/api/tauri'
-import { Command } from '@tauri-apps/api/shell'
+import { appWindow } from '@tauri-apps/api/window';
 </script>
 
 <template>
+    <div class="loading" v-if="videos.length == 0">
+        <div class="loading__spinner">
+            <img :src="loading" alt="loading">
+        </div>
+    </div>
         <div id="player"></div>
 </template>
 
@@ -22,7 +26,7 @@ export default {
         return {
             videos: [],
             subs: [],
-            id: window.location.href.split('/').pop(),
+            id: document.location.href.split('/').pop(),
             lang: navigator.language,
             channel_id: null,
         }
@@ -44,7 +48,7 @@ export default {
             }
         }
     },
-    mounted: async function () {
+    beforeMount: async function () {
         if (window.location.href.includes('crunchyroll')) {
             this.channel_id = 'crunchyroll';
         } else if (window.location.href.includes('adn')) {
@@ -120,9 +124,9 @@ export default {
                     });
                     let result = response.data;
                     const quality = result.streams[0].audio_locale + ' ' + result.streams[0].hardsub_locale;
-                    const pstreamlink = result.streams[0].url.replace('https://www.pstream.net',' http://localhost:5000');
+                    const pstreamlink = result.streams[0].url.replace('https://www.pstream.net', ' http://localhost:5000');
                     console.log(pstreamlink);
-                    const pstream = await pStreamExtractor(pstreamlink); 
+                    const pstream = await pStreamExtractor(pstreamlink);
                     // var videorequest = await fetch(pstream, {
                     //     method: "GET",
                     //     responseType: ResponseType.Text,
@@ -140,10 +144,10 @@ export default {
                     //         console.log(line);
                     //         var quality1 = quality + ' ' + line.split('RESOLUTION=')[1].match(/(\d)+x+(\d)+/g)[0];
                     //         var videoLink = lines[x + 1];
-                            
+
                     //     }
                     // }
-                    videos.push(new Videos(quality,pstream)); 
+                    videos.push(new Videos(quality, pstream));
                 }
                 return videos;
             } catch (e) {
@@ -171,8 +175,10 @@ export default {
                             link = 'https://corsproxy.io/?' + encodeURIComponent(link);
                         }
                         var type = subs.format;
-                        var style = { color: '#fe9200',
-                        fontSize: '20px'};
+                        var style = {
+                            color: '#fe9200',
+                            fontSize: '20px'
+                        };
                         var finalData = new Subs(lang, link, style, type);
                         subtitles.push(finalData);
                         console.log(finalData);
@@ -211,7 +217,6 @@ export default {
             playbackRate: true,
             aspectRatio: true,
             fullscreen: true,
-            fullscreenWeb: true,
             subtitleOffset: true,
             miniProgressBar: true,
             mutex: true,
@@ -220,28 +225,17 @@ export default {
             airplay: true,
             theme: '#f00',
             icons: {
-                loading: `<img src="${loading}">`,
-                state: '<img width="150" heigth="150" src="https://artplayer.org/assets/img/state.svg">',
-                indicator: '<img width="16" heigth="16" src="https://artplayer.org/assets/img/indicator.svg">',
+                loading: `<img src="${loading}">`
             },
             moreVideoAttr: {
                 crossOrigin: 'anonymous',
             },
             customType: {
                 m3u8: function (video, url) {
-                    if (Hls.isSupported()) {
-                        if (hls) hls.destroy();
-                        hls = new Hls();
-                        hls.loadSource(url);
-                        hls.attachMedia(video);
-                    } else {
-                        const canPlay = video.canPlayType('application/vnd.apple.mpegurl');
-                        if (canPlay === 'probably' || canPlay == 'maybe') {
-                            video.src = url;
-                        } else {
-                            art.notice.show = 'Does not support playback of m3u8';
-                        }
-                    }
+                    if (hls) hls.destroy();
+                    hls = new Hls();
+                    hls.loadSource(url);
+                    hls.attachMedia(video);
                 },
             },
             whitelist: ['*'],
@@ -278,7 +272,8 @@ export default {
                             html: sub.html,
                             url: sub.url,
                             type: 'ass',
-                            style: sub.style
+                            style: sub.style,
+                            encoding: 'utf-8'
                         }
                     })
 
@@ -289,13 +284,9 @@ export default {
                     });
                     return item.html;
                 },
-            }],
+            }]
         });
-        art.on('subtitleSwitch', (url) => {
-            console.log(url)
-        });
-        art.on('ready', () => {
-            art.fullscreenWeb = true;
+        art.on('ready', async () => {
             art.controls.add({
                 position: 'right',
                 html: 'Quality',
@@ -351,7 +342,22 @@ export default {
                     });
                 }
             })
+            async function getState() {
+                if (art.fullscreen) {
+                    await appWindow.setFullscreen(true);
+                    console.info('fullscreen');
+                } else {
+                    appWindow.width = 1280;
+                    appWindow.height = 720;
+                    await appWindow.setFullscreen(false);
+                    console.info('not fullscreen');
+                }
+            }
+            art.on('fullscreen', async () => {
+                await getState();
+            });
         });
+
 
     },
 }
