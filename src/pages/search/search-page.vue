@@ -1,5 +1,7 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
+import {getChannelinUse} from '../../scripts/channel_id';
+import loading from '/src/assets/loading.svg';
 
 </script>
 <template>
@@ -10,19 +12,20 @@ import {fetch ,Body} from '@tauri-apps/api/http';
                     <div class="content">
                         <form class="search-input-wrapper state-narrow">
                             <input type="text" placeholder="Rechercher" class="search-input" @keydown.enter.prevent="search">
-                            <button class="search-button" type="sumbit" @click="search">
+                            <div class="search-button" @click="search">
                                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     data-t="search-svg">
                                     <path
                                         d="M2,10.666V5.333L5.333,2h5.333L14,5.333v5.333L10.667,14H5.333ZM4.364,0,0,4.363v7.273L4.364,16h7.273l1.757-1.757L18,20h2V18l-5.757-4.606L16,11.637V4.363L11.637,0Z">
                                     </path>
-                                </svg></button>
+                                </svg></div>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="search-results-wrapper state-search-results">
-                <div class="content">
+                <div class="loading"></div>
+                <div class="content" v-if="results != null">
                     <div class="search-result-collection">
                         <div class="search-card-list">
                             <div v-for="anime of results" class="search-series-movie-card">
@@ -32,7 +35,6 @@ import {fetch ,Body} from '@tauri-apps/api/http';
                                     <div class="search-card-content">
                                         <div class="thumbnail">
                                             <img :src="anime.image" class="c-content-image" :alt="anime.title">
-
                                         </div>
                                         <section class="info">
                                             <div class="series-movie-info">
@@ -44,7 +46,7 @@ import {fetch ,Body} from '@tauri-apps/api/http';
                                                     <span v-else-if="anime.episode_count<=1" class="series-info-elem episodes-number">{{anime.episode_count}} Episode</span>
                                                 </div>
                                             </div>
-                                            <p class="channel-name">{{chan()}}</p>
+                                            <p class="channel-name">{{getChannelinUse(chan())}}</p>
                                             <div class="c-meta-tags annotation">
                                                <span v-if="anime.is_subbed && !anime.is_dubbed" class="c-meta-tags__language">Sub</span>
                                                <span v-else-if="anime.is_dubbed && !anime.is_subbed" class="c-meta-tags__language">Dub</span>
@@ -69,12 +71,14 @@ import {fetch ,Body} from '@tauri-apps/api/http';
 <script>
 import { token } from '/src/scripts/token.js';
 
+
 export default { 
     data(){
         return{
-            results:null
+            results:null,
         }
     },
+
     methods:{
         chan(){
             return localStorage.getItem('channel');
@@ -93,6 +97,8 @@ export default {
         this.maturity_ratings = maturity_ratings;
       },
         async search() {
+            let spinner= document.querySelector('.loading');
+            spinner.innerHTML = `<div class="loading__spinner"><img src="${loading}" alt="loading"></div>`
             const finalData = (title, image, desc, type, maturity_ratings, link, is_dubbed, is_subbed, is_mature, is_simulcast,season_count,episode_count) => {
                     return {
                         title: title,
@@ -112,23 +118,25 @@ export default {
             this.results = null;
             const results = [];
             let query = document.querySelector('.search-input').value;
+            if(query.length>0){
             const options = {
+                method: 'GET',
                 headers: {
                     'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
                     'Authorization': `Bearer ${token.access_token}`,
                 }
             };
-            var chan = localStorage.getItem('channel');
-            const request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${query}&limit=100&channel_id=${chan}`,options);
-            const response = request.data;
-            const data = response;
+            let chan = localStorage.getItem('channel');
+            let request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${query.replace(' ','+')}&limit=100&channel_id=${chan}`,options);
+            let response = request.data;
+            console.log(response,query);
+            let data = response;
             for (const anime of data.items) {
                 for (const item of anime.items) {
                     var title = item.title;
                     var image = item.images.poster_tall[0].source;
                     var desc = item.descripion;
                     var type = item.media_type;
-                    console.log(type);
                     if (type == 'movie_listing'){
                         var metadata = item.movie_listing_metadata;
                     } else{
@@ -159,8 +167,10 @@ export default {
                 }
                 
             }
-            console.log(results);
+            // delete loading element
+            spinner.innerHTML = "";
             this.results = results;
+        }
 }
     }
 }
@@ -168,6 +178,15 @@ export default {
 </script>
 
 <style scoped>
+.erc-search::-webkit-scrollbar {
+    width: 12px !important;
+   
+}
+
+.erc-search::-webkit-scrollbar-thumb {
+    background-color: red !important;
+    border-radius: 10px !important;
+}
 .erc-search {
     box-sizing: border-box;
     display: flex;
