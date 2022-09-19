@@ -6,7 +6,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 
 <template>
     <Suspense>
-        <template v-if="channel=='crunchyroll'" #default>
+        <template v-if="channel=='crunchyroll' & trending.length >= 1 " #default>
             <article class="erc-hero-card" :id="trending[random].id">
                 <div class="erc-hero-card-background-overlay bottom-angled"><span
                         class="background-gradient"></span><img class="background-image"
@@ -36,7 +36,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 
             </article>
         </template>
-        <template v-if="channel=='neko-sama'" #default>
+        <template v-if="channel=='neko-sama' & trending.length >= 1" #default>
             <article class="erc-hero-card" :id="trending[random].id">
                 <div class="erc-hero-card-background-overlay bottom-angled"><span
                         class="background-gradient"></span><img class="background-image"
@@ -64,7 +64,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                 </div>
             </article>
         </template>
-        <template v-if="channel=='animedigitalnetwork'" #default>
+        <template v-if="channel=='animedigitalnetwork' & trending.length >= 1 " #default>
             <article class="erc-hero-card" :id="trending[random].id">
                 <div class="erc-hero-card-background-overlay bottom-angled"><span
                         class="background-gradient"></span><img class="background-image"
