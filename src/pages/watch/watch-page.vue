@@ -169,17 +169,16 @@ export default {
                 let result = response.data;
                 if (result.subtitles.length >= 1) {
                     for (let subs of result.subtitles) {
-                        var lang = subs.locale;
-                        var link = subs.url;
+                        let lang = subs.locale;
+                        let link = subs.url;
                         if (link.includes('kamyroll')) {
                             link = 'https://corsproxy.io/?' + encodeURIComponent(link);
                         }
-                        var type = subs.format;
-                        var style = {
-                            color: '#fe9200',
-                            fontSize: '20px'
+                        let type = subs.format;
+                        let style = {
+                            fontSize: '40px'
                         };
-                        var finalData = new Subs(lang, link, style, type);
+                        let finalData = new Subs(lang, link, style, type);
                         subtitles.push(finalData);
                         console.log(finalData);
                     }
@@ -187,7 +186,6 @@ export default {
                     subtitles.push(new Subs('No subtitles', '', style, ''));
                 }
                 return subtitles;
-
             } catch (e) {
                 console.log(e);
             }
