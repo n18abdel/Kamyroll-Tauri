@@ -345,8 +345,6 @@ export default {
                     await appWindow.setFullscreen(true);
                     console.info('fullscreen');
                 } else {
-                    appWindow.width = 1280;
-                    appWindow.height = 720;
                     await appWindow.setFullscreen(false);
                     console.info('not fullscreen');
                 }
