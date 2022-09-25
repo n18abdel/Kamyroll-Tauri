@@ -5,9 +5,7 @@ import {
 
 import HomePage from './pages/home/home-page.vue';
 import List from './pages/contact/list-page.vue';
-import ADN from './pages/info/adn-page.vue';
-import Crunchyroll from './pages/info/crunchyroll-page.vue';
-import NekoSama from './pages/info/nekosama-page.vue';
+import Kamyroll from './pages/info/kamyroll-page.vue';
 import Error from './pages/error/error-page.vue';
 import Watch from './pages/watch/watch-page.vue';
 import Search from './pages/search/search-page.vue';
@@ -26,15 +24,15 @@ export default createRouter({
     },
     {
       path: '/crunchyroll/:id',
-      component: Crunchyroll
+      component: Kamyroll
     },
     {
       path: '/adn/:id',
-      component: ADN
+      component: Kamyroll
     },
     {
       path: '/neko-sama/:id',
-      component: NekoSama
+      component: Kamyroll
     },
     {
       path: '/crunchyroll/watch/:id',

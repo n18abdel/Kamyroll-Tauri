@@ -1,7 +1,6 @@
 <script setup>
-import {fetch ,Body} from '@tauri-apps/api/http';
-import {getChannelinUse} from '../../scripts/channel_id';
-import loading from '/src/assets/loading.svg';
+
+import spinner from '/src/assets/loading.svg';
 
 </script>
 <template>
@@ -11,8 +10,8 @@ import loading from '/src/assets/loading.svg';
                 <div class="erc-search-field">
                     <div class="content">
                         <form class="search-input-wrapper state-narrow">
-                            <input type="text" placeholder="Rechercher" class="search-input" @keydown.enter.prevent="search">
-                            <div class="search-button" @click="search">
+                            <input type="text" placeholder="Rechercher" class="search-input" @keydown.enter.prevent="recherche">
+                            <div class="search-button" @click="recherche">
                                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     data-t="search-svg">
                                     <path
@@ -24,7 +23,9 @@ import loading from '/src/assets/loading.svg';
                 </div>
             </div>
             <div class="search-results-wrapper state-search-results">
-                <div class="loading"></div>
+                <div class="loading" >
+                    <div class="loading__spinner" v-show="loading"><img :src="spinner" alt="loading"></div>
+                </div>
                 <div class="content" v-if="results != null">
                     <div class="search-result-collection">
                         <div class="search-card-list">
@@ -46,7 +47,7 @@ import loading from '/src/assets/loading.svg';
                                                     <span v-else-if="anime.episode_count<=1" class="series-info-elem episodes-number">{{anime.episode_count}} Episode</span>
                                                 </div>
                                             </div>
-                                            <p class="channel-name">{{getChannelinUse(chan())}}</p>
+                                            <p class="channel-name">{{channel}}</p>
                                             <div class="c-meta-tags annotation">
                                                <span v-if="anime.is_subbed && !anime.is_dubbed" class="c-meta-tags__language">Sub</span>
                                                <span v-else-if="anime.is_dubbed && !anime.is_subbed" class="c-meta-tags__language">Dub</span>
@@ -57,121 +58,34 @@ import loading from '/src/assets/loading.svg';
                                     </div>
                                 </article>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-     
     </div>
 </template>
 
 <script>
-import { token } from '/src/scripts/token.js';
-
-
+import {getChannelinUse,chan} from '../../scripts/channel_id';
+import {search} from '../../scripts/crunchyroll.js'
 export default { 
     data(){
         return{
             results:null,
+            loading : false,
+            channel : null
         }
     },
-
     methods:{
-        chan(){
-            return localStorage.getItem('channel');
-        },
-         infoAnime(title,  url, image, description, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
-        this.title = title;
-        this.url = url;
-        this.image = image;
-        this.description = description;
-        this.episodes = episodes;
-        this.status = status;
-        this.is_dubbed = is_dubbed;
-        this.is_subbed= is_subbed;
-        this.is_mature = is_mature;
-        this.is_simulcast = is_simulcast;
-        this.maturity_ratings = maturity_ratings;
-      },
-        async search() {
-            let spinner= document.querySelector('.loading');
-            spinner.innerHTML = `<div class="loading__spinner"><img src="${loading}" alt="loading"></div>`
-            const finalData = (title, image, desc, type, maturity_ratings, link, is_dubbed, is_subbed, is_mature, is_simulcast,season_count,episode_count) => {
-                    return {
-                        title: title,
-                        image: image,
-                        desc: desc,
-                        type: type,
-                        maturity_ratings: maturity_ratings,
-                        link: link,
-                        is_dubbed: is_dubbed,
-                        is_subbed: is_subbed,
-                        is_mature: is_mature,
-                        is_simulcast: is_simulcast,
-                        season_count: season_count,
-                        episode_count: episode_count
-                    }
-                }
-            this.results = null;
-            const results = [];
-            let query = document.querySelector('.search-input').value;
-            if(query.length>0){
-            const options = {
-                method: 'GET',
-                headers: {
-                    'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
-                    'Authorization': `Bearer ${token.access_token}`,
-                }
-            };
-            let chan = localStorage.getItem('channel');
-            let request = await fetch(`https://kamyroll.herokuapp.com/content/v1/search?query=${query.replace(' ','+')}&limit=100&channel_id=${chan}`,options);
-            let response = request.data;
-            console.log(response,query);
-            let data = response;
-            for (const anime of data.items) {
-                for (const item of anime.items) {
-                    var title = item.title;
-                    var image = item.images.poster_tall[0].source;
-                    var desc = item.descripion;
-                    var type = item.media_type;
-                    if (type == 'movie_listing'){
-                        var metadata = item.movie_listing_metadata;
-                    } else{
-                        var metadata = item.series_metadata;
-                    }
-                    var link = "";
-                    if(chan=="animedigitalnetwork"){
-                        link = '/adn/' + item.id;
-                    } else if (chan=="neko-sama"){
-                        link = '/neko-sama/' + item.id;
-                    } else if(chan=="crunchyroll"){
-                        link = '/crunchyroll/' + item.id;
-                    }
-                    var maturity_ratings = metadata.maturity_ratings;
-                    var is_dubbed = metadata.is_dubbed;
-                    var is_subbed = metadata.is_subbed;
-                    var is_mature = metadata.is_mature;
-                    try{
-                        var is_simulcast = metadata.is_simulcast;
-                        var season_count = metadata.season_count;
-                        var episode_count = metadata.episode_count;
-                    }catch(e){
-                        var is_simulcast = false;
-                        var season_count = 0;
-                        var episode_count = 0;
-                    }
-                    results.push(finalData(title, image, desc, type, maturity_ratings, link, is_dubbed, is_subbed, is_mature, is_simulcast,season_count,episode_count));
-                }
-                
-            }
-            // delete loading element
-            spinner.innerHTML = "";
-            this.results = results;
+        async recherche() {
+            this.channel = getChannelinUse(chan);
+            this.results = [];
+            this.loading = true;
+            let keyword = document.querySelector('.search-input').value;
+            this.results = await search(keyword);
+            this.loading = false; 
         }
-}
     }
 }
 

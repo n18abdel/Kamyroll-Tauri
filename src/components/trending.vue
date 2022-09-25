@@ -96,6 +96,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 </template>
 
 <script>
+    import { trending } from '../scripts/constructor.js';
 export default {
     data() {
         return {
@@ -113,16 +114,7 @@ export default {
         }
     },
     beforeCreate: async function () {
-        function Trending(title, link, image, bannerImage, description, status, id) {
-            this.title = title;
-            this.link = link;
-            this.image = image;
-            this.bannerImage = bannerImage;
-            this.description = description;
-            this.status = status;
-            this.id = id;
-        }
-
+        
         function getRandomInt(min, max) {
             min = Math.ceil(min);
             max = Math.floor(max);
@@ -186,7 +178,7 @@ export default {
                             }
                             if (id != '') {
                                 const link = "/crunchyroll/" + id;
-                                trends.push(new Trending(tMedia.title.romaji, link, tMedia.coverImage.large, bannerImage, description, tMedia.status, id));
+                                trends.push(new trending(tMedia.title.romaji, link, tMedia.coverImage.large, bannerImage, description, tMedia.status, id));
                             }
                         }
                         resolve(trends);
@@ -215,7 +207,7 @@ export default {
                     link = '/neko-sama/' + link.split('/').pop().split('-')[0];
                     console.log(link)
                     let id = link.split('/').pop().split('-')[0];
-                    trends.push(new Trending(title, link, image, bannerImage, description, 'unknown', id));
+                    trends.push(new trending(title, link, image, bannerImage, description, 'unknown', id));
                 }
                 this.trending = trends;
             } else if (localStorage.getItem('channel') == 'animedigitalnetwork'){
@@ -232,7 +224,7 @@ export default {
                     let description = tMedia.summary;
                     let id = tMedia.id;
                     let link = '/adn/' + id;
-                    let finalData = new Trending(title, link, image, bannerImage, description, 'unknown', id);
+                    let finalData = new trending(title, link, image, bannerImage, description, 'unknown', id);
                     trends.push(finalData);
                 }
                 this.trending = trends;
