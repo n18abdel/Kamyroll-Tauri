@@ -13,7 +13,7 @@ function infoAnime(title,  url, image, description, type, episodes, status, is_d
     this.maturity_ratings = maturity_ratings;
   }
 
-  function episode(title, url, description, poster,is_dubbed,is_subbed) {
+function episode(title, url, description, poster,is_dubbed,is_subbed) {
     this.title = title;
     this.url = url;
     this.description = description;
