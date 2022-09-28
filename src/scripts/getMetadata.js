@@ -1,8 +1,9 @@
 import {infoAnime}  from "./constructor.js";
-import { chan } from "./channel_id.js";
+import { chan,channelPage } from "./channel_id.js";
 import { fetch } from '@tauri-apps/api/http';
 import {token} from './token.js';
 async function getMetadata(slug){
+    channelPage();
     let url = `https://kamyroll.herokuapp.com/content/v1/media?id=${slug}&channel_id=${chan}`;
     let options = {
       headers: {

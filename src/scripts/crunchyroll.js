@@ -8,17 +8,11 @@ import {
     token
 } from './token.js'
 import {
-    chan,setChannel
+    chan,channelPage
 } from './channel_id.js'
 
 async function getEpisodes(slug, type) {
-    if(window.location.href.includes('adn')){
-        setChannel('animedigitalnetwork');
-    }else if(window.location.href.includes('neko')){
-        setChannel('neko-sama');
-    }else{
-        setChannel('crunchyroll');
-    }
+    channelPage();
     let url = "";
     if (type == 'movie_listing') {
         url = `https://kamyroll.herokuapp.com/content/v1/movies?id=${slug}&channel_id=${chan}`;
