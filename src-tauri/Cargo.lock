@@ -54,12 +54,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "98161a4e3e2184da77bb14f02184cdd111e83bbbcc9979dfee3c44b9a85f5602"
 
 [[package]]
-name = "ascii"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d92bec98840b8f03a5ff5413de5293bfcd8bf96467cf5452609f939ec6f5de16"
-
-[[package]]
 name = "atk"
 version = "0.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -269,12 +263,6 @@ name = "cfg-if"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
-
-[[package]]
-name = "chunked_transfer"
-version = "1.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fff857943da45f546682664a79488be82e69e43c1a7a2307679ab9afb3a66d2e"
 
 [[package]]
 name = "cocoa"
@@ -1249,7 +1237,7 @@ dependencies = [
 
 [[package]]
 name = "kamyroll"
-version = "0.3.2"
+version = "0.3.3"
 dependencies = [
  "command-group",
  "serde",
@@ -1257,7 +1245,6 @@ dependencies = [
  "tauri 1.1.1 (git+https://github.com/tauri-apps/tauri)",
  "tauri-build",
  "tauri-plugin-window-state",
- "tiny_http",
 ]
 
 [[package]]
@@ -2625,7 +2612,7 @@ dependencies = [
 [[package]]
 name = "tauri"
 version = "1.1.1"
-source = "git+https://github.com/tauri-apps/tauri#1d7171a1ec2bf3a1d8a432e9afd0cbf0e5767ee9"
+source = "git+https://github.com/tauri-apps/tauri#a4aec9f0a864ec6d7712db8bd50989d9c2e2fd2e"
 dependencies = [
  "anyhow",
  "attohttpc",
@@ -2714,7 +2701,7 @@ dependencies = [
 [[package]]
 name = "tauri-codegen"
 version = "1.1.1"
-source = "git+https://github.com/tauri-apps/tauri#1d7171a1ec2bf3a1d8a432e9afd0cbf0e5767ee9"
+source = "git+https://github.com/tauri-apps/tauri#a4aec9f0a864ec6d7712db8bd50989d9c2e2fd2e"
 dependencies = [
  "base64",
  "brotli",
@@ -2753,7 +2740,7 @@ dependencies = [
 [[package]]
 name = "tauri-macros"
 version = "1.1.1"
-source = "git+https://github.com/tauri-apps/tauri#1d7171a1ec2bf3a1d8a432e9afd0cbf0e5767ee9"
+source = "git+https://github.com/tauri-apps/tauri#a4aec9f0a864ec6d7712db8bd50989d9c2e2fd2e"
 dependencies = [
  "heck 0.4.0",
  "proc-macro2",
@@ -2799,12 +2786,11 @@ dependencies = [
 [[package]]
 name = "tauri-runtime"
 version = "0.11.1"
-source = "git+https://github.com/tauri-apps/tauri#1d7171a1ec2bf3a1d8a432e9afd0cbf0e5767ee9"
+source = "git+https://github.com/tauri-apps/tauri#a4aec9f0a864ec6d7712db8bd50989d9c2e2fd2e"
 dependencies = [
  "gtk",
  "http",
  "http-range",
- "infer",
  "rand 0.8.5",
  "raw-window-handle",
  "serde",
@@ -2839,7 +2825,7 @@ dependencies = [
 [[package]]
 name = "tauri-runtime-wry"
 version = "0.11.1"
-source = "git+https://github.com/tauri-apps/tauri#1d7171a1ec2bf3a1d8a432e9afd0cbf0e5767ee9"
+source = "git+https://github.com/tauri-apps/tauri#a4aec9f0a864ec6d7712db8bd50989d9c2e2fd2e"
 dependencies = [
  "cocoa",
  "gtk",
@@ -2885,13 +2871,14 @@ dependencies = [
 [[package]]
 name = "tauri-utils"
 version = "1.1.1"
-source = "git+https://github.com/tauri-apps/tauri#1d7171a1ec2bf3a1d8a432e9afd0cbf0e5767ee9"
+source = "git+https://github.com/tauri-apps/tauri#a4aec9f0a864ec6d7712db8bd50989d9c2e2fd2e"
 dependencies = [
  "brotli",
  "ctor",
  "glob",
  "heck 0.4.0",
  "html5ever",
+ "infer",
  "json-patch",
  "kuchiki",
  "memchr",
@@ -2977,26 +2964,6 @@ dependencies = [
  "itoa 1.0.3",
  "libc",
  "num_threads",
- "time-macros",
-]
-
-[[package]]
-name = "time-macros"
-version = "0.2.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "42657b1a6f4d817cda8e7a0ace261fe0cc946cf3a80314390b22cc61ae080792"
-
-[[package]]
-name = "tiny_http"
-version = "0.11.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e0d6ef4e10d23c1efb862eecad25c5054429a71958b4eeef85eb5e7170b477ca"
-dependencies = [
- "ascii",
- "chunked_transfer",
- "log",
- "time",
- "url",
 ]
 
 [[package]]

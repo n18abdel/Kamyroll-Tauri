@@ -1,29 +1,28 @@
 import {reactive} from 'vue';
-import { ref } from 'vue'
+
 const CRUNCHYROLL = 'crunchyroll';
 const NEKO_SAMA = 'neko-sama';
 const ANIMEDIGITALNETWORK = 'animedigitalnetwork';
-const setChannel = (channelName) => {
-    channel = localStorage.setItem('channel', channelName);
+let setChannel = async (channelName) => {
     localStorage.setItem('channel', channelName);
-    chan = localStorage.getItem('channel');
 }
 // by default set in the local storage crunchyroll
-var channel = localStorage.getItem('channel');
+let channel = localStorage.getItem('channel');
 if (channel==undefined){
     setChannel(CRUNCHYROLL);
 } else {
     channel = localStorage.getItem('channel');
 }
-var chan = localStorage.getItem('channel');
+var chan = channel;
+
 
 const channels = reactive([
-    { name: CRUNCHYROLL, label: 'Crunchyroll' },
+    { name: CRUNCHYROLL, label: 'Crunchyroll'},
     { name: NEKO_SAMA, label: 'Neko-sama' },
     { name: ANIMEDIGITALNETWORK, label: 'Anime Digital Network' },
 ]);
 
-const getChannelinUse = (chan) => {
+let getChannelinUse = (chan) => {
     for (var i = 0; i < channels.length; i++) {
         if (channels[i].name == chan) {
             return channels[i].label;
@@ -31,11 +30,27 @@ const getChannelinUse = (chan) => {
     }
 }
 
+let channelPage = () => {
+    if (window.location.pathname.includes('/crunchyroll/')) {
+        setChannel(CRUNCHYROLL);
+        chan = CRUNCHYROLL;
+    } else if (window.location.pathname.includes('/nekosama/')) {
+        setChannel(NEKO_SAMA);
+        chan = NEKO_SAMA;
+    } else if (window.location.pathname.includes('/adn/')) {
+        setChannel(ANIMEDIGITALNETWORK);
+        chan = ANIMEDIGITALNETWORK;
+    }
+}
+
+
+
 
 export  {       
     chan,
     channels,
     setChannel,
     channel,
-    getChannelinUse
+    getChannelinUse,
+    channelPage
 }

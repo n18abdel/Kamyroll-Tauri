@@ -1,10 +1,10 @@
 <script setup>
-    import {chan,channels,setChannel} from '../scripts/channel_id';
+    import {channel,channels,setChannel} from '../scripts/channel_id';
 </script>
     
     <template>
     
-        <select name="channel-id" id="channel-id" v-model="chan" @change="setChannel($event.target.value)">
+        <select name="channel-id" id="channel-id" v-model="channel" @change="setChannel($event.target.value)">
             <option v-for="prov of channels" :value="prov.name">{{prov.label}}</option>
         </select>
             
@@ -13,8 +13,6 @@
     <style scoped>
     
        #channel-id {
-            width: 100%;
-            height: 100%;
             border: none;
             border-radius: 0;
             color: white;

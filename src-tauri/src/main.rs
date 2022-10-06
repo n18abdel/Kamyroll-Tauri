@@ -5,13 +5,15 @@
 
 
 use tauri::{
-  api::process::{Command},
+  api::process::{Command/* , CommandEvent */},
   Manager,
   CustomMenuItem,
    SystemTray, 
    SystemTrayMenu,
    SystemTrayMenuItem,
-   SystemTrayEvent
+   SystemTrayEvent,
+   /* Runtime,
+   async_runtime */
 };
 use std::process::Command as StdCommand;
 use std::io::{BufReader};
@@ -27,6 +29,45 @@ async fn close_splashscreen(window: tauri::Window) {
   // Show main window
   window.get_window("main").unwrap().show().unwrap();
 }
+
+/* #[tauri::command]
+async fn download_file <R: Runtime>(
+  window: tauri::Window<R>,
+  args: Vec<String>,
+) -> Result<(), String> {
+  let command = Command::new_sidecar("ytdlp").unwrap();
+  let (mut rx, _) = command.args(args).spawn().unwrap();
+
+  async_runtime::spawn(async move {
+    // read events such as stdout
+    while let Some(event) = rx.recv().await {
+      match event {
+        CommandEvent::Stderr(line) => {
+          println!("stderr: {}", line);
+          window
+            .emit(
+              "logs",
+              Some(format!("stderr: {}", line)),
+            )
+            .unwrap();
+        }
+        CommandEvent::Terminated(terminated) => {
+          window
+            .emit(
+              "logs",
+              Some(format!("Download endded: {:#?}", terminated)),
+            )
+            .unwrap();
+          window.emit("logs:end", terminated).unwrap();
+        }
+        _ => {}
+      }
+    }
+  });
+  Ok(())
+}
+ */
+
 
 fn main() {
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
@@ -94,7 +135,7 @@ fn main() {
   });
   Ok(())
 })
-    .invoke_handler(tauri::generate_handler![close_splashscreen])
+    .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */])
     .run(tauri::generate_context!())
     .expect("failed to run app");
 }

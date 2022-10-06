@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "Kamyroll",
-    "version": "0.3.2"
+    "version": "0.3.3"
   },
   "build": {
     "distDir": "../dist",
@@ -26,7 +26,7 @@
         "icons/icon.ico"
       ],
       "resources": [],
-      "externalBin": ["proxy/pstream/main"],
+      "externalBin": ["proxy/pstream/main", "proxy/download/ytdlp"],
       "copyright": "Nabil 2022",
       "category": "DeveloperTool",
       "shortDescription": "",
