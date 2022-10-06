@@ -13,13 +13,14 @@ function infoAnime(title,  url, image, description, type, episodes, status, is_d
     this.maturity_ratings = maturity_ratings;
   }
 
-function episode(title, url, description, poster,is_dubbed,is_subbed) {
+function episode(title, url, description, poster,is_dubbed,is_subbed,duration) {
     this.title = title;
     this.url = url;
     this.description = description;
     this.poster = poster;
     this.is_dubbed = is_dubbed;
     this.is_subbed= is_subbed;
+    this.duration = duration;
 }
 
 function trending(title, link, image, bannerImage, description, status, id) {
@@ -51,10 +52,31 @@ function season(season_number, episodes){
     this.season_number = season_number;
     this.episodes = episodes;
 }
+
+function Videos(quality, link) {
+    this.html = quality;
+    this.url = link;
+}
+
+function Subs(html, link, style, type) {
+    this.html = html;
+    this.url = link;
+    this.style = style;
+    this.type = type;
+}
+
+function seasons(season_number, episodes){
+    this.season_number = season_number;
+    this.episodes = episodes;
+}
+
 export {
     infoAnime,
     episode,
     trending,
     finalData,
-    season
+    season,
+    Videos,
+    Subs,
+    seasons
 }

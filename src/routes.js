@@ -27,6 +27,10 @@ export default createRouter({
       component: Kamyroll
     },
     {
+      path: '/crunchyroll/:id/:title',
+      component: Kamyroll
+    },
+    {
       path: '/adn/:id',
       component: Kamyroll
     },

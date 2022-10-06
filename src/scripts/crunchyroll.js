@@ -1,8 +1,8 @@
 import {
-    fetch
+    fetch,ResponseType
 } from '@tauri-apps/api/http'
 import {
-    episode,finalData
+    episode,finalData,Videos,Subs
 } from './constructor.js'
 import {
     token
@@ -10,6 +10,7 @@ import {
 import {
     chan,channelPage
 } from './channel_id.js'
+import pStreamExtractor from './pstreamextractor.js'
 
 async function getEpisodes(slug, type) {
     channelPage();
@@ -36,6 +37,7 @@ async function getEpisodes(slug, type) {
     let result = response.data;
     if (type == 'series') {
         for (let season of result.items) {
+            let season_title = season.title;
             for (let epi of season.episodes) {
                 if (epi.episode != 'Bande Annonce') {
                     let titre = `S${epi.season_number} Episode ${epi.episode}: ` + epi.title;
@@ -62,7 +64,9 @@ async function getEpisodes(slug, type) {
                     }
                     let is_dubbed = epi.is_dubbed;
                     let is_subbed = epi.is_subbed;
-                    let finalData = new episode(titre, link, desc, image, is_dubbed, is_subbed);
+                    let duration = epi.duration_ms;
+                    duration = Math.floor(duration / 60000);
+                    let finalData = new episode(titre, link, desc, image, is_dubbed, is_subbed,duration);
                     episodes.push(finalData);
                 }
             }
@@ -77,7 +81,7 @@ async function getEpisodes(slug, type) {
                 titre += ' (VOSTFR)';
             }
             let desc = epi.description;
-            let image = ""
+            let image = "";
             try {
                 image = epi.images.thumbnail[1].source;
             } catch (e) {
@@ -93,7 +97,9 @@ async function getEpisodes(slug, type) {
             }
             let is_dubbed = epi.is_dubbed;
             let is_subbed = epi.is_subbed;
-            let finalData = new episode(titre, link, desc, image, is_dubbed, is_subbed);
+            let duration = epi.duration_ms;
+            duration = Math.floor(duration / 60000);
+            let finalData = new episode(titre, link, desc, image, is_dubbed, is_subbed,duration);
             episodes.push(finalData);
         }
     }
@@ -105,7 +111,7 @@ async function search(query){
     const options = {
         method: 'GET',
         headers: {
-            'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
+            'User-Agent': 'Kamyroll/0.3.2',
             'Authorization': `Bearer ${token.access_token}`,
         }
     };
@@ -161,4 +167,118 @@ async function search(query){
     return results
 }
 
-export {getEpisodes,search};
+async function getVideos(id) {
+    let videos = [];
+    let subtitles = [];
+    var streams = '';
+    const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${chan}&id=${id}&type=adaptive_hls&format=ass`;
+    const headers = {
+        'Authorization': 'Bearer ' + token.access_token,
+        'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    try {
+        if (window.location.href.includes('/crunchyroll/')) {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: headers
+            });
+            let result = response.data;
+            console.log(result);
+            for (streams of result.streams) {
+                var quality = streams.audio_locale + ' ' + streams.hardsub_locale;
+                var link = streams.url;
+                videos.push(new Videos(quality, link));
+            }
+            if (result.subtitles.length >= 1) {
+                for (let subs of result.subtitles) {
+                    let lang = subs.locale;
+                    let link = subs.url;
+                    if (link.includes('kamyroll')) {
+                        link = 'https://corsproxy.io/?' + encodeURIComponent(link);
+                    }
+                    let type = subs.format;
+                    let style = {
+                        fontSize: '40px'
+                    };
+                    let finalData = new Subs(lang, link, style, type);
+                    subtitles.push(finalData);
+                    console.log(finalData);
+            }
+            } else {
+                subtitles.push(new Subs('No subtitles', '', {}, ''));
+            }
+        } else if (window.location.href.includes('/adn/')) {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: headers
+            });
+            let result = response.data;
+            console.log(result);
+            for (streams of result.streams) {
+                let quality = streams.audio_locale + ' ' + streams.hardsub_locale;
+                let link = streams.url;
+                let videorequest = await fetch(link, {
+                    method: "GET",
+                    responseType: ResponseType.Text
+                });
+                let videoresult = videorequest.data;
+                let lines = videoresult.split('\n');
+                for (var x = 0; x < lines.length; x++) {
+                    var line = lines[x];
+                    if (line.includes('EXT-X-STREAM-INF:PROGRAM-ID=1')) {
+                        let quality1 = quality + ' ' + line.split('RESOLUTION=')[1].match(/(\d)+x+(\d)+/g)[0];
+                        let videoLink = lines[x + 1];
+                        videos.push(new Videos(quality1, videoLink));
+                    }
+                }
+            }
+            if (result.subtitles.length >= 1) {
+                for (let subs of result.subtitles) {
+                    let lang = subs.locale;
+                    let link = subs.url;
+                    if (link.includes('kamyroll')) {
+                        link = 'https://corsproxy.io/?' + encodeURIComponent(link);
+                    }
+                    let type = subs.format;
+                    let style = {
+                        fontSize: '40px'
+                    };
+                    let finalData = new Subs(lang, link, style, type);
+                    subtitles.push(finalData);
+            }
+            } else {
+                subtitles.push(new Subs('No subtitles', '', style, ''));
+            }
+        } else if (window.location.href.includes('/nekosama/')) {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: headers
+            });
+            let result = response.data;
+            const quality = result.streams[0].audio_locale + ' ' + result.streams[0].hardsub_locale;
+            const pstreamlink = result.streams[0].url.replace('https://www.pstream.net', ' http://localhost:5000');
+            console.log(pstreamlink);
+            const pstream = await pStreamExtractor(pstreamlink);
+            videos.push(new Videos(quality, pstream));
+            subtitles.push(new Subs('No subtitles', '', {}, ''));
+        }
+
+        // fr-FR in first in the subtitles array
+        for(let i = 0; i < subtitles.length; i++){
+            if(subtitles[i].html == 'fr-FR'){
+                let temp = subtitles[0];
+                subtitles[0] = subtitles[i];
+                subtitles[i] = temp;
+            }
+        }
+
+        return {
+            streams:videos, 
+            subs: subtitles
+        };
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+export {getEpisodes,search,getVideos};

@@ -5,15 +5,23 @@
 // import Requester from '../../components/requester.vue';
 // import { moduleExpression } from '@babel/types';
 // import Requester from '../../components/requester.vue';
-import Trending from '../../components/trending.vue';
+import Trending from '../../components/tendance.vue';
+import building from '../../components/building.vue';
 import DarkModeToggle from '../../components/DarkModeToggle.vue';
 
-
-// listen to an event from the backend
-
-
-
 </script>
-<template>      
-        <trending></trending>
+<template>  
+        <trending></trending>   
+        <!-- <lastepisodes></lastepisodes> -->
 </template>
+
+<script>
+        export default {
+                components: {
+                        Trending,
+                        building,
+                        DarkModeToggle
+                },
+                
+        }
+</script>

@@ -20,11 +20,16 @@ async function getMetadata(slug){
     let result = response.data;
     let title = result.title;
     let image = "";
-    try {
-      image = result.images.poster_tall[2].source;
-    } catch (error) {
-      image = result.images.poster_tall.pop().source;
+    try{
+      try {
+        image = result.images.poster_tall[2].source;
+      } catch (error) {
+        image = result.images.poster_tall.pop().source;
+      }
+    }catch(e){
+      image = result.images.thumbnail.pop().source;
     }
+    
     let description = result.description;
     let type = result.__class__;
     if(description==''){

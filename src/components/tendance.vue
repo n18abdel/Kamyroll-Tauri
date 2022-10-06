@@ -1,0 +1,2293 @@
+<script setup>
+import {fetch ,Body} from '@tauri-apps/api/http';
+import { invoke } from '@tauri-apps/api/tauri'
+</script>
+
+
+<template>
+        <div class="crunchyroll" v-if="channel=='crunchyroll' && trending.length >= 1 " >
+            
+            <div class="erc-feed-container">
+                
+        <div>
+            <article class="erc-hero-card" :id="trending[random].id">
+                <div class="erc-hero-card-background-overlay bottom-angled"><span
+                        class="background-gradient"></span><img class="background-image"
+                        :src="trending[random].bannerImage" :alt="trending[random].title"></div>
+                <div class="foreground">
+                    <div class="main-image-wrapper-link">
+                        <div class="main-image-wrapper"><a class="poster-hover-layer" :href="trending[random].link">to
+                                series</a><img :src="trending[random].image" class="c-content-image"
+                                :alt="trending[random].title"></div>
+                    </div>
+                    <section class="info"><a class="title-link" :href="trending[random].link">
+                            <h1 class="title">{{trending[random].title}}</h1>
+                        </a>
+                        <div class="additional-information">
+                            <div class="c-meta-tags media-tag-group"><span class="c-meta-tags__type">Series</span><span
+                                    class="c-meta-tags__language">Subtitled</span></div>
+                        </div>
+                        <p class="description">{{trending[random].description}}</p>
+                        <div class="watch-actions"><a role="button" tabindex="0"
+                                class="go-watch c-button -type-one-weak" data-t="watching-btn"
+                                :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
+                                    <polygon points="0 0 0 20 20 10"></polygon>
+                                </svg><span>Start Watching</span></a></div>
+                    </section>
+                </div>
+            </article>
+        </div>
+        <div class="erc-shelf-feed-item" id="browse_popular">
+            <h1 class="feed-title">Most Popular</h1>
+            <div class="erc-cards-collection">
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="One Piece" class="card-link"
+                                href="/crunchyroll/GRMG8ZQZR"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/236f44583009506b8d9d012c4d3119a5.jpeg"
+                                    class="c-content-image image" alt="One Piece"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/2239c7b46b2e491ae33b33ff980e9fb1.jpeg"
+                                        class="c-content-image" alt="One Piece"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>One Piece</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="JUJUTSU KAISEN" class="card-link"
+                                href="/crunchyroll/GRDV0019R"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/98662d1c546c4e74de58fbc52679ac6c.jpeg"
+                                    class="c-content-image image" alt="JUJUTSU KAISEN"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/47efe819e954f83cf0b8e022c39488ce.jpeg"
+                                        class="c-content-image" alt="JUJUTSU KAISEN"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>JUJUTSU KAISEN</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Naruto Shippuden" class="card-link"
+                                href="/crunchyroll/GYQ4MW246"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/7add01c632a7aaf883a90d75b0154ab8.jpeg"
+                                    class="c-content-image image" alt="Naruto Shippuden"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/d5f15f87bf61d845b53fea64ee6f63f3.jpeg"
+                                        class="c-content-image" alt="Naruto Shippuden"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Naruto Shippuden</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Mob Psycho 100" class="card-link"
+                                href="/crunchyroll/GY190DKQR"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/30b75ec805a6083356a94dfe68c2caac.jpeg"
+                                    class="c-content-image image" alt="Mob Psycho 100"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/eeaaec512f71989a66f853270c08c6b2.jpeg"
+                                        class="c-content-image" alt="Mob Psycho 100"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Mob Psycho 100</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Dubbed</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Black Clover" class="card-link"
+                                href="/crunchyroll/GRE50KV36"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/0273e80242d80b0218f640e038269c18.jpeg"
+                                    class="c-content-image image" alt="Black Clover"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/e108ae17d8d0407417cac40eb52d849a.jpeg"
+                                        class="c-content-image" alt="Black Clover"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Black Clover</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="My Hero Academia" class="card-link"
+                                href="/crunchyroll/G6NQ5DWZ6"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/db4769f7108e7c1e43d1549e0d4ff9c5.jpeg"
+                                    class="c-content-image image" alt="My Hero Academia"><a class="erc-channel-icon"
+                                    href="/crunchyroll" style="">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/dbdff189a7b97afadbe73b778583de83.jpeg"
+                                        class="c-content-image" alt="My Hero Academia"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>My Hero Academia</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GYXM79M56">
+            <h1 class="feed-title">DRAGON QUEST The Adventure of Dai</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="DRAGON QUEST The Adventure of Dai"
+                                class="card-link" href="/crunchyroll/GYXM79M56"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/11c6b367ea0fa9fe2cd570c90811f953.jpeg"
+                                    class="c-content-image image" alt="DRAGON QUEST The Adventure of Dai"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/cba230badc3a1559995f8f7503af4788.jpeg"
+                                        class="c-content-image" alt="DRAGON QUEST The Adventure of Dai"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>DRAGON QUEST The Adventure of Dai</h1>
+                                        <p class="description">The world that was once afflicted by Hadlar, the Dark
+                                            Lord, has regained peace in the hands of a swordsman called the "hero" and
+                                            his companions. Delmurin Island became a place where monsters released from
+                                            the Dark Lord lived.
+
+                                            Dai, who is the only human on the island and longs to be a hero, lives in
+                                            peace with the monsters. However, that life completely changes with the
+                                            resurrection of the Dark Lord Hadlar. With promises from teachers,
+                                            encounters with friends, and a destiny that cannot be escaped... In order to
+                                            save the world, the adventure of Dai and his quest to be a hero begins!</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="G8DHV7W3N">
+            <h1 class="feed-title">CUE!</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="CUE!" class="card-link"
+                                href="/crunchyroll/G8DHV7W3N"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/6eed2d7a686544c88c2f53acbdcb325a.jpeg"
+                                    class="c-content-image image" alt="CUE!"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/915602f701a9a0c19feb0257e7e9b044.jpeg"
+                                        class="c-content-image" alt="CUE!"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>CUE!</h1>
+                                        <p class="description">The brand-new voice acting talent agency AiRBLUE has
+                                            neither seasoned pros nor famous stars. What it does have is a group of
+                                            trainee voice actresses whose individualism and personality shines through
+                                            their inexperience. Each one is looking for a way to harness her talents and
+                                            make her dreams come true!
+
+                                            However, sooner or later, all these dreams will run up against the harshness
+                                            of reality. No matter how devotedly they practice, not all the candidates
+                                            can pass every audition.
+                                            Can they endure through anguish, setbacks, and discord? If the hurdles all
+                                            trainees must face trip them up, can they recover and rise again?
+
+                                            The story of these fledgling voice actresses is now ready for the director
+                                            to call “action!”</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="browse_newly">
+            <h1 class="feed-title">Just Updated On VRV</h1>
+            <div class="erc-cards-collection">
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="The Great Jahy Will Not Be Defeated!"
+                                class="card-link" href="/crunchyroll/GNVHKNWXW"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/6a2835dce2872f4c7d2cbbb2d5cb3c43.jpeg"
+                                    class="c-content-image image" alt="The Great Jahy Will Not Be Defeated!"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/099c77141e6be1a3c882ede49300773d.jpeg"
+                                        class="c-content-image" alt="The Great Jahy Will Not Be Defeated!"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>The Great Jahy Will Not Be Defeated!</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Dubbed</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="SING &quot;YESTERDAY&quot; FOR ME"
+                                class="card-link" href="/crunchyroll/GYVDV1N0Y"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/88f36cfc79bbdc313b5495e5d24736c2.jpeg"
+                                    class="c-content-image image" alt="SING &quot;YESTERDAY&quot; FOR ME"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/6a08d40c6e817c508fb8537347dbd548.jpeg"
+                                        class="c-content-image" alt="SING &quot;YESTERDAY&quot; FOR ME"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>SING "YESTERDAY" FOR ME</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Dubbed</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="The Prince of Tennis II U-17 World Cup"
+                                class="card-link" href="/crunchyroll/G5PHNMWWN"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/3a084c93f7e062b3ce211a426474b17d.jpeg"
+                                    class="c-content-image image" alt="The Prince of Tennis II U-17 World Cup"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/7b9bb3ff8dbb4d52ef4411f5a157d2aa.jpeg"
+                                        class="c-content-image" alt="The Prince of Tennis II U-17 World Cup"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>The Prince of Tennis II U-17 World Cup</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Dubbed</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Remake Our Life!" class="card-link"
+                                href="/crunchyroll/GKEH2GZX9"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/a07f932b819930bfa0f4048a4ee22384.jpeg"
+                                    class="c-content-image image" alt="Remake Our Life!"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/f890fa41100faa3b92fbd304209e40b1.jpeg"
+                                        class="c-content-image" alt="Remake Our Life!"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Remake Our Life!</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Dubbed</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Smile of the Arsnotoria the Animation"
+                                class="card-link" href="/crunchyroll/GW4HM7GG3"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/466890243539541e499d8ba38ee6fe68.jpeg"
+                                    class="c-content-image image" alt="Smile of the Arsnotoria the Animation"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/a12aa96558664f4c482677e9ec083fba.jpeg"
+                                        class="c-content-image" alt="Smile of the Arsnotoria the Animation"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Smile of the Arsnotoria the Animation</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Dubbed</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Do It Yourself!!" class="card-link"
+                                href="/crunchyroll/GEXH3W4JP"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/d919dc52f7e58912bad2a6df7a83e7a9.jpeg"
+                                    class="c-content-image image" alt="Do It Yourself!!"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/8ba96e71fd40d92bb2b3942c362fe250.jpeg"
+                                        class="c-content-image" alt="Do It Yourself!!"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Do It Yourself!!</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="G64PEME0R">
+            <h1 class="feed-title">Historical figures but not really</h1>
+            <div class="erc-cards-collection">
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Meow Meow Japanese History" class="card-link"
+                                href="/crunchyroll/G62PJ4X26"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/7efdd1bb367a62467fb641691bf17013.jpeg"
+                                    class="c-content-image image" alt="Meow Meow Japanese History"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/6cf28f1893eef82286c919f9ad95b254.jpeg"
+                                        class="c-content-image" alt="Meow Meow Japanese History"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Meow Meow Japanese History</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a
+                                title="Fate/Grand Order Absolute Demonic Front: Babylonia" class="card-link"
+                                href="/crunchyroll/GR24JZ886"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/60385671a804aa4e097eea1e9d8b88f7.jpeg"
+                                    class="c-content-image image"
+                                    alt="Fate/Grand Order Absolute Demonic Front: Babylonia"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/5e2029d2c96cf5f92af034feec6e72c9.jpeg"
+                                        class="c-content-image"
+                                        alt="Fate/Grand Order Absolute Demonic Front: Babylonia"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Fate/Grand Order Absolute Demonic Front: Babylonia</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Fate/Zero" class="card-link"
+                                href="/crunchyroll/GRJQ04Z3Y"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/fdc0dff409f19dfd8ffff5037257ac98.jpeg"
+                                    class="c-content-image image" alt="Fate/Zero"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/2ee05df6e44530437069955b71f09daf.jpeg"
+                                        class="c-content-image" alt="Fate/Zero"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Fate/Zero</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Oda Cinnamon Nobunaga" class="card-link"
+                                href="/crunchyroll/GRJ0XX20Y"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/363816b7e73c294ec1f26942b6ab5b23.jpeg"
+                                    class="c-content-image image" alt="Oda Cinnamon Nobunaga"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/b5fa363e489980d695acaac385aacbf3.jpeg"
+                                        class="c-content-image" alt="Oda Cinnamon Nobunaga"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Oda Cinnamon Nobunaga</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="G0XHWM380">
+            <h1 class="feed-title">Seirei Gensouki: Spirit Chronicles</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="Seirei Gensouki: Spirit Chronicles"
+                                class="card-link" href="/crunchyroll/G0XHWM380"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/2b2f015ed1adf726347dd4df8bc41df3.jpeg"
+                                    class="c-content-image image" alt="Seirei Gensouki: Spirit Chronicles"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/b660009a87462001a52ff9aa8d114726.jpeg"
+                                        class="c-content-image" alt="Seirei Gensouki: Spirit Chronicles"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Seirei Gensouki: Spirit Chronicles</h1>
+                                        <p class="description">His past life and current life are intersecting--a boy
+                                            with memories of two lives faces his destiny!
+
+                                            After his mother was killed at an early age, the orphaned Rio fought his
+                                            hardest to survive in the slums.
+
+                                            One day, he awakens to the memories of Haruto Amakwa, who died in an
+                                            accident while dreaming of being reunited with his childhood friend, and Rio
+                                            realizing he has reincarnated in a world of swords and sorcery.</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GY4P94286">
+            <h1 class="feed-title">Killjoys</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="Killjoys" class="card-link"
+                                href="/crunchyroll/GY4P94286"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/6866f722191c71d4d8354102c8af82bb.png"
+                                    class="c-content-image image" alt="Killjoys"><a class="erc-channel-icon"
+                                    href="/vrvselect">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
+                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/2f62bf221ad1c00400fb1471b57d9782.png"
+                                        class="c-content-image" alt="Killjoys"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Killjoys</h1>
+                                        <p class="description">From the producers of&nbsp;Orphan Black&nbsp;(Temple
+                                            Street Productions) and the creator of&nbsp;Lost Girl&nbsp;(Michelle
+                                            Lovretta),&nbsp;Killjoys&nbsp;follows a fun-loving, hard living trio of
+                                            interplanetary bounty hunters sworn to remain impartial as they chase deadly
+                                            warrants throughout the Quad, a distant system on the brink of a bloody,
+                                            multiplanetary class war.</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="G6QW774G6">
+            <h1 class="feed-title">BIGFOOT</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="BIGFOOT" class="card-link"
+                                href="/crunchyroll/G6QW774G6"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(233, 55, 53);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/mondo/a9221e0dc7f4f1c0410c5f8e58547fae.png"
+                                    class="c-content-image image" alt="BIGFOOT"><a class="erc-channel-icon"
+                                    href="/mondo">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(233, 55, 53);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/mondo/e4e43ea71ac360a96d36ef760883559a.png"
+                                            alt="Mondo icon"><span class="channel-name">Mondo</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/mondo/fc53811e7318f15fd88bfcf1d7f4d9a4.png"
+                                        class="c-content-image" alt="BIGFOOT"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>BIGFOOT</h1>
+                                        <p class="description">Controversial megafauna, Bigfoot, finds himself down on
+                                            his luck. His hunt for meaning, connection, and redemption snacks reveals
+                                            him to be a complex mix of ego, vulnerability, cool dances, weird smells,
+                                            and philosophical insight. Can he borrow some money? What is the moon?
+                                            Please stop honking at Bigfoot? What is a Bigfoot? So many questions..only
+                                            one Bigfoot. </p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GY8VEQ95Y">
+            <h1 class="feed-title">DARLING in the FRANXX</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="DARLING in the FRANXX" class="card-link"
+                                href="/crunchyroll/GY8VEQ95Y"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/626b30dc8203a0e263bba0a191a8f7be.jpeg"
+                                    class="c-content-image image" alt="DARLING in the FRANXX"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/3fa31250f0604ff16ef6cb0a12dea63d.jpeg"
+                                        class="c-content-image" alt="DARLING in the FRANXX"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>DARLING in the FRANXX</h1>
+                                        <p class="description">The distant future: Humanity established the mobile fort
+                                            city, Plantation, upon the ruined wasteland. Within the city were pilot
+                                            quarters, Mistilteinn, otherwise known as the “Birdcage.” That is where the
+                                            children live... Their only mission in life was the fight. Their enemies are
+                                            the mysterious giant organisms known as Kyoryu. The children operate robots
+                                            known as FRANXX in order to face these still unseen enemies. Among them was
+                                            a boy who was once called a child prodigy: Code number 016, Hiro. One day, a
+                                            mysterious girl called Zero Two appears in front of Hiro. “I’ve found you,
+                                            my Darling.”</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GRW459XMY">
+            <h1 class="feed-title">The Prisoner</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="The Prisoner" class="card-link"
+                                href="/crunchyroll/GRW459XMY"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/0c7ff7d6bf309593a14248c538cbd36b.jpg"
+                                    class="c-content-image image" alt="The Prisoner"><a class="erc-channel-icon"
+                                    href="/vrvselect">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
+                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/411d69ef59e7cbc0c991fabc72451dfa.jpeg"
+                                        class="c-content-image" alt="The Prisoner"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>The Prisoner</h1>
+                                        <p class="description">After resigning, a secret agent is abducted and taken to
+                                            what looks like an idyllic village, but is really a bizarre prison. His
+                                            warders demand information. He gives them nothing, but only tries to escape.
+                                        </p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GRE5WM096">
+            <h1 class="feed-title">Fot &amp; Angus</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="Fot &amp; Angus" class="card-link"
+                                href="/crunchyroll/GRE5WM096"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(233, 55, 53);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/mondo/6a6b6d4a78a8270c0fcc32326e9d0cf2.png"
+                                    class="c-content-image image" alt="Fot &amp; Angus"><a class="erc-channel-icon"
+                                    href="/mondo">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(233, 55, 53);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/mondo/e4e43ea71ac360a96d36ef760883559a.png"
+                                            alt="Mondo icon"><span class="channel-name">Mondo</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/mondo/ad01700c9b5c6aaf2e9e5c83260bd5b3.png"
+                                        class="c-content-image" alt="Fot &amp; Angus"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Fot &amp; Angus</h1>
+                                        <p class="description">The adventures of FOT and his hapless side-kick Angus.
+                                            Created, animated and directed by Alex Dron, voiced by Rhys Darby (Flight of
+                                            the Concords) and written by Karl Wills and Alex Dron.</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GYG53DGDY">
+            <h1 class="feed-title">Not saying it was aliens... but it was ALIENS</h1>
+            <div class="erc-cards-collection">
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Gintama" class="card-link"
+                                href="/crunchyroll/GYQ4MKDZ6"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/5d1c34b8f9491d82bf62391f7ac4e4a3.jpeg"
+                                    class="c-content-image image" alt="Gintama"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/4fadd5f113c28de1b22d4ef67a78890b.jpeg"
+                                        class="c-content-image" alt="Gintama"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Gintama</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Parasyte -the maxim-" class="card-link"
+                                href="/crunchyroll/G6K53VGGY"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/a1b9e0783210f940b383626b224e8827.jpeg"
+                                    class="c-content-image image" alt="Parasyte -the maxim-"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/7d31dfaf49397a8cc1e490ccedea04e2.jpeg"
+                                        class="c-content-image" alt="Parasyte -the maxim-"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Parasyte -the maxim-</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="TERRAFORMARS" class="card-link"
+                                href="/crunchyroll/GRNQPEGWR"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/ccfd7b9ad6d78e42a273a105bbfe3160.jpeg"
+                                    class="c-content-image image" alt="TERRAFORMARS"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/4f3815ec979014aa5a281278b1edbbd7.jpeg"
+                                        class="c-content-image" alt="TERRAFORMARS"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>TERRAFORMARS</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Space Brothers" class="card-link"
+                                href="/crunchyroll/G69PVE29Y"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/42ba5e60876342de5c5a933d56b96748.jpeg"
+                                    class="c-content-image image" alt="Space Brothers"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/9b11916ae9d5d8e53323ea072fd6157e.jpeg"
+                                        class="c-content-image" alt="Space Brothers"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Space Brothers</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Star Blazers: Space Battleship Yamato"
+                                class="card-link" href="/crunchyroll/G65V4P4K6"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/e0716c3a240d572c329ff56d1b9bf120.jpeg"
+                                    class="c-content-image image" alt="Star Blazers: Space Battleship Yamato"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/ced799cac17d0138c72f710de19d9f94.jpeg"
+                                        class="c-content-image" alt="Star Blazers: Space Battleship Yamato"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Star Blazers: Space Battleship Yamato</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="SPACE PATROL LULUCO" class="card-link"
+                                href="/crunchyroll/G63VM514Y"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/2f7dae8185c48de7d4ba0c3229c2e4b3.jpeg"
+                                    class="c-content-image image" alt="SPACE PATROL LULUCO"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/c37c375a5bb578d9c5a2a2066a432ee7.jpeg"
+                                        class="c-content-image" alt="SPACE PATROL LULUCO"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>SPACE PATROL LULUCO</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GRDQN479Y">
+            <h1 class="feed-title">Haven’t You Heard? I’m Sakamoto</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="Haven’t You Heard? I’m Sakamoto"
+                                class="card-link" href="/crunchyroll/GRDQN479Y"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/70d0dd053ca9916296c56e7cb4594e23.jpeg"
+                                    class="c-content-image image" alt="Haven’t You Heard? I’m Sakamoto"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/c836efd49dded6ba59d4aa9e162222c6.jpeg"
+                                        class="c-content-image" alt="Haven’t You Heard? I’m Sakamoto"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Haven’t You Heard? I’m Sakamoto</h1>
+                                        <p class="description">Sakamoto is not a normal high schooler. He’s smart, he’s
+                                            dashing, he’s popular with girls. Much to the dislike of the male population
+                                            of his school, who tries every trick in the book to mess Sakamoto up. But in
+                                            the end, Sakamoto comes out of every trap with style and makes himself look
+                                            cooler. Does he do this for popularity? Is this just who he is? No one
+                                            really knows, but haven’t you heard? He’s Sakamoto!</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GY19V24KR">
+            <h1 class="feed-title">Game Program Attack</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="Game Program Attack" class="card-link"
+                                href="/crunchyroll/GY19V24KR"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(233, 55, 53);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/mondo/3bebca93f2b6cc77e5d8ef316dd39b63.png"
+                                    class="c-content-image image" alt="Game Program Attack"><a class="erc-channel-icon"
+                                    href="/mondo">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(233, 55, 53);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/mondo/e4e43ea71ac360a96d36ef760883559a.png"
+                                            alt="Mondo icon"><span class="channel-name">Mondo</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/mondo/5b8c1ac9f8d1f4b1ce7af5e8befe093c.png"
+                                        class="c-content-image" alt="Game Program Attack"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Game Program Attack</h1>
+                                        <p class="description">A super awesome collection of game cartridges from the
+                                            greatest old-school console that never existed.</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GYEXQVZQ6">
+            <h1 class="feed-title">Ultraman Leo</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="Ultraman Leo" class="card-link"
+                                href="/crunchyroll/GYEXQVZQ6"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/47e382c4af08e253cfb540ddfb38ca9c.jpeg"
+                                    class="c-content-image image" alt="Ultraman Leo"><a class="erc-channel-icon"
+                                    href="/vrvselect">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
+                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/b53bf1e369256c1461cd365f87b18a8f.jpeg"
+                                        class="c-content-image" alt="Ultraman Leo"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Ultraman Leo</h1>
+                                        <p class="description">Alien intergalactic slavers called Magma come to Earth in
+                                            an attempt to find more slaves for their expanding evil empire. In response,
+                                            the Ultra Warriors send Leo to protect the planet from this new threat.</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GYP8DP1MY">
+            <h1 class="feed-title">JoJo's Bizarre Adventure</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="JoJo's Bizarre Adventure" class="card-link"
+                                href="/crunchyroll/GYP8DP1MY"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/aaeca3e651bebe79fe808085d079feea.jpeg"
+                                    class="c-content-image image" alt="JoJo's Bizarre Adventure"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/2423e59e70fab2f873cbe48c9dac0d21.jpeg"
+                                        class="c-content-image" alt="JoJo's Bizarre Adventure"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>JoJo's Bizarre Adventure</h1>
+                                        <p class="description">Part 1 - Phantom Blood
+
+                                            In ancient Mexico, people of Aztec had prospered. They had historic and
+                                            strange "Stone Mask". It was a miraculous mask which brings eternal life and
+                                            the power of authentic ruler. But the mask suddenly disappeared.
+
+                                            A long time after that, in late 19th centuries when the thought and life of
+                                            people were suddenly changing, Jonathan Joestar met with Dio Brando―. They
+                                            spend time together through boyhood to youth, and the "Stone Mask" brings
+                                            curious fate to them―.</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GRZJ80NX6">
+            <h1 class="feed-title">Chojin Sentai Jetman</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="Chojin Sentai Jetman" class="card-link"
+                                href="/crunchyroll/GRZJ80NX6"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/46792cf638a9cb8f405ea0d8ce72eee2.jpg"
+                                    class="c-content-image image" alt="Chojin Sentai Jetman"><a class="erc-channel-icon"
+                                    href="/vrvselect">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
+                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/089fb135bba7edaebd43ef2be427c649.jpg"
+                                        class="c-content-image" alt="Chojin Sentai Jetman"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Chojin Sentai Jetman</h1>
+                                        <p class="description">The Sky Force sends five highly trained operatives to
+                                            participate in an experiment which will expose them to Birdonic Waves,
+                                            resulting in superhuman abilities. But when the Earth Ship is attacked by
+                                            Vyram, the majority of the Birdonic Waves are sent to Earth and find four
+                                            unsuspecting civilians. Now, it's up to these four accidental super humans –
+                                            Raita, Kaori, Ako, and Gai – alongside Ryu, the only original operative to
+                                            receive Birdonic Waves, to defend their dimension against Vyram.</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="G6EXQQGGR">
+            <h1 class="feed-title">A Whole New World</h1>
+            <div class="erc-cards-collection">
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="The Rising of the Shield Hero"
+                                class="card-link" href="/crunchyroll/G6W4QKX0R"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/a05f3e4b27485d33c5bf2b0e80c6d3c6.jpeg"
+                                    class="c-content-image image" alt="The Rising of the Shield Hero"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/c73bc7c503920b61c100eab128e70d5e.jpeg"
+                                        class="c-content-image" alt="The Rising of the Shield Hero"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>The Rising of the Shield Hero</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Dubbed</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="That Time I Got Reincarnated as a Slime"
+                                class="card-link" href="/crunchyroll/GYZJ43JMR"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/2afcd3a9eb8cd351328bcae8d5d7dc4a.jpeg"
+                                    class="c-content-image image" alt="That Time I Got Reincarnated as a Slime"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/8a94435b1ba75c09126441f41f5f497d.jpeg"
+                                        class="c-content-image" alt="That Time I Got Reincarnated as a Slime"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>That Time I Got Reincarnated as a Slime</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Dubbed</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Isekai Cheat Magician" class="card-link"
+                                href="/crunchyroll/GY79GJX1R"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/089567220a1fb7b5a9752d9227848650.jpeg"
+                                    class="c-content-image image" alt="Isekai Cheat Magician"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/641f1b360dca7b98d9c7e503feda4bae.jpeg"
+                                        class="c-content-image" alt="Isekai Cheat Magician"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Isekai Cheat Magician</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a
+                                title="KONOSUBA -God's blessing on this wonderful world!" class="card-link"
+                                href="/crunchyroll/GYE5K3GQR"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/ccfcc995823a0bac58f924b9ed19cf63.jpeg"
+                                    class="c-content-image image"
+                                    alt="KONOSUBA -God's blessing on this wonderful world!"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/9b4ab6da6eda68a105831ca27aaaf4d5.jpeg"
+                                        class="c-content-image" alt="KONOSUBA -God's blessing on this wonderful world!">
+                                </div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>KONOSUBA -God's blessing on this wonderful world!</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Re:ZERO -Starting Life in Another World-"
+                                class="card-link" href="/crunchyroll/GRGG9798R"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/653fb1c89ecec17dc6947308819d702b.jpeg"
+                                    class="c-content-image image" alt="Re:ZERO -Starting Life in Another World-"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/291c6c3b60857afabe46899f848079a4.jpeg"
+                                        class="c-content-image" alt="Re:ZERO -Starting Life in Another World-"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Re:ZERO -Starting Life in Another World-</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Dubbed</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Overlord" class="card-link"
+                                href="/crunchyroll/G69PZ5PDY"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/5b65797ccc7305b99cd8f1922d66d777.jpeg"
+                                    class="c-content-image image" alt="Overlord"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/59dd9785564f46c3cf2a18b38149f5a1.jpeg"
+                                        class="c-content-image" alt="Overlord"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Overlord</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Dubbed</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GRVNXWQZY">
+            <h1 class="feed-title">March comes in like a lion</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="March comes in like a lion"
+                                class="card-link" href="/crunchyroll/GRVNXWQZY"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/3d6d42e2df6177df1c60edc4328072a7.jpeg"
+                                    class="c-content-image image" alt="March comes in like a lion"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/85872591d4a019caf31d07dafdc27efe.jpeg"
+                                        class="c-content-image" alt="March comes in like a lion"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>March comes in like a lion</h1>
+                                        <p class="description">This is a gentle tale about people trying to regain
+                                            something.
+                                            And it is a tale of battle.
+                                            The main character, Rei Kiriyama, lost his family in an accident when he was
+                                            young. Now he is a 17-year-old pro shogi player who is burdened with deep
+                                            loneliness. Rei lives alone in an old town in Tokyo, but after becoming
+                                            acquainted with three sisters, Akari, Hinata and Momo, he begins to change
+                                            little by little…</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GRNQZ129R">
+            <h1 class="feed-title">HarmonQuest</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="HarmonQuest" class="card-link"
+                                href="/crunchyroll/GRNQZ129R"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/6cd43f767c6cc7680334e709e4db215b.png"
+                                    class="c-content-image image" alt="HarmonQuest"><a class="erc-channel-icon"
+                                    href="/vrvselect">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
+                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/7d37176efdbfb81faf54aeda6d018e93.png"
+                                        class="c-content-image" alt="HarmonQuest"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>HarmonQuest</h1>
+                                        <p class="description">A comedic journey into the hilarious world of fantasy
+                                            roleplaying with Dan Harmon and his Comedian Companions. A new Seeso
+                                            Original Series starring Dan Harmon, Spencer Crittenden, Erin McGathy, and
+                                            Jeff B. Davis. Guest stars include, Paul F. Tompkins, Chelsea Peretti, Steve
+                                            Agee, Aubrey Plaza, Thomas Middleditch, Kumail Nanjiani, &amp; more.</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GY5V11XQY">
+            <h1 class="feed-title">Lastman</h1>
+            <div class="erc-cards-collection">
+                <div class="card-full">
+                    <div>
+                        <article class="erc-series-movie-card xl"><a title="Lastman" class="card-link"
+                                href="/crunchyroll/GY5V11XQY"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group">
+                                    <div class="c-info-tag c-info-tag--secondary tags-group-item mature"><span
+                                            class="c-info-tag__item">MATURE</span></div>
+                                </div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(233, 55, 53);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/mondo/8a48556d4f4a73cf28757ffba7c63442.png"
+                                    class="c-content-image image" alt="Lastman"><a class="erc-channel-icon"
+                                    href="/mondo">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(233, 55, 53);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/mondo/e4e43ea71ac360a96d36ef760883559a.png"
+                                            alt="Mondo icon"><span class="channel-name">Mondo</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/mondo/df448859586b8e3d955f918794034e4a.png"
+                                        class="c-content-image" alt="Lastman"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Lastman</h1>
+                                        <p class="description">Who’s Richard Aldana? A poor bastard who’s the last man
+                                            for the job. Watch him fight his way through hell in Mondo’s new series
+                                            Lastman.</p>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="erc-shelf-feed-item" id="GRKEQXWWR">
+            <h1 class="feed-title">Space Oddity</h1>
+            <div class="erc-cards-collection">
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="SPACE PATROL LULUCO" class="card-link"
+                                href="/crunchyroll/G63VM514Y"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/2f7dae8185c48de7d4ba0c3229c2e4b3.jpeg"
+                                    class="c-content-image image" alt="SPACE PATROL LULUCO"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/c37c375a5bb578d9c5a2a2066a432ee7.jpeg"
+                                        class="c-content-image" alt="SPACE PATROL LULUCO"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>SPACE PATROL LULUCO</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Sub | Dub</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Final Space" class="card-link"
+                                href="/crunchyroll/GRMEE9QWY"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/f85a0bc71533597e531852f527541caf.png"
+                                    class="c-content-image image" alt="Final Space"><a class="erc-channel-icon"
+                                    href="/vrvselect">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
+                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/fd31476770c276892514970617d2816e.jpeg"
+                                        class="c-content-image" alt="Final Space"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Final Space</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Space Battleship Tiramisu" class="card-link"
+                                href="/crunchyroll/GYW4DX8Q6"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/c66009303664356077150bc8f8c71f71.jpeg"
+                                    class="c-content-image image" alt="Space Battleship Tiramisu"><a
+                                    class="erc-channel-icon" href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/735f9bd127f8bf4b464e5cf9a335dd41.jpeg"
+                                        class="c-content-image" alt="Space Battleship Tiramisu"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Space Battleship Tiramisu</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Killjoys" class="card-link"
+                                href="/crunchyroll/GY4P94286"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/6866f722191c71d4d8354102c8af82bb.png"
+                                    class="c-content-image image" alt="Killjoys"><a class="erc-channel-icon"
+                                    href="/vrvselect">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
+                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/2f62bf221ad1c00400fb1471b57d9782.png"
+                                        class="c-content-image" alt="Killjoys"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Killjoys</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Mystery Science Theater 3000" class="card-link"
+                                href="/crunchyroll/GYW44WQN6"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/936e53302d8e69113c7980ca076b70de.png"
+                                    class="c-content-image image" alt="Mystery Science Theater 3000"><a
+                                    class="erc-channel-icon" href="/vrvselect">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
+                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/00b924e88505eefc035595f7d028d7f3.jpg"
+                                        class="c-content-image" alt="Mystery Science Theater 3000"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Mystery Science Theater 3000</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <article class="erc-series-movie-card"><a title="Captain Harlock" class="card-link"
+                                href="/crunchyroll/GYGGPD73Y"></a>
+                            <div class="watch-tag-list">
+                                <div class="erc-info-tags-group"></div>
+                            </div>
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
+                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/1a2b839f14271f8bb1bb23804400adbe.jpeg"
+                                    class="c-content-image image" alt="Captain Harlock"><a class="erc-channel-icon"
+                                    href="/crunchyroll">
+                                    <div class="channel-mask">
+                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
+                                        </div><img class="channel-icon"
+                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                    </div>
+                                </a></div>
+                            <div class="body-section">
+                                <div class="poster-image"><img
+                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/47cc4e9d26d596ba7c3c389aa0290337.jpeg"
+                                        class="c-content-image" alt="Captain Harlock"></div>
+                                <div class="info">
+                                    <div class="description-metadata">
+                                        <h1>Captain Harlock</h1>
+                                    </div>
+                                    <div class="details-metadata">
+                                        <div class="c-meta-tags media-tag-group"><span
+                                                class="c-meta-tags__type">Series</span><span
+                                                class="c-meta-tags__language">Subtitled</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+        <div class="neko-sama" v-if="channel=='neko-sama' && trending.length >= 1" >
+            <article class="erc-hero-card" :id="trending[random].id">
+                <div class="erc-hero-card-background-overlay bottom-angled"><span
+                        class="background-gradient"></span><img class="background-image"
+                        :src="trending[random].bannerImage" :alt="trending[random].title"></div>
+                <div class="foreground">
+                    <div class="main-image-wrapper-link">
+                        <div class="main-image-wrapper"><a class="poster-hover-layer" :href="trending[random].link">to
+                                series</a><img :src="trending[random].image" class="c-content-image"
+                                :alt="trending[random].title"></div>
+                    </div>
+                    <section class="info"><a class="title-link" :href="trending[random].link">
+                            <h1 class="title">{{trending[random].title}}</h1>
+                        </a>
+                        <div class="additional-information">
+
+                        </div>
+                        <p class="description">{{trending[random].description}}</p>
+                        <div class="watch-actions"><a role="button" tabindex="0"
+                                class="go-watch c-button -type-one-weak" data-t="watching-btn"
+                                :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
+                                    <polygon points="0 0 0 20 20 10"></polygon>
+                                </svg><span>Start Watching</span></a></div>
+                    </section>
+                </div>
+            </article>
+        </div>
+        <div class="adn" v-if="channel=='animedigitalnetwork' && trending.length >= 1 " >
+            <article class="erc-hero-card" :id="trending[random].id">
+                <div class="erc-hero-card-background-overlay bottom-angled"><span
+                        class="background-gradient"></span><img class="background-image"
+                        :src="trending[random].bannerImage" :alt="trending[random].title"></div>
+                <div class="foreground">
+                    <div class="main-image-wrapper-link">
+                        <div class="main-image-wrapper"><a class="poster-hover-layer" :href="trending[random].link">to
+                                series</a><img :src="trending[random].image" class="c-content-image"
+                                :alt="trending[random].title"></div>
+                    </div>
+                    <section class="info"><a class="title-link" :href="trending[random].link">
+                            <h1 class="title">{{trending[random].title}}</h1>
+                        </a>
+                        <div class="additional-information">
+
+                        </div>
+                        <p class="description">{{trending[random].description}}</p>
+                        <div class="watch-actions"><a role="button" tabindex="0"
+                                class="go-watch c-button -type-one-weak" data-t="watching-btn"
+                                :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
+                                    <polygon points="0 0 0 20 20 10"></polygon>
+                                </svg><span>Start Watching</span></a></div>
+                    </section>
+                </div>
+            </article>
+        </div>
+</template>
+
+<script>
+    import { trending } from '../scripts/constructor.js';
+export default {
+    data() {
+        return {
+            trending:[],
+            random: null,
+            channel: localStorage.getItem('channel')
+        }
+    },
+    methods: {
+        checkToken() {
+            if (localStorage.getItem('channel') != this.channel) {
+                this.$forceUpdate()
+                window.location.reload();
+            }
+        }
+    },
+    beforeCreate: async function () {
+        
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        if (localStorage.getItem('channel') == 'crunchyroll') {
+            const url = 'https://graphql.anilist.co/';
+            const params = {
+                    query: `{
+                            Page(page: 1, perPage: 15) {
+                                media(type: ANIME, sort: TRENDING_DESC, status: RELEASING) {
+                                id
+                                title {
+                                    romaji
+                                    english
+                                    native
+                                }
+                                bannerImage
+                                coverImage {
+                                    large
+                                }
+                                externalLinks {
+                                    id
+                                    site
+                                    url
+                                }
+                                description
+                                status
+                                }
+                            }
+                    }`
+                };
+                /* const getTrending = async () => {
+                    return new Promise(async (resolve) => {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                            },
+                            body: Body.text(JSON.stringify(params))
+                        });
+                        console.log(response.data)
+                        let trends = [];
+                        for (var x = 0; x < response.data.data.Page.media.length; x++) {
+                            let tMedia = response.data.data.Page.media[x];
+                            let providers = tMedia.externalLinks;
+                            var id = '';
+                            var bannerImage = tMedia.bannerImage;
+                            if (bannerImage == null) {
+                                bannerImage = tMedia.coverImage.large;
+                            }
+                            var description = tMedia.description;
+                            description = description.replace(/<(?:.|\n)*?>/gm, '').trim();
+                            for (const provider of providers) {
+                                if (provider.site == 'VRV') {
+                                    id = provider.url.split('/')[4];
+                                    break
+                                }
+                            }
+                            if (id != '' || id == null || id == undefined) {
+                                let link = "/crunchyroll/" + id;
+                                trends.push(new trending(tMedia.title.romaji, link, tMedia.coverImage.large, bannerImage, description, tMedia.status, id));
+                            }
+                        }
+                        
+                        resolve(trends);
+                    });
+                } */
+                async function getTrending(){
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: Body.text(JSON.stringify(params))
+                    });
+                    let trends = [];
+                    for (var x = 0; x < response.data.data.Page.media.length; x++) {
+                        let tMedia = response.data.data.Page.media[x];
+                        let providers = tMedia.externalLinks;
+                        var id = '';
+                        var bannerImage = tMedia.bannerImage;
+                        if (bannerImage == null) {
+                            bannerImage = tMedia.coverImage.large;
+                        }
+                        var description = tMedia.description;
+                        description = description.replace(/<(?:.|\n)*?>/gm, '').trim();
+                        for (const provider of providers) {
+                            if (provider.site == 'VRV') {
+                                id = provider.url.split('/')[4];
+                                break
+                            }
+                        }
+                        if (id != '' || id == null || id == undefined) {
+                            let link = "/crunchyroll/" + id;
+                            trends.push(new trending(tMedia.title.romaji, link, tMedia.coverImage.large, bannerImage, description, tMedia.status, id));
+                        }
+                    }
+                    return trends;
+                }
+                this.trending = await getTrending();
+            } else if (localStorage.getItem('channel') == 'neko-sama'){
+                let request = await fetch('https://neko-sama.fr/', {
+                    method: 'GET',
+                    responseType: 2
+                });
+                let response = request.data;
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(response, "text/html");
+                let trendings = doc.querySelectorAll('#home > div > div:nth-child(6) .row.anime-listing div.text-left');
+                let trends = [];
+                for (var x = 0; x < trendings.length; x++) {
+                    let tMedia = trendings[x];
+                    let title = tMedia.querySelector('a').title;
+                    var link = tMedia.querySelector('a').href;
+                    let image = tMedia.querySelector('img.lazy').dataset.src;
+                    let bannerImage = image;
+                    let description = tMedia.querySelector('.episode').innerText;
+                    link = '/neko-sama/' + link.split('/').pop().split('-')[0];
+                    let id = link.split('/').pop().split('-')[0];
+                    trends.push(new trending(title, link, image, bannerImage, description, 'unknown', id));
+                }
+                this.trending = trends;
+            } else if (localStorage.getItem('channel') == 'animedigitalnetwork'){
+                let request = await fetch('https://gw.api.animationdigitalnetwork.fr/show/carousel?limit=15', {
+                    method: 'GET'
+                });
+                let response = request.data;
+                let trends = [];
+                for (var x = 0; x < response.shows.length; x++) {
+                    let tMedia = response.shows[x];
+                    let title = tMedia.title;
+                    let image = tMedia.image2x;
+                    let bannerImage = tMedia.imageHorizontal2x;
+                    let description = tMedia.summary;
+                    let id = tMedia.id;
+                    let link = '/adn/' + id;
+                    let finalData = new trending(title, link, image, bannerImage, description, 'unknown', id);
+                    trends.push(finalData);
+                }
+                this.trending = trends;
+            }
+            
+            this.random = '' + getRandomInt(0, this.trending.length);
+            console.log(this.trending,this.random);
+        await invoke('close_splashscreen');
+    },
+    mounted() {
+        setInterval(this.checkToken, 1000);
+    }
+
+}
+</script>
