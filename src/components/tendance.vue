@@ -5,13 +5,10 @@ import { invoke } from '@tauri-apps/api/tauri'
 
 
 <template>
-        <div class="crunchyroll" v-if="channel=='crunchyroll' && trending.length >= 1 " >
-            
+        <div class="crunchyroll" v-if="channel=='crunchyroll' && trending.length > 1 " >
             <div class="erc-feed-container">
-                
-        <div>
-            <article class="erc-hero-card" :id="trending[random].id">
-                <div class="erc-hero-card-background-overlay bottom-angled"><span
+            <article class="erc-hero-card" >
+                <div class="erc-hero-card-background-overlay top-angled bottom-angled"><span
                         class="background-gradient"></span><img class="background-image"
                         :src="trending[random].bannerImage" :alt="trending[random].title"></div>
                 <div class="foreground">
@@ -37,7 +34,6 @@ import { invoke } from '@tauri-apps/api/tauri'
                     </section>
                 </div>
             </article>
-        </div>
         <div class="erc-shelf-feed-item" id="browse_popular">
             <h1 class="feed-title">Most Popular</h1>
             <div class="erc-cards-collection">
@@ -56,7 +52,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -92,7 +88,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -128,7 +124,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -164,7 +160,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -200,7 +196,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -236,7 +232,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -278,7 +274,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -329,7 +325,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -367,7 +363,7 @@ import { invoke } from '@tauri-apps/api/tauri'
             </div>
         </div>
         <div class="erc-shelf-feed-item" id="browse_newly">
-            <h1 class="feed-title">Just Updated On VRV</h1>
+            <h1 class="feed-title">Just Updated</h1>
             <div class="erc-cards-collection">
                 <div class="card">
                     <div>
@@ -384,7 +380,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -420,7 +416,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -456,7 +452,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -492,7 +488,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -528,7 +524,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -564,7 +560,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -606,7 +602,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -644,7 +640,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -681,7 +677,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -717,7 +713,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -758,7 +754,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -900,7 +896,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1037,7 +1033,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1073,7 +1069,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1109,7 +1105,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1145,7 +1141,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1181,7 +1177,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1217,7 +1213,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1259,7 +1255,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1391,7 +1387,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1489,7 +1485,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1525,7 +1521,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1561,7 +1557,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1599,7 +1595,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1636,7 +1632,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1672,7 +1668,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1714,7 +1710,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1855,7 +1851,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -1926,7 +1922,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -2032,7 +2028,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
                                             src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
-                                            alt="Crunchyroll icon"><span class="channel-name">Crunchyroll</span>
+                                            alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
                             <div class="body-section">
@@ -2116,12 +2112,12 @@ import { invoke } from '@tauri-apps/api/tauri'
 </template>
 
 <script>
-    import { trending } from '../scripts/constructor.js';
+    import { trend } from '../scripts/constructor.js';
 export default {
     data() {
         return {
-            trending:[],
-            random: null,
+            trending: [] ,
+            random: 0,
             channel: localStorage.getItem('channel')
         }
     },
@@ -2133,8 +2129,7 @@ export default {
             }
         }
     },
-    beforeCreate: async function () {
-        
+    beforeMount: async function () {
         function getRandomInt(min, max) {
             min = Math.ceil(min);
             max = Math.floor(max);
@@ -2198,7 +2193,7 @@ export default {
                             }
                             if (id != '' || id == null || id == undefined) {
                                 let link = "/crunchyroll/" + id;
-                                trends.push(new trending(tMedia.title.romaji, link, tMedia.coverImage.large, bannerImage, description, tMedia.status, id));
+                                trends.push(new trend(tMedia.title.romaji, link, tMedia.coverImage.large, bannerImage, description, tMedia.status, id));
                             }
                         }
                         
@@ -2224,7 +2219,11 @@ export default {
                             bannerImage = tMedia.coverImage.large;
                         }
                         var description = tMedia.description;
-                        description = description.replace(/<(?:.|\n)*?>/gm, '').trim();
+                        try{
+                            description = description.replace(/<(?:.|\n)*?>/gm, '').trim();
+                        } catch (e) {
+                            description = "No Description";
+                        }
                         for (const provider of providers) {
                             if (provider.site == 'VRV') {
                                 id = provider.url.split('/')[4];
@@ -2233,7 +2232,7 @@ export default {
                         }
                         if (id != '' || id == null || id == undefined) {
                             let link = "/crunchyroll/" + id;
-                            trends.push(new trending(tMedia.title.romaji, link, tMedia.coverImage.large, bannerImage, description, tMedia.status, id));
+                            trends.push(new trend(tMedia.title.romaji, link, tMedia.coverImage.large, bannerImage, description, tMedia.status, id));
                         }
                     }
                     return trends;
@@ -2258,7 +2257,7 @@ export default {
                     let description = tMedia.querySelector('.episode').innerText;
                     link = '/neko-sama/' + link.split('/').pop().split('-')[0];
                     let id = link.split('/').pop().split('-')[0];
-                    trends.push(new trending(title, link, image, bannerImage, description, 'unknown', id));
+                    trends.push(new trend(title, link, image, bannerImage, description, 'unknown', id));
                 }
                 this.trending = trends;
             } else if (localStorage.getItem('channel') == 'animedigitalnetwork'){
@@ -2275,7 +2274,7 @@ export default {
                     let description = tMedia.summary;
                     let id = tMedia.id;
                     let link = '/adn/' + id;
-                    let finalData = new trending(title, link, image, bannerImage, description, 'unknown', id);
+                    let finalData = new trend(title, link, image, bannerImage, description, 'unknown', id);
                     trends.push(finalData);
                 }
                 this.trending = trends;

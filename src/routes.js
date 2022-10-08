@@ -3,7 +3,7 @@ import {
   createWebHistory
 } from "vue-router";
 
-import HomePage from './pages/home/home-page.vue';
+import Home from './pages/home/home-page.vue';
 import List from './pages/contact/list-page.vue';
 import Kamyroll from './pages/info/kamyroll-page.vue';
 import Error from './pages/error/error-page.vue';
@@ -16,7 +16,7 @@ export default createRouter({
   history: createWebHistory(),
   routes: [{
       path: '/',
-      component: HomePage
+      component: Home
     },
     {
       path: '/liste',

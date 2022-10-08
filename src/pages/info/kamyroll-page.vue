@@ -162,7 +162,7 @@ import { channelPage } from '../../scripts/channel_id';
         meta:null,
         episodes: null,
         slug : window.location.href.split('/').pop(),
-        test: true
+        test: false
       }
     },
     beforeMount: async function () {     

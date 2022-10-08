@@ -3,8 +3,13 @@ import {reactive} from 'vue';
 const CRUNCHYROLL = 'crunchyroll';
 const NEKO_SAMA = 'neko-sama';
 const ANIMEDIGITALNETWORK = 'animedigitalnetwork';
+let setChannelinUse = () => {
+    channel = localStorage.getItem('channel');
+}
+
 let setChannel = async (channelName) => {
     localStorage.setItem('channel', channelName);
+    setChannelinUse();
 }
 // by default set in the local storage crunchyroll
 let channel = localStorage.getItem('channel');
@@ -14,6 +19,8 @@ if (channel==undefined){
     channel = localStorage.getItem('channel');
 }
 var chan = channel;
+
+
 
 
 const channels = reactive([
@@ -29,6 +36,8 @@ let getChannelinUse = (chan) => {
         }
     }
 }
+
+
 
 let channelPage = () => {
     if (window.location.pathname.includes('/crunchyroll/')) {
@@ -52,5 +61,6 @@ export  {
     setChannel,
     channel,
     getChannelinUse,
-    channelPage
+    channelPage,
+    setChannelinUse
 }

@@ -26,7 +26,7 @@
         "icons/icon.ico"
       ],
       "resources": [],
-      "externalBin": ["proxy/pstream/main", "proxy/download/ytdlp"],
+      "externalBin": ["proxy/pstream/main"],
       "copyright": "Nabil 2022",
       "category": "DeveloperTool",
       "shortDescription": "",

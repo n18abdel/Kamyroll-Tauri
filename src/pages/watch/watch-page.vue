@@ -19,6 +19,7 @@ import { invoke } from '@tauri-apps/api';
 <script>
 import { channelPage } from '../../scripts/channel_id';
 import { getVideos } from '../../scripts/crunchyroll.js';
+import qualityicon from '../../assets/quality.svg';
 export default {
     data() {
         return {
@@ -157,7 +158,7 @@ export default {
             console.log(art.controls)
             art.controls.add({
                 position: 'right',
-                html: 'Quality',
+                html: `<img width="22" heigth="22" src="${qualityicon}">`,
                 selector: hls.levels.map((item, index) => {
                     return {
                         html: item.height + 'P',

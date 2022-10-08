@@ -14,14 +14,3 @@ import DarkModeToggle from '../../components/DarkModeToggle.vue';
         <trending></trending>   
         <!-- <lastepisodes></lastepisodes> -->
 </template>
-
-<script>
-        export default {
-                components: {
-                        Trending,
-                        building,
-                        DarkModeToggle
-                },
-                
-        }
-</script>

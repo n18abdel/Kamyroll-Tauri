@@ -4,11 +4,26 @@
     
     <template>
     
-        <select name="channel-id" id="channel-id" v-model="channel" @change="setChannel($event.target.value)">
+        <select name="channel-id" id="channel-id" v-if="inRightPlace==true" v-model="channel" @change="setChannel($event.target.value)">
             <option v-for="prov of channels" :value="prov.name">{{prov.label}}</option>
         </select>
             
     </template>
+<script>
+export default {
+    data() {
+        return {
+            inRightPlace: false,
+        }
+    },
+    beforeMount: async function () {
+        if(window.location.href.includes('/search') || window.location.href.split('/').pop().length == 0){
+            this.inRightPlace = true;
+        }
+    },
+
+}
+</script>
     
     <style scoped>
     
