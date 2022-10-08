@@ -17,6 +17,7 @@ import { invoke } from '@tauri-apps/api';
     <div id="player"></div>
 </template>
 <script>
+import { appWindow } from '@tauri-apps/api/window';
 import { channelPage } from '../../scripts/channel_id';
 import { getVideos } from '../../scripts/crunchyroll.js';
 import qualityicon from '../../assets/quality.svg';
