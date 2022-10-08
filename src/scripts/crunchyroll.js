@@ -8,7 +8,7 @@ import {
     token
 } from './token.js'
 import {
-    chan,channelPage
+    channel,channelPage,setChannelinUse
 } from './channel_id.js'
 import pStreamExtractor from './pstreamextractor.js'
 
@@ -16,9 +16,9 @@ async function getEpisodes(slug, type) {
     channelPage();
     let url = "";
     if (type == 'movie_listing') {
-        url = `https://kamyroll.herokuapp.com/content/v1/movies?id=${slug}&channel_id=${chan}`;
+        url = `https://kamyroll.herokuapp.com/content/v1/movies?id=${slug}&channel_id=${channel}`;
     } else {
-        url = `https://kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=${chan}`;
+        url = `https://kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=${channel}`;
     }
     const options = {
         headers: {
@@ -36,8 +36,10 @@ async function getEpisodes(slug, type) {
     }
     let result = response.data;
     if (type == 'series') {
+        console.log('series');
         for (let season of result.items) {
             let season_title = season.title;
+            console.log(season_title);
             for (let epi of season.episodes) {
                 if (epi.episode != 'Bande Annonce') {
                     let titre = `S${epi.season_number} Episode ${epi.episode}: ` + epi.title;
@@ -48,18 +50,23 @@ async function getEpisodes(slug, type) {
                         titre += ' (VOSTFR)';
                     }
                     let desc = epi.description;
-                    let image = "";
-                    try {
-                        image = epi.images.thumbnail[1].source;
-                    } catch (e) {
-                        image = epi.images.thumbnail[0].source;
+                    let image = epi.images.thumbnail;
+                    if(image.length > 0){
+                        try {
+                            image = epi.images.thumbnail[1].source;
+                        } catch (e) {
+                            image = epi.images.thumbnail[0].source;
+                        }
+                    } else{
+                        image = 'https://i.imgur.com/removed.png';
                     }
+                    
                     let link = '';
-                    if (chan == 'crunchyroll') {
+                    if (channel == 'crunchyroll') {
                         link = '/crunchyroll/watch/' + id;
-                    } else if(chan == 'animedigitalnetwork'){
+                    } else if(channel == 'animedigitalnetwork'){
                         link = '/adn/watch/' + id;
-                    }else if(chan == 'neko-sama'){
+                    }else if(channel == 'neko-sama'){
                         link = '/nekosama/watch/' + id;
                     }
                     let is_dubbed = epi.is_dubbed;
@@ -72,6 +79,7 @@ async function getEpisodes(slug, type) {
             }
         }
     } else if (type == 'movie_listing') {
+        console.log('movie');
         for (const epi of result.items) {
             let titre = epi.title;
             let id = epi.id;
@@ -107,17 +115,16 @@ async function getEpisodes(slug, type) {
 }
 
 async function search(query){
+    setChannelinUse();
     let results = [];
     const options = {
         method: 'GET',
         headers: {
-            'User-Agent': 'Kamyroll/0.3.2',
+            'User-Agent': 'Kamyroll/0.3.3',
             'Authorization': `Bearer ${token.access_token}`,
         }
     };
-    console.log(query);
-    let url = `https://kamyroll.herokuapp.com/content/v1/search?query=${query.replaceAll(' ','+')}&limit=100&channel_id=${chan}`;
-    console.log(url);
+    let url = `https://kamyroll.herokuapp.com/content/v1/search?query=${query.replaceAll(' ','+')}&limit=100&channel_id=${channel}`;
     let request = await fetch(url,options);
     let response = request.data;
     if(request.status != 200){
@@ -138,11 +145,11 @@ async function search(query){
                 metadata = item.series_metadata;
             }
             let link = "";
-            if(chan=="animedigitalnetwork"){
+            if(channel =="animedigitalnetwork"){
                 link = '/adn/' + item.id;
-            } else if (chan=="neko-sama"){
+            } else if (channel =="neko-sama"){
                 link = '/nekosama/' + item.id;
-            } else if(chan=="crunchyroll"){
+            } else if(channel =="crunchyroll"){
                 link = '/crunchyroll/' + item.id;
             }
             let maturity_ratings = metadata.maturity_ratings;
@@ -171,7 +178,7 @@ async function getVideos(id) {
     let videos = [];
     let subtitles = [];
     var streams = '';
-    const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${chan}&id=${id}&type=adaptive_hls&format=ass`;
+    const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=ass`;
     const headers = {
         'Authorization': 'Bearer ' + token.access_token,
         'Content-Type': 'application/x-www-form-urlencoded',

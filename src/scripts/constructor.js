@@ -23,7 +23,7 @@ function episode(title, url, description, poster,is_dubbed,is_subbed,duration) {
     this.duration = duration;
 }
 
-function trending(title, link, image, bannerImage, description, status, id) {
+function trend(title, link, image, bannerImage, description, status, id) {
     this.title = title;
     this.link = link;
     this.image = image;
@@ -73,7 +73,7 @@ function seasons(season_number, episodes){
 export {
     infoAnime,
     episode,
-    trending,
+    trend,
     finalData,
     season,
     Videos,
