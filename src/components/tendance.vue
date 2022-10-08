@@ -2255,7 +2255,7 @@ export default {
                     let image = tMedia.querySelector('img.lazy').dataset.src;
                     let bannerImage = image;
                     let description = tMedia.querySelector('.episode').innerText;
-                    link = '/neko-sama/' + link.split('/').pop().split('-')[0];
+                    link = '/nekosama/' + link.split('/').pop().split('-')[0];
                     let id = link.split('/').pop().split('-')[0];
                     trends.push(new trend(title, link, image, bannerImage, description, 'unknown', id));
                 }

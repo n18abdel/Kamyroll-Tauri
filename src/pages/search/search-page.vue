@@ -47,11 +47,11 @@ import spinner from '/src/assets/loading.svg';
                                                     <span v-else-if="anime.episode_count<=1" class="series-info-elem episodes-number">{{anime.episode_count}} Episode</span>
                                                 </div>
                                             </div>
-                                            <p class="channel-name">{{channel}}</p>
+                                            <p class="channel-name">{{chan}}</p>
                                             <div class="c-meta-tags annotation">
-                                               <span v-if="anime.is_subbed && !anime.is_dubbed" class="c-meta-tags__language">Sub</span>
-                                               <span v-else-if="anime.is_dubbed && !anime.is_subbed" class="c-meta-tags__language">Dub</span>
-                                               <span v-else-if="anime.is_subbed && anime.is_dubbed" class="c-meta-tags__language">Sub | Dub</span>
+                                               <span v-if="anime.is_subbed && anime.is_dubbed" class="c-meta-tags__language">Sub | Dub</span>
+                                               <span v-else-if="anime.is_subbed && !anime.is_dubbed" class="c-meta-tags__language">Subtitled</span>
+                                               <span v-else-if="anime.is_dubbed && !anime.is_subbed" class="c-meta-tags__language">Dubbed</span>
                                                <span v-else class="c-meta-tags__language">Unknown</span>
                                             </div>
                                         </section>
@@ -67,19 +67,19 @@ import spinner from '/src/assets/loading.svg';
 </template>
 
 <script>
-import {getChannelinUse,chan} from '../../scripts/channel_id';
+import {getChannelinUse,channel} from '../../scripts/channel_id';
 import {search} from '../../scripts/crunchyroll.js'
 export default { 
     data(){
         return{
             results:null,
             loading : false,
-            channel : null
+            chan : null
         }
     },
     methods:{
         async recherche() {
-            this.channel = getChannelinUse(chan);
+            this.chan = getChannelinUse(channel);
             this.results = [];
             this.loading = true;
             let keyword = document.querySelector('.search-input').value;

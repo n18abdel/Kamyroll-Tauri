@@ -12,6 +12,13 @@ let setChannel = async (channelName) => {
     setChannelinUse();
 }
 // by default set in the local storage crunchyroll
+/* let channel = localStorage.getItem('channel');
+if (channel==undefined){
+    setChannel(CRUNCHYROLL);
+} else {
+    channel = localStorage.getItem('channel');
+} */
+
 let channel = localStorage.getItem('channel');
 if (channel==undefined){
     setChannel(CRUNCHYROLL);
@@ -19,6 +26,9 @@ if (channel==undefined){
     channel = localStorage.getItem('channel');
 }
 var chan = channel;
+
+
+
 
 
 
