@@ -35,7 +35,7 @@ export default createRouter({
       component: Kamyroll
     },
     {
-      path: '/neko-sama/:id',
+      path: '/nekosama/:id',
       component: Kamyroll
     },
     {
