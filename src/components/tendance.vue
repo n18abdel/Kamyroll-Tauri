@@ -786,98 +786,6 @@ import { invoke } from '@tauri-apps/api/tauri'
                 </div>
             </div>
         </div>
-        <div class="erc-shelf-feed-item" id="GY4P94286">
-            <h1 class="feed-title">Killjoys</h1>
-            <div class="erc-cards-collection">
-                <div class="card-full">
-                    <div>
-                        <article class="erc-series-movie-card xl"><a title="Killjoys" class="card-link"
-                                href="/crunchyroll/GY4P94286"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/6866f722191c71d4d8354102c8af82bb.png"
-                                    class="c-content-image image" alt="Killjoys"><a class="erc-channel-icon"
-                                    href="/vrvselect">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
-                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/2f62bf221ad1c00400fb1471b57d9782.png"
-                                        class="c-content-image" alt="Killjoys"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>Killjoys</h1>
-                                        <p class="description">From the producers of&nbsp;Orphan Black&nbsp;(Temple
-                                            Street Productions) and the creator of&nbsp;Lost Girl&nbsp;(Michelle
-                                            Lovretta),&nbsp;Killjoys&nbsp;follows a fun-loving, hard living trio of
-                                            interplanetary bounty hunters sworn to remain impartial as they chase deadly
-                                            warrants throughout the Quad, a distant system on the brink of a bloody,
-                                            multiplanetary class war.</p>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="erc-shelf-feed-item" id="G6QW774G6">
-            <h1 class="feed-title">BIGFOOT</h1>
-            <div class="erc-cards-collection">
-                <div class="card-full">
-                    <div>
-                        <article class="erc-series-movie-card xl"><a title="BIGFOOT" class="card-link"
-                                href="/crunchyroll/G6QW774G6"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(233, 55, 53);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/mondo/a9221e0dc7f4f1c0410c5f8e58547fae.png"
-                                    class="c-content-image image" alt="BIGFOOT"><a class="erc-channel-icon"
-                                    href="/mondo">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(233, 55, 53);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/mondo/e4e43ea71ac360a96d36ef760883559a.png"
-                                            alt="Mondo icon"><span class="channel-name">Mondo</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/mondo/fc53811e7318f15fd88bfcf1d7f4d9a4.png"
-                                        class="c-content-image" alt="BIGFOOT"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>BIGFOOT</h1>
-                                        <p class="description">Controversial megafauna, Bigfoot, finds himself down on
-                                            his luck. His hunt for meaning, connection, and redemption snacks reveals
-                                            him to be a complex mix of ego, vulnerability, cool dances, weird smells,
-                                            and philosophical insight. Can he borrow some money? What is the moon?
-                                            Please stop honking at Bigfoot? What is a Bigfoot? So many questions..only
-                                            one Bigfoot. </p>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="erc-shelf-feed-item" id="GY8VEQ95Y">
             <h1 class="feed-title">DARLING in the FRANXX</h1>
             <div class="erc-cards-collection">
@@ -920,93 +828,6 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="c-meta-tags media-tag-group"><span
                                                 class="c-meta-tags__type">Series</span><span
                                                 class="c-meta-tags__language">Sub | Dub</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="erc-shelf-feed-item" id="GRW459XMY">
-            <h1 class="feed-title">The Prisoner</h1>
-            <div class="erc-cards-collection">
-                <div class="card-full">
-                    <div>
-                        <article class="erc-series-movie-card xl"><a title="The Prisoner" class="card-link"
-                                href="/crunchyroll/GRW459XMY"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/0c7ff7d6bf309593a14248c538cbd36b.jpg"
-                                    class="c-content-image image" alt="The Prisoner"><a class="erc-channel-icon"
-                                    href="/vrvselect">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
-                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/411d69ef59e7cbc0c991fabc72451dfa.jpeg"
-                                        class="c-content-image" alt="The Prisoner"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>The Prisoner</h1>
-                                        <p class="description">After resigning, a secret agent is abducted and taken to
-                                            what looks like an idyllic village, but is really a bizarre prison. His
-                                            warders demand information. He gives them nothing, but only tries to escape.
-                                        </p>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="erc-shelf-feed-item" id="GRE5WM096">
-            <h1 class="feed-title">Fot &amp; Angus</h1>
-            <div class="erc-cards-collection">
-                <div class="card-full">
-                    <div>
-                        <article class="erc-series-movie-card xl"><a title="Fot &amp; Angus" class="card-link"
-                                href="/crunchyroll/GRE5WM096"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(233, 55, 53);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/mondo/6a6b6d4a78a8270c0fcc32326e9d0cf2.png"
-                                    class="c-content-image image" alt="Fot &amp; Angus"><a class="erc-channel-icon"
-                                    href="/mondo">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(233, 55, 53);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/mondo/e4e43ea71ac360a96d36ef760883559a.png"
-                                            alt="Mondo icon"><span class="channel-name">Mondo</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/mondo/ad01700c9b5c6aaf2e9e5c83260bd5b3.png"
-                                        class="c-content-image" alt="Fot &amp; Angus"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>Fot &amp; Angus</h1>
-                                        <p class="description">The adventures of FOT and his hapless side-kick Angus.
-                                            Created, animated and directed by Alex Dron, voiced by Rhys Darby (Flight of
-                                            the Concords) and written by Karl Wills and Alex Dron.</p>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -1284,91 +1105,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                 </div>
             </div>
         </div>
-        <div class="erc-shelf-feed-item" id="GY19V24KR">
-            <h1 class="feed-title">Game Program Attack</h1>
-            <div class="erc-cards-collection">
-                <div class="card-full">
-                    <div>
-                        <article class="erc-series-movie-card xl"><a title="Game Program Attack" class="card-link"
-                                href="/crunchyroll/GY19V24KR"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(233, 55, 53);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/mondo/3bebca93f2b6cc77e5d8ef316dd39b63.png"
-                                    class="c-content-image image" alt="Game Program Attack"><a class="erc-channel-icon"
-                                    href="/mondo">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(233, 55, 53);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/mondo/e4e43ea71ac360a96d36ef760883559a.png"
-                                            alt="Mondo icon"><span class="channel-name">Mondo</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/mondo/5b8c1ac9f8d1f4b1ce7af5e8befe093c.png"
-                                        class="c-content-image" alt="Game Program Attack"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>Game Program Attack</h1>
-                                        <p class="description">A super awesome collection of game cartridges from the
-                                            greatest old-school console that never existed.</p>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="erc-shelf-feed-item" id="GYEXQVZQ6">
-            <h1 class="feed-title">Ultraman Leo</h1>
-            <div class="erc-cards-collection">
-                <div class="card-full">
-                    <div>
-                        <article class="erc-series-movie-card xl"><a title="Ultraman Leo" class="card-link"
-                                href="/crunchyroll/GYEXQVZQ6"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/47e382c4af08e253cfb540ddfb38ca9c.jpeg"
-                                    class="c-content-image image" alt="Ultraman Leo"><a class="erc-channel-icon"
-                                    href="/vrvselect">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
-                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/b53bf1e369256c1461cd365f87b18a8f.jpeg"
-                                        class="c-content-image" alt="Ultraman Leo"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>Ultraman Leo</h1>
-                                        <p class="description">Alien intergalactic slavers called Magma come to Earth in
-                                            an attempt to find more slaves for their expanding evil empire. In response,
-                                            the Ultra Warriors send Leo to protect the planet from this new threat.</p>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <div class="erc-shelf-feed-item" id="GYP8DP1MY">
             <h1 class="feed-title">JoJo's Bizarre Adventure</h1>
             <div class="erc-cards-collection">
@@ -1412,53 +1149,6 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="c-meta-tags media-tag-group"><span
                                                 class="c-meta-tags__type">Series</span><span
                                                 class="c-meta-tags__language">Sub | Dub</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="erc-shelf-feed-item" id="GRZJ80NX6">
-            <h1 class="feed-title">Chojin Sentai Jetman</h1>
-            <div class="erc-cards-collection">
-                <div class="card-full">
-                    <div>
-                        <article class="erc-series-movie-card xl"><a title="Chojin Sentai Jetman" class="card-link"
-                                href="/crunchyroll/GRZJ80NX6"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/46792cf638a9cb8f405ea0d8ce72eee2.jpg"
-                                    class="c-content-image image" alt="Chojin Sentai Jetman"><a class="erc-channel-icon"
-                                    href="/vrvselect">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
-                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/089fb135bba7edaebd43ef2be427c649.jpg"
-                                        class="c-content-image" alt="Chojin Sentai Jetman"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>Chojin Sentai Jetman</h1>
-                                        <p class="description">The Sky Force sends five highly trained operatives to
-                                            participate in an experiment which will expose them to Birdonic Waves,
-                                            resulting in superhuman abilities. But when the Earth Ship is attacked by
-                                            Vyram, the majority of the Birdonic Waves are sent to Earth and find four
-                                            unsuspecting civilians. Now, it's up to these four accidental super humans –
-                                            Raita, Kaori, Ako, and Gai – alongside Ryu, the only original operative to
-                                            receive Birdonic Waves, to defend their dimension against Vyram.</p>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -1741,98 +1431,6 @@ import { invoke } from '@tauri-apps/api/tauri'
                 </div>
             </div>
         </div>
-        <div class="erc-shelf-feed-item" id="GRNQZ129R">
-            <h1 class="feed-title">HarmonQuest</h1>
-            <div class="erc-cards-collection">
-                <div class="card-full">
-                    <div>
-                        <article class="erc-series-movie-card xl"><a title="HarmonQuest" class="card-link"
-                                href="/crunchyroll/GRNQZ129R"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/6cd43f767c6cc7680334e709e4db215b.png"
-                                    class="c-content-image image" alt="HarmonQuest"><a class="erc-channel-icon"
-                                    href="/vrvselect">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
-                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/7d37176efdbfb81faf54aeda6d018e93.png"
-                                        class="c-content-image" alt="HarmonQuest"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>HarmonQuest</h1>
-                                        <p class="description">A comedic journey into the hilarious world of fantasy
-                                            roleplaying with Dan Harmon and his Comedian Companions. A new Seeso
-                                            Original Series starring Dan Harmon, Spencer Crittenden, Erin McGathy, and
-                                            Jeff B. Davis. Guest stars include, Paul F. Tompkins, Chelsea Peretti, Steve
-                                            Agee, Aubrey Plaza, Thomas Middleditch, Kumail Nanjiani, &amp; more.</p>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="erc-shelf-feed-item" id="GY5V11XQY">
-            <h1 class="feed-title">Lastman</h1>
-            <div class="erc-cards-collection">
-                <div class="card-full">
-                    <div>
-                        <article class="erc-series-movie-card xl"><a title="Lastman" class="card-link"
-                                href="/crunchyroll/GY5V11XQY"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group">
-                                    <div class="c-info-tag c-info-tag--secondary tags-group-item mature"><span
-                                            class="c-info-tag__item">MATURE</span></div>
-                                </div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(233, 55, 53);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/mondo/8a48556d4f4a73cf28757ffba7c63442.png"
-                                    class="c-content-image image" alt="Lastman"><a class="erc-channel-icon"
-                                    href="/mondo">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(233, 55, 53);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/mondo/e4e43ea71ac360a96d36ef760883559a.png"
-                                            alt="Mondo icon"><span class="channel-name">Mondo</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/mondo/df448859586b8e3d955f918794034e4a.png"
-                                        class="c-content-image" alt="Lastman"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>Lastman</h1>
-                                        <p class="description">Who’s Richard Aldana? A poor bastard who’s the last man
-                                            for the job. Watch him fight his way through hell in Mondo’s new series
-                                            Lastman.</p>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span><span
-                                                class="c-meta-tags__language">Sub | Dub</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="erc-shelf-feed-item" id="GRKEQXWWR">
             <h1 class="feed-title">Space Oddity</h1>
             <div class="erc-cards-collection">
@@ -1866,41 +1464,6 @@ import { invoke } from '@tauri-apps/api/tauri'
                                         <div class="c-meta-tags media-tag-group"><span
                                                 class="c-meta-tags__type">Series</span><span
                                                 class="c-meta-tags__language">Sub | Dub</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                <div class="card">
-                    <div>
-                        <article class="erc-series-movie-card"><a title="Final Space" class="card-link"
-                                href="/crunchyroll/GRMEE9QWY"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/f85a0bc71533597e531852f527541caf.png"
-                                    class="c-content-image image" alt="Final Space"><a class="erc-channel-icon"
-                                    href="/vrvselect">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
-                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/fd31476770c276892514970617d2816e.jpeg"
-                                        class="c-content-image" alt="Final Space"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>Final Space</h1>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -1980,41 +1543,6 @@ import { invoke } from '@tauri-apps/api/tauri'
                 </div>
                 <div class="card">
                     <div>
-                        <article class="erc-series-movie-card"><a title="Mystery Science Theater 3000" class="card-link"
-                                href="/crunchyroll/GYW44WQN6"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/936e53302d8e69113c7980ca076b70de.png"
-                                    class="c-content-image image" alt="Mystery Science Theater 3000"><a
-                                    class="erc-channel-icon" href="/vrvselect">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
-                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/00b924e88505eefc035595f7d028d7f3.jpg"
-                                        class="c-content-image" alt="Mystery Science Theater 3000"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>Mystery Science Theater 3000</h1>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                <div class="card">
-                    <div>
                         <article class="erc-series-movie-card"><a title="Captain Harlock" class="card-link"
                                 href="/crunchyroll/GYGGPD73Y"></a>
                             <div class="watch-tag-list">
@@ -2081,7 +1609,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                 </div>
             </article>
         </div>
-        <div class="adn" v-if="channel=='animedigitalnetwork' && trending.length >= 1 " >
+        <div class="adn" v-if="channel=='adn' && trending.length >= 1 " >
             <article class="erc-hero-card" :id="trending[random].id">
                 <div class="erc-hero-card-background-overlay bottom-angled"><span
                         class="background-gradient"></span><img class="background-image"
@@ -2260,7 +1788,7 @@ export default {
                     trends.push(new trend(title, link, image, bannerImage, description, 'unknown', id));
                 }
                 this.trending = trends;
-            } else if (localStorage.getItem('channel') == 'animedigitalnetwork'){
+            } else if (localStorage.getItem('channel') == 'adn'){
                 let request = await fetch('https://gw.api.animationdigitalnetwork.fr/show/carousel?limit=15', {
                     method: 'GET'
                 });

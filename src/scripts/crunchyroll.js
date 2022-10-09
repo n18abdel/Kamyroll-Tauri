@@ -8,7 +8,7 @@ import {
     token
 } from './token.js'
 import {
-    chan,channelPage
+    channel,channelPage
 } from './channel_id.js'
 import pStreamExtractor from './pstreamextractor.js'
 
@@ -16,14 +16,14 @@ async function getEpisodes(slug, type) {
     channelPage();
     let url = "";
     if (type == 'movie_listing') {
-        url = `https://kamyroll.herokuapp.com/content/v1/movies?id=${slug}&channel_id=${chan}`;
+        url = `https://beta-kamyroll.herokuapp.com/content/v1/movies?id=${slug}&channel_id=${channel}`;
     } else {
-        url = `https://kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=${chan}`;
+        url = `https://beta-kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=${channel}`;
     }
     const options = {
         headers: {
             'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
-            'Authorization': `Bearer ${token.access_token}`,
+            'Authorization': `Bearer ${token}`,
         },
         method: "GET",
     }
@@ -55,11 +55,11 @@ async function getEpisodes(slug, type) {
                         image = epi.images.thumbnail[0].source;
                     }
                     let link = '';
-                    if (chan == 'crunchyroll') {
+                    if (channel ==  'crunchyroll') {
                         link = '/crunchyroll/watch/' + id;
-                    } else if(chan == 'animedigitalnetwork'){
+                    } else if(channel ==  'animedigitalnetwork'){
                         link = '/adn/watch/' + id;
-                    }else if(chan == 'neko-sama'){
+                    }else if(channel ==  'neko-sama'){
                         link = '/nekosama/watch/' + id;
                     }
                     let is_dubbed = epi.is_dubbed;
@@ -88,11 +88,11 @@ async function getEpisodes(slug, type) {
                 image = epi.images.thumbnail[0].source;
             }
             let link = '';
-            if (chan == 'crunchyroll') {
+            if (channel == 'crunchyroll') {
                 link = '/crunchyroll/watch/' + id;
-            } else if(chan == 'animedigitalnetwork'){
+            } else if(channel == 'animedigitalnetwork'){
                 link = '/adn/watch/' + id;
-            } else if(chan == 'neko-sama'){
+            } else if(channel == 'neko-sama'){
                 link = '/nekosama/watch/' + id;
             }
             let is_dubbed = epi.is_dubbed;
@@ -112,11 +112,11 @@ async function search(query){
         method: 'GET',
         headers: {
             'User-Agent': 'Kamyroll/0.3.2',
-            'Authorization': `Bearer ${token.access_token}`,
+            'Authorization': `Bearer ${token}`,
         }
     };
     console.log(query);
-    let url = `https://kamyroll.herokuapp.com/content/v1/search?query=${query.replaceAll(' ','+')}&limit=100&channel_id=${chan}`;
+    let url = `https://beta-kamyroll.herokuapp.com/content/v1/search?query=${query.replaceAll(' ','+')}&limit=100&channel_id=${channel}`;
     console.log(url);
     let request = await fetch(url,options);
     let response = request.data;
@@ -138,11 +138,11 @@ async function search(query){
                 metadata = item.series_metadata;
             }
             let link = "";
-            if(chan=="animedigitalnetwork"){
+            if(channel=="animedigitalnetwork"){
                 link = '/adn/' + item.id;
-            } else if (chan=="neko-sama"){
+            } else if (channel=="neko-sama"){
                 link = '/nekosama/' + item.id;
-            } else if(chan=="crunchyroll"){
+            } else if(channel=="crunchyroll"){
                 link = '/crunchyroll/' + item.id;
             }
             let maturity_ratings = metadata.maturity_ratings;
@@ -171,9 +171,9 @@ async function getVideos(id) {
     let videos = [];
     let subtitles = [];
     var streams = '';
-    const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${chan}&id=${id}&type=adaptive_hls&format=ass`;
+    const url = `https://beta-kamyroll.herokuapp.com/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=ass`;
     const headers = {
-        'Authorization': 'Bearer ' + token.access_token,
+        'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/x-www-form-urlencoded',
     };
     try {

@@ -4,11 +4,11 @@ import { fetch } from '@tauri-apps/api/http';
 import {token} from './token.js';
 async function getMetadata(slug){
     channelPage();
-    let url = `https://kamyroll.herokuapp.com/content/v1/media?id=${slug}&channel_id=${chan}`;
+    let url = `https://beta-kamyroll.herokuapp.com/content/v1/media?id=${slug}&channel_id=${chan}`;
     let options = {
       headers: {
         'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
-        'Authorization': `Bearer ${token.access_token}`,
+        'Authorization': `Bearer ${token}`,
       },
       method: "GET",
     }
