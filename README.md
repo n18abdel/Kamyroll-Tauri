@@ -1,4 +1,4 @@
-![Alpha_Kamyroll](https://raw.githubusercontent.com/Bilnaa/kamyroll-tauri/main/src/assets/kamyroll_logo.svg?token=GHSAT0AAAAAABWQA7Z2UAY3YZCFIF32HO64YXH5SWA)
+![Alpha_Kamyroll](https://github.com/Bilnaa/kamyroll-tauri/blob/main/src/assets/kamyroll_logo.svg)
 ## Description
 A tauri desktop app to watch anime using the Kamyroll API.
 
