@@ -15,6 +15,7 @@
     "serve:native": "VITE_HTTP_HANDLER=NATIVE vite --port 8080",
     "serve:tauri": "tauri dev",
     "build:web": "vite build",
+    "build:tauri": "tauri build --debug",
     "build": "vite build && tauri build --debug"
   },
   "dependencies": {

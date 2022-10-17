@@ -1,7 +1,7 @@
 import{fetch,Body} from "@tauri-apps/api/http";
 
-/* async function testToken(token){
-  const url = 'https://beta-kamyroll.herokuapp.com/content/v1/search?query=naruto&limit=1&channel_id=adn';
+async function testToken(token){
+  const url = 'https://api.kamyroll.tech/content/v1/search?query=naruto&limit=1&channel_id=adn';
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -14,7 +14,7 @@ import{fetch,Body} from "@tauri-apps/api/http";
     return false;
   }
 }
- */
+
 function createRandomId (){
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -24,9 +24,9 @@ function createRandomId (){
   }
 
 async function getToken() {
-    if(localStorage.getItem('token') == undefined|| localStorage.getItem('token') == 'undefined' || localStorage.getItem('token_expire') > Date.now() /* || !await testToken(localStorage.getItem('token') */){
+    if(localStorage.getItem('token') == undefined|| localStorage.getItem('token') == 'undefined' || localStorage.getItem('token_expire') > Date.now() /* || !await testToken(localStorage.getItem('token')) */ ){
         console.log('token expired');
-        const url = 'https://beta-kamyroll.herokuapp.com/auth/v1/token';
+        const url = 'https://api.kamyroll.tech/auth/v1/token';
         const APP_TOKEN = 'HMbQeThWmZq4t7w';
         let device_id = localStorage.getItem('device_id');
         if (device_id == undefined) {
@@ -59,4 +59,11 @@ async function getToken() {
   }
 }
 
-export const token = await getToken(); 
+// TO-DO: send the token to process.env.TOKEN 
+
+
+
+let cle = await getToken();
+
+
+export const token = cle; 
