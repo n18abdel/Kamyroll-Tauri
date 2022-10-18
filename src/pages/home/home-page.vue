@@ -7,10 +7,11 @@
 // import Requester from '../../components/requester.vue';
 import Trending from '../../components/tendance.vue';
 import building from '../../components/building.vue';
+import LastEpisodes from '../../components/lastepisodes.vue';
 import DarkModeToggle from '../../components/DarkModeToggle.vue';
 
 </script>
 <template>  
         <trending></trending>   
-        <!-- <lastepisodes></lastepisodes> -->
+        <LastEpisodes></LastEpisodes>
 </template>

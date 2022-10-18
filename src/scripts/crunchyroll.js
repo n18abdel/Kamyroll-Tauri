@@ -1,5 +1,5 @@
 import {
-    fetch,ResponseType
+    fetch
 } from '@tauri-apps/api/http'
 import {
     episode,finalData,Videos,Subs
@@ -12,6 +12,40 @@ import {
 } from './channel_id.js'
 import pStreamExtractor from './pstreamextractor.js'
 
+async function getLastEpisodes(){
+    let url = `https://api.kamyroll.tech/content/v1/updated?channel_id=${channel}&locale=en-US&limit=20`;
+    const options = {
+        headers: {
+            'User-Agent': 'Kamyroll/0.3.6 Tauri-Rust',
+            'Authorization': `Bearer ${token}`,
+        },
+        method: "GET",
+    }
+    let episodes = [];
+    let response = await fetch(url, options);
+    console.log(response);
+    if (response.status != 200) {
+        console.log(response);
+        return;
+    }
+    let result = response.data.items;
+    for (let item of result) {
+        item.url = '';
+        let id = item.id;
+        if (channel == 'crunchyroll') {
+            item.url = '/crunchyroll/watch/' + id;
+        } else if (channel == 'adn') {
+            item.url = '/adn/watch/' + id;
+        } else if (channel == 'neko-sama') {
+            item.url = '/nekosama/watch/' + id;
+        }
+        episodes.push(item)
+    }
+    console.log(episodes);
+    return episodes;
+}
+
+
 async function getEpisodes(slug, type) {
     channelPage();
     let url = "";
@@ -22,7 +56,7 @@ async function getEpisodes(slug, type) {
     }
     const options = {
         headers: {
-            'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
+            'User-Agent': 'Kamyroll/0.3.6 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         },
         method: "GET",
@@ -111,7 +145,7 @@ async function search(query){
     const options = {
         method: 'GET',
         headers: {
-            'User-Agent': 'Kamyroll/0.3.2',
+            'User-Agent': 'Kamyroll/0.3.6 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         }
     };
@@ -273,4 +307,4 @@ async function getVideos(id) {
     }
 }
 
-export {getEpisodes,search,getVideos};
+export {getEpisodes,search,getVideos,getLastEpisodes};
