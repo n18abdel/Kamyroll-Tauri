@@ -1,6 +1,6 @@
 {
   "name": "kamyroll",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Tauri app that uses the Kamyroll API to watch animes",
   "keywords": [
     "vite",
@@ -12,11 +12,11 @@
   "scripts": {
     "lint": "exit 0;",
     "serve": "vite --port 3000",
-    "serve:native": "VITE_HTTP_HANDLER=NATIVE vite --port 8080",
     "serve:tauri": "tauri dev",
     "build:web": "vite build",
-    "build:tauri": "tauri build --debug",
-    "build": "vite build && tauri build --debug"
+    "build:tauri": "tauri build",
+    "build:prod": "vite build && tauri build",
+    "build:debug": "vite build && tauri build --debug"
   },
   "dependencies": {
     "@egoist/vue-emotion": "^0.6.2",

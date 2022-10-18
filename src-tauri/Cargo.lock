@@ -326,8 +326,7 @@ dependencies = [
 [[package]]
 name = "command-group"
 version = "1.0.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f7a8a86f409b4a59df3a3e4bee2de0b83f1755fdd2a25e3a9684c396fc4bed2c"
+source = "git+https://github.com/Bilnaa/command-group#49c5cc1a6d513fd20a5c58e36aef88e46a7e7656"
 dependencies = [
  "nix",
  "winapi",
@@ -1249,7 +1248,7 @@ dependencies = [
 
 [[package]]
 name = "kamyroll"
-version = "0.3.5"
+version = "0.3.6"
 dependencies = [
  "command-group",
  "portpicker",
