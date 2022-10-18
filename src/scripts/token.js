@@ -1,28 +1,69 @@
 import{fetch,Body} from "@tauri-apps/api/http";
 
-async function getToken() {
-    const url = 'https://kamyroll.herokuapp.com/auth/v1/token';
-    const headers = {
-      'Authorization': 'Basic vrvluizpdr2eby+RjSKM17dOLacExxq1HAERdxQDO6+2pHvFHTKKnByPD7b6kZVe1dJXifb6SG5NWMz49ABgJA==',
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
-    try {
-      var body = Body.text(
-        'refresh_token=IV%2BFtTI%2BSYR0d5CQy2KOc6Q06S6aEVPIjZdWA6mmO7nDWrMr04cGjSkk4o6urP%2F6yDmE4yzccSX%2FrP%2FOIgDgK4ildzNf2G%2FpPS9Ze1XbEyJAEUyN%2BoKT7Gs1PhVTFdz%2FvYXvxp%2FoZmLWQGoGgSQLwgoRqnJddWjqk0ageUbgT1FwLazdL3iYYKdNN98BqGFbs%2Fbaeqqa8aFre5SzF%2F4G62y201uLnsElgd07OAh1bnJOy8PTNHpGqEBxxbo1VENqtYilG9ZKY18nEz8vLPQBbin%2FIIEjKITjSa%2BLvSDQt%2F0AaxCkhClNDUX2uUZ8q7fKuSDisJtEyIFDXtuZGFhaaA%3D%3D&grant_type=refresh_token&scope=offline_access'
-      )
-      const response = await fetch(url, {
-        method: "POST",
-        body: body,
-        headers: headers
+async function testToken(token){
+  const url = 'https://api.kamyroll.tech/content/v1/search?query=naruto&limit=1&channel_id=adn';
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  if(response.status==200){
+    return true;
+  }else{
+    return false;
+  }
+}
 
-      })
-      let result = response.data;
-      return result;
+function createRandomId (){
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < 16; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+  }
+
+async function getToken() {
+    if(localStorage.getItem('token') == undefined|| localStorage.getItem('token') == 'undefined' || localStorage.getItem('token_expire') > Date.now() /* || !await testToken(localStorage.getItem('token')) */ ){
+        console.log('token expired');
+        const url = 'https://api.kamyroll.tech/auth/v1/token';
+        const APP_TOKEN = 'HMbQeThWmZq4t7w';
+        let device_id = localStorage.getItem('device_id');
+        if (device_id == undefined) {
+            device_id = createRandomId();
+            localStorage.setItem('device_id', device_id);
+        }
+        try {
+          var body = Body.text(
+            `device_id=${device_id}&device_type=com.nabil.kamyroll&access_token=${APP_TOKEN}`
+          )
+          const response = await fetch(url, {
+            method: "POST",
+            headers:{
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: body,
+          })
+          let result = response.data;
+          console.log(response);
+          localStorage.setItem('token', result.access_token);
+          // expire token
+          localStorage.setItem('token_expire', result.expires_in);
+          return result.access_token;
     } catch (e) {
       console.log(e);
     }
+  } else {
+    console.log('token is still valid');
+    return localStorage.getItem('token');
   }
+}
+
+// TO-DO: send the token to process.env.TOKEN 
 
 
 
-export const token = await getToken()
+let cle = await getToken();
+
+
+export const token = cle; 

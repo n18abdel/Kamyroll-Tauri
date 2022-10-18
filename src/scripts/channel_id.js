@@ -2,7 +2,7 @@ import {reactive} from 'vue';
 
 const CRUNCHYROLL = 'crunchyroll';
 const NEKO_SAMA = 'neko-sama';
-const ANIMEDIGITALNETWORK = 'animedigitalnetwork';
+const ANIMEDIGITALNETWORK = 'adn';
 let setChannelinUse = () => {
     channel = localStorage.getItem('channel');
 }

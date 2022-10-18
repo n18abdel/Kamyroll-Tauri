@@ -155,8 +155,14 @@ export default {
                 },
             }]
         });
+
         art.on('ready', async () => {
-            console.log(art.controls)
+            // if the user agent is a mac turn on fullscreenWeb: true, else turn it off
+            if (navigator.userAgent.indexOf('Mac') != -1) {
+                art.fullscreenWeb = true;
+            } else {
+                art.fullscreenWeb = false;
+            }
             art.controls.add({
                 position: 'right',
                 html: `<img width="22" heigth="22" src="${qualityicon}">`,

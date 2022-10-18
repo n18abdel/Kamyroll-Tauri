@@ -8,7 +8,7 @@ import {
     token
 } from './token.js'
 import {
-    chan,channelPage
+    channel,channelPage
 } from './channel_id.js'
 import pStreamExtractor from './pstreamextractor.js'
 
@@ -16,14 +16,14 @@ async function getEpisodes(slug, type) {
     channelPage();
     let url = "";
     if (type == 'movie_listing') {
-        url = `https://kamyroll.herokuapp.com/content/v1/movies?id=${slug}&channel_id=${chan}`;
+        url = `https://api.kamyroll.tech/content/v1/movies?id=${slug}&channel_id=${channel}`;
     } else {
-        url = `https://kamyroll.herokuapp.com/content/v1/seasons?id=${slug}&channel_id=${chan}`;
+        url = `https://api.kamyroll.tech/content/v1/seasons?id=${slug}&channel_id=${channel}`;
     }
     const options = {
         headers: {
             'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
-            'Authorization': `Bearer ${token.access_token}`,
+            'Authorization': `Bearer ${token}`,
         },
         method: "GET",
     }
@@ -55,11 +55,11 @@ async function getEpisodes(slug, type) {
                         image = epi.images.thumbnail[0].source;
                     }
                     let link = '';
-                    if (chan == 'crunchyroll') {
+                    if (channel ==  'crunchyroll') {
                         link = '/crunchyroll/watch/' + id;
-                    } else if(chan == 'animedigitalnetwork'){
+                    } else if(channel ==  'adn'){
                         link = '/adn/watch/' + id;
-                    }else if(chan == 'neko-sama'){
+                    }else if(channel ==  'neko-sama'){
                         link = '/nekosama/watch/' + id;
                     }
                     let is_dubbed = epi.is_dubbed;
@@ -88,11 +88,11 @@ async function getEpisodes(slug, type) {
                 image = epi.images.thumbnail[0].source;
             }
             let link = '';
-            if (chan == 'crunchyroll') {
+            if (channel == 'crunchyroll') {
                 link = '/crunchyroll/watch/' + id;
-            } else if(chan == 'animedigitalnetwork'){
+            } else if(channel == 'adn'){
                 link = '/adn/watch/' + id;
-            } else if(chan == 'neko-sama'){
+            } else if(channel == 'neko-sama'){
                 link = '/nekosama/watch/' + id;
             }
             let is_dubbed = epi.is_dubbed;
@@ -112,11 +112,11 @@ async function search(query){
         method: 'GET',
         headers: {
             'User-Agent': 'Kamyroll/0.3.2',
-            'Authorization': `Bearer ${token.access_token}`,
+            'Authorization': `Bearer ${token}`,
         }
     };
     console.log(query);
-    let url = `https://kamyroll.herokuapp.com/content/v1/search?query=${query.replaceAll(' ','+')}&limit=100&channel_id=${chan}`;
+    let url = `https://api.kamyroll.tech/content/v1/search?query=${query.replaceAll(' ','+')}&limit=100&channel_id=${channel}`;
     console.log(url);
     let request = await fetch(url,options);
     let response = request.data;
@@ -138,11 +138,11 @@ async function search(query){
                 metadata = item.series_metadata;
             }
             let link = "";
-            if(chan=="animedigitalnetwork"){
+            if(channel == "adn"){
                 link = '/adn/' + item.id;
-            } else if (chan=="neko-sama"){
+            } else if (channel=="neko-sama"){
                 link = '/nekosama/' + item.id;
-            } else if(chan=="crunchyroll"){
+            } else if(channel=="crunchyroll"){
                 link = '/crunchyroll/' + item.id;
             }
             let maturity_ratings = metadata.maturity_ratings;
@@ -167,13 +167,15 @@ async function search(query){
     return results
 }
 
+
 async function getVideos(id) {
+    const proxy_url = 'http://127.0.0.1:15411';
     let videos = [];
     let subtitles = [];
     var streams = '';
-    const url = `https://kamyroll.herokuapp.com/videos/v1/streams?channel_id=${chan}&id=${id}&type=adaptive_hls&format=ass`;
+    const url = `https://api.kamyroll.tech/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=ass`;
     const headers = {
-        'Authorization': 'Bearer ' + token.access_token,
+        'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/x-www-form-urlencoded',
     };
     try {
@@ -213,24 +215,13 @@ async function getVideos(id) {
                 headers: headers
             });
             let result = response.data;
-            console.log(result);
             for (streams of result.streams) {
                 let quality = streams.audio_locale + ' ' + streams.hardsub_locale;
                 let link = streams.url;
-                let videorequest = await fetch(link, {
-                    method: "GET",
-                    responseType: ResponseType.Text
-                });
-                let videoresult = videorequest.data;
-                let lines = videoresult.split('\n');
-                for (var x = 0; x < lines.length; x++) {
-                    var line = lines[x];
-                    if (line.includes('EXT-X-STREAM-INF:PROGRAM-ID=1')) {
-                        let quality1 = quality + ' ' + line.split('RESOLUTION=')[1].match(/(\d)+x+(\d)+/g)[0];
-                        let videoLink = lines[x + 1];
-                        videos.push(new Videos(quality1, videoLink));
-                    }
-                }
+                const video_url = link;
+                const file_extension = '.m3u8';
+                const hls_proxy_url  = `${proxy_url}/${ btoa(video_url) }${file_extension}`;
+                videos.push(new Videos(quality, hls_proxy_url));
             }
             if (result.subtitles.length >= 1) {
                 for (let subs of result.subtitles) {
@@ -241,7 +232,7 @@ async function getVideos(id) {
                     }
                     let type = subs.format;
                     let style = {
-                        fontSize: '40px'
+                        fontSize: '40px',
                     };
                     let finalData = new Subs(lang, link, style, type);
                     subtitles.push(finalData);
@@ -255,11 +246,12 @@ async function getVideos(id) {
                 headers: headers
             });
             let result = response.data;
-            const quality = result.streams[0].audio_locale + ' ' + result.streams[0].hardsub_locale;
-            const pstreamlink = result.streams[0].url.replace('https://www.pstream.net', ' http://localhost:5000');
-            console.log(pstreamlink);
-            const pstream = await pStreamExtractor(pstreamlink);
-            videos.push(new Videos(quality, pstream));
+            let quality = result.streams[0].audio_locale + ' ' + result.streams[0].hardsub_locale;
+            let pstreamlink = result.streams[0].url.url + '&key=clear';
+            const video_url = pstreamlink;
+            const file_extension = '.m3u8'
+            const hls_proxy_url  = `${proxy_url}/${ btoa(video_url) }${file_extension}`
+            videos.push(new Videos(quality, hls_proxy_url));
             subtitles.push(new Subs('No subtitles', '', {}, ''));
         }
 

@@ -12,11 +12,11 @@ use tauri::{
    SystemTrayMenu,
    SystemTrayMenuItem,
    SystemTrayEvent,
-   /* Runtime,
-   async_runtime */
+
 };
+use tauri::{utils::config::AppUrl, WindowUrl};
 use std::process::Command as StdCommand;
-use std::io::{BufReader};
+use std::io::BufReader;
 use command_group::CommandGroup;
 
 
@@ -70,6 +70,15 @@ async fn download_file <R: Runtime>(
 
 
 fn main() {
+  let port = portpicker::pick_unused_port().expect("failed to find unused port");
+
+  let mut context = tauri::generate_context!();
+  let url = format!("http://localhost:{}", port).parse().unwrap();
+  let window_url = WindowUrl::External(url);
+  
+  context.config_mut().build.dist_dir = AppUrl::Url(window_url.clone());
+  context.config_mut().build.dev_path = AppUrl::Url(window_url.clone()); 
+
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let hide = CustomMenuItem::new("hide".to_string(), "Hide");
   let tray_menu = SystemTrayMenu::new()
@@ -100,7 +109,7 @@ fn main() {
     } => {
         println!("system tray received a double click");
         let window = app.get_window("main").unwrap();
-        window.get_window("main").unwrap().show().unwrap();
+        window.show().unwrap();
     }
     SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
         "quit" => {
@@ -136,6 +145,7 @@ fn main() {
   Ok(())
 })
     .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */])
-    .run(tauri::generate_context!())
+    .plugin(tauri_plugin_localhost::Builder::new(port).build())
+    .run(context)
     .expect("failed to run app");
 }
