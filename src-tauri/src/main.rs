@@ -17,6 +17,7 @@ use tauri::{
 use tauri::{utils::config::AppUrl, WindowUrl};
 use std::process::Command as StdCommand;
 use std::io::BufReader;
+use std::os::windows::process::CommandExt;
 use command_group::CommandGroup;
 
 
@@ -77,7 +78,7 @@ fn main() {
   let window_url = WindowUrl::External(url);
   
   context.config_mut().build.dist_dir = AppUrl::Url(window_url.clone());
-  context.config_mut().build.dev_path = AppUrl::Url(window_url.clone()); 
+  /* context.config_mut().build.dev_path = AppUrl::Url(window_url.clone());  */
 
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let hide = CustomMenuItem::new("hide".to_string(), "Hide");
@@ -127,11 +128,13 @@ fn main() {
   tauri::async_runtime::spawn(async move {
     let tauri_cmd = Command::new_sidecar("main").expect("failed to setup `proxy` sidecar");
     let mut std_cmd = StdCommand::from(tauri_cmd);
-    let mut child = std_cmd 
+    let mut child = std_cmd
+      .creation_flags(0x08000000) 
       .group_spawn() // !
       .expect("failed to spawn `proxy` sidecar");
     let mut stdout = BufReader::new(child.inner().stdout.take().unwrap());
-    let mut buf = Vec::new();
+    
+     let mut buf = Vec::new();
     loop {
       buf.clear();
       match tauri::utils::io::read_line(&mut stdout, &mut buf) {
