@@ -23,7 +23,7 @@ function episode(title, url, description, poster,is_dubbed,is_subbed,duration) {
     this.duration = duration;
 }
 
-function trend(title, link, image, bannerImage, description, status, id) {
+function trend(title, link, image, bannerImage, description, status, id,lang,type) {
     this.title = title;
     this.link = link;
     this.image = image;
@@ -31,6 +31,8 @@ function trend(title, link, image, bannerImage, description, status, id) {
     this.description = description;
     this.status = status;
     this.id = id;
+    this.lang = lang;
+    this.type = type;
 }
 
 

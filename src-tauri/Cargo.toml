@@ -22,8 +22,6 @@ tauri = { version = "1.1.1", features = ["http-all", "process-command-api", "she
 tauri-plugin-window-state = "0.1"
 command-group = {git="https://github.com/Bilnaa/command-group", version = "1.0.9"}
 # tiny_http = "0.11"
-tauri-plugin-localhost = { git= "https://github.com/tauri-apps/tauri-plugin-localhost", branch = "dev" } 
-portpicker = "0.1"
 
 [features]
 default = [ "custom-protocol" ]

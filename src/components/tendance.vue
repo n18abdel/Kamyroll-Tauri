@@ -67,7 +67,7 @@ import { invoke } from '@tauri-apps/api/tauri'
         </div>
         <div class="adn" v-if="channel=='adn' && trending.length >= 1 " >
             <article class="erc-hero-card" :id="trending[random].id">
-                <div class="erc-hero-card-background-overlay bottom-angled"><span
+                <div class="erc-hero-card-background-overlay top-angled bottom-angled"><span
                         class="background-gradient"></span><img class="background-image"
                         :src="trending[random].bannerImage" :alt="trending[random].title"></div>
                 <div class="foreground">
@@ -80,7 +80,10 @@ import { invoke } from '@tauri-apps/api/tauri'
                             <h1 class="title">{{trending[random].title}}</h1>
                         </a>
                         <div class="additional-information">
-
+                            <div class="c-meta-tags media-tag-group">
+                                <span class="c-meta-tags__type">{{trending[random].type}}</span>
+                                <span class="c-meta-tags__language">{{trending[random].lang}}</span>
+                            </div>
                         </div>
                         <p class="description">{{trending[random].description}}</p>
                         <div class="watch-actions"><a role="button" tabindex="0"
@@ -147,43 +150,6 @@ export default {
                             }
                     }`
                 };
-                /* const getTrending = async () => {
-                    return new Promise(async (resolve) => {
-                        const response = await fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                            },
-                            body: Body.text(JSON.stringify(params))
-                        });
-                        console.log(response.data)
-                        let trends = [];
-                        for (var x = 0; x < response.data.data.Page.media.length; x++) {
-                            let tMedia = response.data.data.Page.media[x];
-                            let providers = tMedia.externalLinks;
-                            var id = '';
-                            var bannerImage = tMedia.bannerImage;
-                            if (bannerImage == null) {
-                                bannerImage = tMedia.coverImage.large;
-                            }
-                            var description = tMedia.description;
-                            description = description.replace(/<(?:.|\n)*?>/gm, '').trim();
-                            for (const provider of providers) {
-                                if (provider.site == 'VRV') {
-                                    id = provider.url.split('/')[4];
-                                    break
-                                }
-                            }
-                            if (id != '' || id == null || id == undefined) {
-                                let link = "/crunchyroll/" + id;
-                                trends.push(new trend(tMedia.title.romaji, link, tMedia.coverImage.large, bannerImage, description, tMedia.status, id));
-                            }
-                        }
-                        
-                        resolve(trends);
-                    });
-                } */
                 async function getTrending(){
                     const response = await fetch(url, {
                         method: 'POST',
@@ -249,6 +215,7 @@ export default {
                     method: 'GET'
                 });
                 let response = request.data;
+                console.log(response.shows)
                 let trends = [];
                 for (var x = 0; x < response.shows.length; x++) {
                     let tMedia = response.shows[x];
@@ -258,7 +225,25 @@ export default {
                     let description = tMedia.summary;
                     let id = tMedia.id;
                     let link = '/adn/' + id;
-                    let finalData = new trend(title, link, image, bannerImage, description, 'unknown', id);
+                    let lang = tMedia.languages;
+                    if(lang.length > 2){
+                        lang = 'Sub | Dub';
+                    } else if (lang[0]=='vostf'){
+                        lang = 'Sub';
+                    } else if (lang[0]=='vf') {
+                        lang = 'Dub';
+                    } else {
+                        lang = 'Unknown';
+                    }
+                    let type = tMedia.type;
+                    if(type == 'EPS'){
+                        type = 'Series';
+                    } else if (type == 'MOV'){
+                        type = 'Movie';
+                    } else {
+                        type = 'Unknown';
+                    }
+                    let finalData = new trend(title, link, image, bannerImage, description, 'unknown', id, lang, type);
                     trends.push(finalData);
                 }
                 this.trending = trends;

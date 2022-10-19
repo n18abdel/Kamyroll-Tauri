@@ -14,7 +14,6 @@ use tauri::{
    SystemTrayEvent,
 
 };
-use tauri::{utils::config::AppUrl, WindowUrl};
 use std::process::Command as StdCommand;
 use std::io::BufReader;
 use command_group::CommandGroup;
@@ -70,21 +69,17 @@ async fn download_file <R: Runtime>(
 
 
 fn main() {
-  let port = portpicker::pick_unused_port().expect("failed to find unused port");
 
-  let mut context = tauri::generate_context!();
-  let url = format!("http://localhost:{}", port).parse().unwrap();
-  let window_url = WindowUrl::External(url);
-  
-  context.config_mut().build.dist_dir = AppUrl::Url(window_url.clone());
-  /* context.config_mut().build.dev_path = AppUrl::Url(window_url.clone());  */
 
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let hide = CustomMenuItem::new("hide".to_string(), "Hide");
+  let show = CustomMenuItem::new("show".to_string(),"Show");
   let tray_menu = SystemTrayMenu::new()
     .add_item(hide)
     .add_native_item(SystemTrayMenuItem::Separator)
-    .add_item(quit);
+    .add_item(quit)
+    .add_native_item(SystemTrayMenuItem::Separator)
+    .add_item(show);
   tauri::Builder::default()
   .system_tray(SystemTray::new().with_menu(tray_menu))
   .on_system_tray_event(|app, event| match event {
@@ -119,6 +114,10 @@ fn main() {
             let window = app.get_window("main").unwrap();
             window.hide().unwrap();
         }
+        "show" => {
+            let window = app.get_window("main").unwrap();
+            window.show().unwrap();
+        }
         _ => {}
     },
     _ => {}
@@ -146,7 +145,6 @@ fn main() {
   Ok(())
 })
     .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */])
-    .plugin(tauri_plugin_localhost::Builder::new(port).build())
-    .run(context)
+    .run(tauri::generate_context!())
     .expect("failed to run app");
 }
