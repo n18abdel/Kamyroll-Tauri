@@ -17,7 +17,6 @@ use tauri::{
 use tauri::{utils::config::AppUrl, WindowUrl};
 use std::process::Command as StdCommand;
 use std::io::BufReader;
-use std::os::windows::process::CommandExt;
 use command_group::CommandGroup;
 
 
@@ -129,7 +128,6 @@ fn main() {
     let tauri_cmd = Command::new_sidecar("main").expect("failed to setup `proxy` sidecar");
     let mut std_cmd = StdCommand::from(tauri_cmd);
     let mut child = std_cmd
-      .creation_flags(0x08000000) 
       .group_spawn() // !
       .expect("failed to spawn `proxy` sidecar");
     let mut stdout = BufReader::new(child.inner().stdout.take().unwrap());
