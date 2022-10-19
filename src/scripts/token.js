@@ -59,11 +59,10 @@ async function getToken() {
   }
 }
 
-// TO-DO: send the token to process.env.TOKEN 
+async function generateNewToken(){
+  localStorage.removeItem('token');
+  localStorage.removeItem('token_expire');
+  await getToken();
+}
 
-
-
-let cle = await getToken();
-
-
-export const token = cle; 
+export {getToken,testToken,generateNewToken};

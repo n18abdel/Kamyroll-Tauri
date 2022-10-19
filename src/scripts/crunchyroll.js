@@ -4,14 +4,13 @@ import {
 import {
     episode,finalData,Videos,Subs
 } from './constructor.js'
-import {
-    token
-} from './token.js'
+
 import {
     channel,channelPage
 } from './channel_id.js'
 import pStreamExtractor from './pstreamextractor.js'
 
+const token = localStorage.getItem('token');
 async function getLastEpisodes(){
     let url = `https://api.kamyroll.tech/content/v1/updated?channel_id=${channel}&locale=en-US&limit=20`;
     const options = {

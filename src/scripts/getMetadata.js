@@ -1,13 +1,15 @@
 import {infoAnime}  from "./constructor.js";
 import { chan,channelPage } from "./channel_id.js";
 import { fetch } from '@tauri-apps/api/http';
-import {token} from './token.js';
+
+const token = localStorage.getItem('token');
+console.log(token);
 async function getMetadata(slug){
     channelPage();
     let url = `https://api.kamyroll.tech/content/v1/media?id=${slug}&channel_id=${chan}`;
     let options = {
       headers: {
-        'User-Agent': 'Kamyroll/3.17.0 Android/7.1.2 okhttp/4.9.1',
+        'User-Agent': 'Kamyroll/0.3.6 Tauri-Rust',
         'Authorization': `Bearer ${token}`,
       },
       method: "GET",
