@@ -325,8 +325,8 @@ dependencies = [
 
 [[package]]
 name = "command-group"
-version = "1.0.8"
-source = "git+https://github.com/Bilnaa/command-group#49c5cc1a6d513fd20a5c58e36aef88e46a7e7656"
+version = "1.0.9"
+source = "git+https://github.com/Bilnaa/command-group#1490ad71ff6630230c592c495f00248e9075f3be"
 dependencies = [
  "nix",
  "winapi",
