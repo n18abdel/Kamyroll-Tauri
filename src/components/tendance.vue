@@ -19,7 +19,7 @@ import { invoke } from '@tauri-apps/api/tauri'
                     </div>
                     <section class="info"><a class="title-link" :href="trending[random].link">
                             <h1 class="title">{{trending[random].title}}</h1>
-                        </a>
+                    </a>
                         <div class="additional-information">
                             <div class="c-meta-tags media-tag-group"><span class="c-meta-tags__type">Series</span><span
                                     class="c-meta-tags__language">Subtitled</span></div>

@@ -98,6 +98,7 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
+        <v-lazy>
         <div class="erc-shelf-feed-item" id="browse_popular">
             <h1 class="feed-title">Most Popular</h1>
             <div class="erc-cards-collection">
@@ -320,6 +321,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 
             </div>
         </div>
+        </v-lazy>
+        <v-lazy>
         <div class="erc-shelf-feed-item" id="GYXM79M56">
             <h1 class="feed-title">DRAGON QUEST The Adventure of Dai</h1>
             <div class="erc-cards-collection">
@@ -371,6 +374,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
+        </v-lazy>
+        <v-lazy>
         <div class="erc-shelf-feed-item" id="G8DHV7W3N">
             <h1 class="feed-title">CUE!</h1>
             <div class="erc-cards-collection">
@@ -426,6 +431,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
+        </v-lazy>
+        <v-lazy>
         <div class="erc-shelf-feed-item" id="browse_newly">
             <h1 class="feed-title">Just Updated</h1>
             <div class="erc-cards-collection">
@@ -647,7 +654,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
                 
             </div>
-        </div>
+        </div> </v-lazy>
+        <v-lazy>
         <div class="erc-shelf-feed-item" id="G64PEME0R">
             <h1 class="feed-title">Historical figures but not really</h1>
             <div class="erc-cards-collection">
@@ -800,6 +808,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
+    </v-lazy>
+    <v-lazy>
         <div class="erc-shelf-feed-item" id="G0XHWM380">
             <h1 class="feed-title">Seirei Gensouki: Spirit Chronicles</h1>
             <div class="erc-cards-collection">
@@ -849,7 +859,8 @@ import neko_logo from '../assets/neko-sama.svg';
                     </div>
                 </div>
             </div>
-        </div>
+        </div></v-lazy>
+    <v-lazy>
         <div class="erc-shelf-feed-item" id="GY8VEQ95Y">
             <h1 class="feed-title">DARLING in the FRANXX</h1>
             <div class="erc-cards-collection">
@@ -899,7 +910,8 @@ import neko_logo from '../assets/neko-sama.svg';
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  </v-lazy>
+    <v-lazy>
         <div class="erc-shelf-feed-item" id="GYG53DGDY">
             <h1 class="feed-title">Not saying it was aliens... but it was ALIENS</h1>
             <div class="erc-cards-collection">
@@ -1121,7 +1133,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
                 
             </div>
-        </div>
+        </div> </v-lazy>
+        <v-lazy>
         <div class="erc-shelf-feed-item" id="GRDQN479Y">
             <h1 class="feed-title">Haven’t You Heard? I’m Sakamoto</h1>
             <div class="erc-cards-collection">
@@ -1168,8 +1181,8 @@ import neko_logo from '../assets/neko-sama.svg';
                     </div>
                 </div>
             </div>
-        </div>
-        
+        </div></v-lazy>
+        <v-lazy>
         <div class="erc-shelf-feed-item" id="GYP8DP1MY">
             <h1 class="feed-title">JoJo's Bizarre Adventure</h1>
             <div class="erc-cards-collection">
@@ -1221,6 +1234,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
+    </v-lazy>
+    <v-lazy>
         <div class="erc-shelf-feed-item" id="G6EXQQGGR">
             <h1 class="feed-title">A Whole New World</h1>
             <div class="erc-cards-collection">
@@ -1446,6 +1461,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 
             </div>
         </div>
+    </v-lazy>
+    <v-lazy>
         <div class="erc-shelf-feed-item" id="GRVNXWQZY">
             <h1 class="feed-title">March comes in like a lion</h1>
             <div class="erc-cards-collection">
@@ -1495,6 +1512,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
+    </v-lazy>
+    <v-lazy>
         <div class="erc-shelf-feed-item" id="GRKEQXWWR">
             <h1 class="feed-title">Space Oddity</h1>
             <div class="erc-cards-collection">
@@ -1642,8 +1661,11 @@ import neko_logo from '../assets/neko-sama.svg';
                     </div>
                 </div>
             </div>
-        </div>
+        </div> </v-lazy>
+
+    
     </div>
+
     <!-- <div v-else-if="channel == 'adn'">
         <div  class="erc-shelf-feed-item" id="last-episodes">
             <h1 class="feed-title">Last Episodes</h1>
@@ -1773,20 +1795,17 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
                             json[i].lang = json[i].lang.toUpperCase();
                             this.episodes.push(json[i]);
                         }
-                        console.log(this.episodes);
                     }
                 }else if(this.channel == 'adn'){
                     const response = await fetch('https://gw.api.animationdigitalnetwork.fr/show/catalog?distribution=simulcast&order=new&offset=0&limit=12', {
                         responseType: 1
                     });
-                    console.log(response);
                     if(response.status === 200){
                         const data = response.data.shows;
                         for (let i = 0; i < data.length; i++) {
                             data[i].urlPath = "/adn/" + data[i].id;
                             this.episodes.push(data[i]);
                         }
-                        console.log(this.episodes);
                     }
                     
                 } else { 
