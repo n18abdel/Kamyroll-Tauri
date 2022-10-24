@@ -1,7 +1,8 @@
-function infoAnime(title,  url, image, description, type, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
+function infoAnime(title,  url, image, bannerImage,description, type, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
     this.title = title;
     this.url = url;
     this.image = image;
+    this.bannerImage = bannerImage;
     this.description = description;
     this.type = type;
     this.episodes = episodes;
