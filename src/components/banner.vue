@@ -8,15 +8,15 @@ import Channel from './channelid.vue';
       <div class="relative flex items-center justify-between h-16">
         <div id="navbar" class="flex-1 flex">
           <div class="flex-none flex items-center">
-            <router-link to="/">
-              <img class="lg:block h-8 w-auto " src="/src/assets/kamyroll_logo.svg" alt="Kamyroll">
-            </router-link>
+            <a href="/">
+              <img class="lg:block h-8 w-auhref " src="/src/assets/kamyroll_logo.svg" alt="Kamyroll">
+            </a>
           </div>
           <div class="hidden sm:block sm:ml-6">
             <div class="flex space-x-4">
-             <router-link to="/search" id="search-button-disclosed" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+             <a href="/search" id="search-buthrefn-disclosed" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                 Recherche
-              </router-link>
+              </a>
             </div>
           </div>
         </div>
@@ -24,7 +24,7 @@ import Channel from './channelid.vue';
           <Channel></Channel>
         </div>
         <div v-else>
-          <v-btn id="back-button" @click="this.$router.go(-1)">Back</v-btn>
+          <v-btn id="back-buthrefn" @click="this.$router.go(-1)">Back</v-btn>
         </div>
         
       </div>
@@ -34,8 +34,8 @@ import Channel from './channelid.vue';
 
     <div class="sm:hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1">
-        <router-link to="/search"
-          class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Recherche</router-link>
+        <a href="/search"
+          class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Recherche</a>
       </div>
     </div>
   </nav>
@@ -53,13 +53,13 @@ export default {
       this.inRightPlace = true;
     }
   },
-  beforeRouteEnter : function (to, from, next) {
+  beforeRouteEnter : function (href, from, next) {
     if(window.location.href.includes('/search') || window.location.href.split('/').pop().length == 0){
       this.inRightPlace = true;
     }
     next();
   },
-  beforeRouteUpdate : function (to, from, next) {
+  beforeRouteUpdate : function (href, from, next) {
     if(window.location.href.includes('/search') || window.location.href.split('/').pop().length == 0){
       this.inRightPlace = true;
     }
