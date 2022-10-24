@@ -8,20 +8,25 @@ import Channel from './channelid.vue';
       <div class="relative flex items-center justify-between h-16">
         <div id="navbar" class="flex-1 flex">
           <div class="flex-none flex items-center">
-            <a href='#'>
+            <router-link to="/">
               <img class="lg:block h-8 w-auto " src="/src/assets/kamyroll_logo.svg" alt="Kamyroll">
-            </a>
+            </router-link>
           </div>
           <div class="hidden sm:block sm:ml-6">
             <div class="flex space-x-4">
-              <a href="/"
-                class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Accueil</a>
-              <a href="/search"
-                class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Recherche</a>
+             <router-link to="/search" id="search-button-disclosed" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                Recherche
+              </router-link>
             </div>
           </div>
         </div>
-        <Channel></Channel>
+        <div v-if="inRightPlace">
+          <Channel></Channel>
+        </div>
+        <div v-else>
+          <v-btn id="back-button" @click="this.$router.go(-1)">Back</v-btn>
+        </div>
+        
       </div>
       
     </div>
@@ -29,17 +34,46 @@ import Channel from './channelid.vue';
 
     <div class="sm:hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1">
-        <a href="/"
-          class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Accueil</a>
-        <a href="#"
-          class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Recherche</a>
+        <router-link to="/search"
+          class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Recherche</router-link>
       </div>
     </div>
   </nav>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      inRightPlace: false,
+    }
+  },
+  mounted: async function () {
+    if(window.location.href.includes('/search') || window.location.href.split('/').pop().length == 0){
+      this.inRightPlace = true;
+    }
+  },
+  beforeRouteEnter : function (to, from, next) {
+    if(window.location.href.includes('/search') || window.location.href.split('/').pop().length == 0){
+      this.inRightPlace = true;
+    }
+    next();
+  },
+  beforeRouteUpdate : function (to, from, next) {
+    if(window.location.href.includes('/search') || window.location.href.split('/').pop().length == 0){
+      this.inRightPlace = true;
+    }
+    next();
+  },
+}
+</script>
+
 <style scoped>
 #navbar{
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 10px;
+}
+
+#search-button-disclosed{
+  /*right of the d*/
 }
 </style>
