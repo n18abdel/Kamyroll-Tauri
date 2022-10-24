@@ -62,14 +62,13 @@ async function getEpisodes(slug, type) {
     }
     let episodes = [];
     let response = await fetch(url, options);
-    console.log(response);
     if (response.status != 200) {
         console.log(response);
         return;
     }
     let result = response.data;
     if (type == 'series') {
-        for (let season of result.items) {
+        /* for (let season of result.items) {
             let season_title = season.title;
             for (let epi of season.episodes) {
                 if (epi.episode != 'Bande Annonce') {
@@ -103,7 +102,29 @@ async function getEpisodes(slug, type) {
                     episodes.push(finalData);
                 }
             }
+        } */
+        for (let season of result.items){
+            for (let epi of season.episodes) {
+                if (epi.episode != 'Bande Annonce') {
+                    epi.title = `S${epi.season_number} Episode ${epi.episode}: ` + epi.title;
+                    if(epi.id.includes('vf')){
+                        epi.title += ' (VF)';
+                    }else if(epi.id.includes('vostfr')){
+                        epi.title += ' (VOSTFR)';
+                    }
+                    epi.url = '';
+                    if(channel ==  'crunchyroll'){
+                        epi.url = '/crunchyroll/watch/' + epi.id;
+                    } else if(channel ==  'adn'){
+                        epi.url = '/adn/watch/' + epi.id;
+                    } else if(channel ==  'neko-sama'){
+                        epi.url = '/nekosama/watch/' + epi.id;
+                    }
+                    epi.duration_ms = epi.duration_ms;
+                    epi.duration_ms = Math.floor(epi.duration_ms / 60000);
+                }
         }
+    }
     } else if (type == 'movie_listing') {
         for (const epi of result.items) {
             let titre = epi.title;
@@ -130,13 +151,14 @@ async function getEpisodes(slug, type) {
             }
             let is_dubbed = epi.is_dubbed;
             let is_subbed = epi.is_subbed;
+            epi.duration_ms = epi.duration_ms;
+            epi.duration_ms = Math.floor(epi.duration_ms / 60000);
             let duration = epi.duration_ms;
-            duration = Math.floor(duration / 60000);
             let finalData = new episode(titre, link, desc, image, is_dubbed, is_subbed,duration);
             episodes.push(finalData);
         }
     }
-    return episodes;
+    return result;
 }
 
 async function search(query){
