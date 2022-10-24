@@ -126,7 +126,7 @@
                   </div>
                 </div>
               </div>
-              <div class="item-list" v-if="type == 'movie_listing'">
+              <div class="item-list" v-else="type == 'movie_listing'">
                 <div v-for="episode in episodes.items" class="media-list-element xl-card" :style="{'display': `${episode.id == id ? 'contents' : 'none'}`}">
                   <article class="erc-episode-card xl-episode state-now-playing">
                     <a :title="episode.title" class="card-link" :href="episode.url"></a>
@@ -207,10 +207,11 @@ import {channelPage} from '../../scripts/channel_id';
       this.meta = await getMetadata(slug);
       let episodes = await getEpisodes(slug,this.meta.__class__);
       this.type = this.meta.__class__;
-      console.log(episodes);
+      
       this.id = episodes.items[this.number].id;
       this.image = Math.floor((this.meta.images.poster_tall.length / 2 ) - 1);
       this.episodes = episodes; 
+      console.log(episodes);
     }
 }
 </script>

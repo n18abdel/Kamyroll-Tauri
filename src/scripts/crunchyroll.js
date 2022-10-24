@@ -127,35 +127,16 @@ async function getEpisodes(slug, type) {
     }
     } else if (type == 'movie_listing') {
         for (const epi of result.items) {
-            let titre = epi.title;
-            let id = epi.id;
-            if(id.includes('vf')){
-                titre += ' (VF)';
-            }else if(id.includes('vostfr')){
-                titre += ' (VOSTFR)';
+            epi.url="";
+            if(channel ==  'crunchyroll'){
+                epi.url = '/crunchyroll/watch/' + epi.id;
+            } else if(channel ==  'adn'){
+                epi.url = '/adn/watch/' + epi.id;
+            } else if(channel ==  'neko-sama'){
+                epi.url = '/nekosama/watch/' + epi.id;
             }
-            let desc = epi.description;
-            let image = "";
-            try {
-                image = epi.images.thumbnail[1].source;
-            } catch (e) {
-                image = epi.images.thumbnail[0].source;
-            }
-            let link = '';
-            if (channel == 'crunchyroll') {
-                link = '/crunchyroll/watch/' + id;
-            } else if(channel == 'adn'){
-                link = '/adn/watch/' + id;
-            } else if(channel == 'neko-sama'){
-                link = '/nekosama/watch/' + id;
-            }
-            let is_dubbed = epi.is_dubbed;
-            let is_subbed = epi.is_subbed;
             epi.duration_ms = epi.duration_ms;
             epi.duration_ms = Math.floor(epi.duration_ms / 60000);
-            let duration = epi.duration_ms;
-            let finalData = new episode(titre, link, desc, image, is_dubbed, is_subbed,duration);
-            episodes.push(finalData);
         }
     }
     return result;
