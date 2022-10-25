@@ -2011,13 +2011,21 @@ img {
     transform: translateX(-50%) translateY(-50%)
 }
 
+#app.state-scroll-blocked {
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 .erc-header .header-left,
 .erc-header .header-right {
     display: flex
 }
 
 .erc-header-bar {
-    background-color: #fd0;
     bottom: 0;
     height: .125rem;
     left: 0;
