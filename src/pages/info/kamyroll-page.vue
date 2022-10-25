@@ -42,20 +42,28 @@
           </div>
         </div>
         <div class="information-tabs-wrapper">
+          <div class="tabs-header"></div>
           <div class="erc-tabs">
             <div class="item-list-wrapper">
-              <div class="erc-content-list-controls">
-                <div class="c-dropdown erc-sort-dropdown">
-                  <div class="c-dropdown-content sort-dropdown-content">
-                    <div class="c-dropdown-item sort-dropdown-item state-active">Oldest First</div>
-                    <div class="c-dropdown-item sort-dropdown-item">Newest First</div>
+              <div class="erc-content-list-controls" style="padding-bottom: 20px;">
+                <div :class="sortOpen  ?'c-dropdown c-dropdown--open erc-sort-dropdown':'c-dropdown erc-sort-dropdown'"
+                  @click="sortOpen = !sortOpen">
+                  <div class="c-dropdown-trigger sort-dropdown-trigger" ><svg class="sort-icon"
+                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" data-t="sort-svg">
+                      <path d="M2,5.2V2H18V5.2Zm0,6.4V8.4H12.667v3.2ZM2,18V14.8H6.267V18Z"></path>
+                    </svg>
+                    <div class="sort-title">Sort</div>
                   </div>
-                </div>
+                  <div class="c-dropdown-content sort-dropdown-content">
+                    <div class="c-dropdown-item sort-dropdown-item" @click="sortContentByOldest">Oldest First</div>
+                    <div class="c-dropdown-item sort-dropdown-item" @click="sortContentByNewest">Newest First</div>
+                  </div>
+                  </div>
                 <div
-                  :class="isOpen && episodes.items.length > 1 ?'c-select--open controls-select':'c-select controls-select'"
-                  @click="isOpen = !isOpen">
+                  :class="isOpen  ?'c-select--open controls-select':'c-select controls-select'"
+                  @click="isOpen = !isOpen" v-if="episodes.items.length > 1 ">
                   <div class="c-select-trigger controls-select-trigger state-active">
-                    <span class="season-info" v-if="type=='series'">
+                    <span class="season-info" v-if="type=='series' ">
                         <span class="season-number" >S{{episodes.items[number].season_number}}</span> -
                         {{episodes.items[number].title}}</span>
                         <span class="season-info" v-else>
@@ -67,13 +75,13 @@
                     </svg>
                   </div>
                   <div class="c-select-content controls-select-content">
-                    <div class="c-select-option controls-select-option" v-if="type=='series'" v-for="season in episodes.items" :id="season.id"
+                    <div class="c-select-option controls-select-option" v-if="type=='series' " v-for="season in episodes.items" :id="season.id"
                       @click="showContent">
                       <span class="season-info" :id="season.id" @click="showContent">
                         <span class="season-number" :id="season.id"
                           @click="showContent">S{{season.season_number}}</span> - {{season.title}}</span>
                     </div>
-                    <div class="c-select-option controls-select-option" v-else v-for="season in episodes.items" :id="season.id"
+                    <div class="c-select-option controls-select-option" v-else-if="episodes.items.length > 1" v-for="season in episodes.items" :id="season.id"
                       @click="showContent">
                       <span class="season-info" :id="season.id" @click="showContent">
                         <span class="season-number" :id="season.id"
@@ -85,7 +93,7 @@
               </div>
               <div class="item-list" v-if="type == 'series'">
                 <div v-for="season in episodes.items" :id="season.id"
-                  :style="{'box-sizing': 'border-box', 'flex': '1 20 39%', 'padding': '.3125rem', 'display': 'flex', 'flex-wrap': 'wrap', 'flex-direction': 'row','display':`${this.id == season.id ? 'contents' : 'none'}`}">
+                  :style="{'box-sizing': 'border-box', 'flex': '1 20 39%', 'padding': '.3125rem', 'display': 'flex', 'flex-wrap': 'wrap', 'flex-direction': 'row','display':`${id == season.id ? 'contents' : 'none'}`}">
                   <div v-if="season.episodes.length >= 1 && id==season.id" v-for="episode in season.episodes"
                     class="erc-series-media-list-element">
                     <article class="erc-episode-card">
@@ -192,6 +200,8 @@ import {channelPage} from '../../scripts/channel_id';
         id : null,
         number : 0,
         type : '',
+        sortOpen: false,
+        sort: 'episode_number_newest',
       }
     },
     methods:{
@@ -199,19 +209,36 @@ import {channelPage} from '../../scripts/channel_id';
         this.id =  el.target.id;
         this.number = this.episodes.items.findIndex(item => item.id === el.target.id);
       },
+      sortContentByNewest(){
+        if(this.sort == 'episode_number_newest'){
+          return
+        }else{
+          this.episodes.items[this.number].episodes.reverse();
+          this.sort = 'episode_number_newest';
+        }
+        
+      },
+      sortContentByOldest(){
+        if(this.sort == 'episode_number_oldest'){
+          return
+        } else{
+          this.episodes.items[this.number].episodes.reverse();
+          this.sort = 'episode_number_oldest';
+        } 
+      },
     },
     beforeMount: async function () {     
       channelPage();
       const slug = this.slug;
       console.log(slug);
       this.meta = await getMetadata(slug);
+      localStorage.setItem('meta', JSON.stringify(this.meta));
       let episodes = await getEpisodes(slug,this.meta.__class__);
+      localStorage.setItem('episodes', JSON.stringify(episodes));
       this.type = this.meta.__class__;
-      
       this.id = episodes.items[this.number].id;
       this.image = Math.floor((this.meta.images.poster_tall.length / 2 ) - 1);
       this.episodes = episodes; 
-      console.log(episodes);
     }
 }
 </script>
