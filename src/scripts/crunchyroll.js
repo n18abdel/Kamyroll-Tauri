@@ -30,13 +30,13 @@ async function getLastEpisodes(){
     let result = response.data.items;
     for (let item of result) {
         item.url = '';
-        let id = item.id;
+        let id = item.series_id;
         if (channel == 'crunchyroll') {
-            item.url = '/crunchyroll/watch/' + id;
+            item.url = '/crunchyroll/' + id;
         } else if (channel == 'adn') {
-            item.url = '/adn/watch/' + id;
+            item.url = '/adn/' + id;
         } else if (channel == 'neko-sama') {
-            item.url = '/nekosama/watch/' + id;
+            item.url = '/nekosama/' + id;
         }
         episodes.push(item)
     }
@@ -60,7 +60,6 @@ async function getEpisodes(slug, type) {
         },
         method: "GET",
     }
-    let episodes = [];
     let response = await fetch(url, options);
     if (response.status != 200) {
         console.log(response);
@@ -221,7 +220,6 @@ async function getVideos(id) {
                 headers: headers
             });
             let result = response.data;
-            console.log(result);
             for (streams of result.streams) {
                 var quality = streams.audio_locale + ' ' + streams.hardsub_locale;
                 var link = streams.url;
@@ -240,7 +238,6 @@ async function getVideos(id) {
                     };
                     let finalData = new Subs(lang, link, style, type);
                     subtitles.push(finalData);
-                    console.log(finalData);
             }
             } else {
                 subtitles.push(new Subs('No subtitles', '', {}, ''));
@@ -269,6 +266,7 @@ async function getVideos(id) {
                     let type = subs.format;
                     let style = {
                         fontSize: '40px',
+                        paddingBottom: '10px'
                     };
                     let finalData = new Subs(lang, link, style, type);
                     subtitles.push(finalData);

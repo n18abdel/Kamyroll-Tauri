@@ -18,6 +18,8 @@ async function getMetadata(slug){
         return;
     }
     let result = response.data;
+    result.url = `/${chan}/`+result.series_id
+    console.log(result);
     return result;
 }
 export default getMetadata;
