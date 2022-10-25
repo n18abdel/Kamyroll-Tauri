@@ -115,7 +115,7 @@ export default {
     mounted : async function (){
         // access the proxy data from the template
         let sources = await getVideos(this.id);
-        let next = this.findNextEpisode(this.id);
+        /* let next = this.findNextEpisode(this.id); */
         this.videos = sources.streams;
         var hls = null;
         this.instance = new Artplayer({
@@ -170,7 +170,7 @@ export default {
                     click: function () {
                         this.tooltip = 'Bah alors bien essayer';
                     }
-                },{
+                },/* {
                     position: 'right',
                     html: `Next`,
                     tooltip: 'Next Episode',
@@ -180,7 +180,7 @@ export default {
                             document.location.href =  document.location.origin + document.location.pathname.replace(this.id,next);
                         }
                     }
-                },
+                }, */
                 {
                 position: 'left',
                 html: `<img width="22" heigth="22" src="${backforward}">`,
