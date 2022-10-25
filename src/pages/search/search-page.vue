@@ -10,7 +10,11 @@ import spinner from '/src/assets/loading.svg';
                 <div class="erc-search-field">
                     <div class="content">
                         <form class="search-input-wrapper state-narrow">
-                            <input type="text" placeholder="Rechercher" class="search-input" @keydown.enter.prevent="recherche">
+                            <input type="text" placeholder="Rechercher" class="search-input crunchyroll" v-if="channel=='crunchyroll'" @keydown.enter.prevent="recherche">
+                            <input type="text" placeholder="Rechercher" class="search-input adn" v-else-if="channel=='adn'" @keydown.enter.prevent="recherche">
+                            <input type="text" placeholder="Rechercher" class="search-input neko" v-else-if="channel=='neko-sama'" @keydown.enter.prevent="recherche">
+                            <input type="text" placeholder="Rechercher" class="search-input" v-else @keydown.enter.prevent="recherche">
+
                             <div class="search-button" @click="recherche">
                                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     data-t="search-svg">
@@ -30,7 +34,7 @@ import spinner from '/src/assets/loading.svg';
                     <div class="search-result-collection">
                         <div class="search-card-list">
                             <div v-for="anime of results" class="search-series-movie-card">
-                                <article class="erc-search-series-movie-card" style="border-color: rgb(244, 33, 33);">
+                                <article class="erc-search-series-movie-card" :style="style">
                                     <a :title="anime.title" class="card-link"
                                         :href="anime.link"></a>
                                     <div class="search-card-content">
@@ -74,17 +78,27 @@ export default {
         return{
             results:null,
             loading : false,
-            chan : null
+            chan : null,
+            style: '',
         }
     },
     methods:{
         async recherche() {
-            this.chan = getChannelinUse(channel);
+            this.chan = getChannelinUse(channel).label;
             this.results = [];
             this.loading = true;
             let keyword = document.querySelector('.search-input').value;
             this.results = await search(keyword);
             this.loading = false; 
+        }
+    },
+    mounted(){
+        if(channel=='crunchyroll'){
+        this.style = 'border-color: #ff6600';
+        } else if(channel == 'neko-sama'){
+        this.style = 'border-color: #1cb9f4';
+        } else {
+        this.style = 'border-color: #0095ff';
         }
     }
 }
@@ -98,7 +112,7 @@ export default {
 }
 
 .erc-search::-webkit-scrollbar-thumb {
-    background-color: red !important;
+    background-color: beige !important;
     border-radius: 10px !important;
 }
 .erc-search {
@@ -295,9 +309,18 @@ export default {
     opacity: 1
 }
 
-.erc-search-field .search-input:focus {
-    border-color: rgb(255, 40, 2)
+.erc-search-field .search-input.crunchyroll:focus  {
+    border-color : #ff6600 
 }
+
+.erc-search-field .search-input.neko:focus  {
+    border-color : #1cb9f4
+}
+
+.erc-search-field .search-input.adn:focus{
+    border-color : #0095ff
+}
+
 
 .erc-search-field .search-button {
     background-color: initial;
