@@ -1,6 +1,6 @@
 [package]
 name = "kamyroll"
-version = "0.3.5"
+version = "0.3.6"
 description = "A tauri app for the Kamyroll project"
 authors = ["Nabil"]
 license = ""
@@ -20,10 +20,8 @@ serde = { version = "1.0", features = ["derive"] }
 #tauri = { git = "https://github.com/tauri-apps/tauri", features = ["http-all", "process-command-api", "shell-execute", "shell-sidecar", "system-tray", "window-all"] }
 tauri = { version = "1.1.1", features = ["http-all", "process-command-api", "shell-execute", "shell-sidecar", "system-tray", "window-all"] }
 tauri-plugin-window-state = "0.1"
-command-group = "1"
+command-group = {git="https://github.com/Bilnaa/command-group", version = "1.0.9"}
 # tiny_http = "0.11"
-tauri-plugin-localhost = { git= "https://github.com/tauri-apps/tauri-plugin-localhost", branch = "dev" } 
-portpicker = "0.1"
 
 [features]
 default = [ "custom-protocol" ]

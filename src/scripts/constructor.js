@@ -1,7 +1,8 @@
-function infoAnime(title,  url, image, description, type, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
+function infoAnime(title,  url, image, bannerImage,description, type, episodes, status, is_dubbed,is_subbed,is_mature,is_simulcast,maturity_ratings) {
     this.title = title;
     this.url = url;
     this.image = image;
+    this.bannerImage = bannerImage;
     this.description = description;
     this.type = type;
     this.episodes = episodes;
@@ -23,7 +24,7 @@ function episode(title, url, description, poster,is_dubbed,is_subbed,duration) {
     this.duration = duration;
 }
 
-function trend(title, link, image, bannerImage, description, status, id) {
+function trend(title, link, image, bannerImage, description, status, id,lang,type) {
     this.title = title;
     this.link = link;
     this.image = image;
@@ -31,6 +32,8 @@ function trend(title, link, image, bannerImage, description, status, id) {
     this.description = description;
     this.status = status;
     this.id = id;
+    this.lang = lang;
+    this.type = type;
 }
 
 
