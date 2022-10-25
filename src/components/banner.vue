@@ -123,7 +123,7 @@ export default {
       style : '',
       isOuvert : false,
       channelInUse : getChannelinUse(channel),
-
+      chan: localStorage.getItem('channel'),
     }
   },
   methods : {
@@ -142,6 +142,12 @@ export default {
         /* document.body.scroll = 'yes'; */
       }
     },
+    checkChannel() {
+            if (localStorage.getItem('channel') != this.chan) {
+                this.$forceUpdate()
+                window.location.reload();
+            }
+        }
   },
   mounted: async function () {
     if(window.location.href.includes('/search') || window.location.href.split('/').pop().length == 0){
@@ -154,6 +160,8 @@ export default {
     } else {
       this.style = 'background-color: #0095ff';
     }
+
+    setInterval(this.checkChannel, 1000);
     
   },
   beforeRouteEnter : function (href, from, next) {
