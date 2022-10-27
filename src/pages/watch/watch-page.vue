@@ -10,7 +10,7 @@ import download from '/src/assets/download-button.svg';
 <template>
     <div class="app-body-wrapper">
         <div class="watch-page-container">
-            <div id="player" class="video-player-wrapper">
+            <div ref="artPlayer" id="player" class="video-player-wrapper">
                 <div class="loading" v-if="videos.length == 0">
                     <div class="loading__spinner">
                         <img :src="loading" alt="loading">
@@ -19,41 +19,36 @@ import download from '/src/assets/download-button.svg';
             </div>
             <div class="video-content">
                 <div class="content">
-                    <div class="media-metadata"><a class="poster-image-wrapper" :href="meta.url"><span
+                    <div class="media-metadata"><a class="poster-image-wrapper" :href="metadat.url"><span
                                 class="poster-hover-layer">to
-                                series</span><img :src="meta.images.poster_tall[image].source" class="c-content-image"
-                                :alt="meta.title"></a>
-                        <div class="text-wrapper"><a class="episode-info" :href="meta.url"><span class="series"><svg
+                                series</span><img :src="metadat.images.poster_tall[image].source" class="c-content-image"
+                                :alt="metadat.title"></a>
+                        <div class="text-wrapper"><a class="episode-info" :href="metadat.url"><span class="series"><svg
                                         class="left-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 20"
                                         data-t="left-arrow-svg">
                                         <path d="M10 .667L.667 10 10 19.332h1.333V18l-8-8 8-8V.667"></path>
-                                    </svg>{{meta.series_title}}</span><span
-                                    class="season">{{meta.season_count}}</span></a>
-                            <h2 class="title">{{meta.title}}</h2>
-                            <div class="description">{{meta.description}}</div>
+                                    </svg>{{metadat.series_title}}</span><span
+                                    class="season">{{metadat.season_count}}</span></a>
+                            <h2 class="title">{{metadat.title}}</h2>
+                            <div class="description">{{metadat.description}}</div>
                             <div class="additional-information">
                                 <div class="c-meta-tags additional-information-tag">
-                                    <span class="c-meta-tags__language" v-if="meta.is_subbed && meta.is_dubbed">Sub |
+                                    <span class="c-meta-tags__language" v-if="metadat.is_subbed && metadat.is_dubbed">Sub |
                                         Dub</span>
-                                    <span class="c-meta-tags__language" v-else-if="meta.is_subbed">Subtitled</span>
+                                    <span class="c-meta-tags__language" v-else-if="metadat.is_subbed">Subtitled</span>
                                     <span class="c-meta-tags__language" v-else>Dubbed</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div v-if="meta.images.thumbnail.length >= 5" class="background-overlay"
-                        :style="{'background-image': `url(${meta.images.poster_tall[4].source})`}"></div>
-                    <div v-else class="background-overlay"
-                        :style="{'background-image': `url(${meta.images.poster_tall[0].source})`}"></div>
                 </div>
             </div>
-
-
         </div>
     </div>
 
 </template>
 <script>
+import { channel} from '../../scripts/channel_id';
 import { appWindow } from '@tauri-apps/api/window';
 import { getVideos } from '../../scripts/crunchyroll.js';
 import qualityicon from '../../assets/quality.svg';
@@ -61,13 +56,13 @@ import getMetadata from '../../scripts/getMetadata';
 export default {
     data() {
         return {
-            instance: null,
+            player: null,
             videos: [],
             subs: [],
             id: document.location.href.split('/').pop(),
             lang: navigator.language,
             channel_id: null,
-            meta: null,
+            metadat: '',
             image : 0,
             nextepisode: ''
         }
@@ -107,20 +102,21 @@ export default {
         }
     },
     beforeMount: async function () {
-        this.meta = await getMetadata(this.id);
-        let meta = JSON.parse(localStorage.getItem('meta'))
-        this.meta.images.poster_tall = meta.images.poster_tall;
-        this.image = Math.floor((this.meta.images.poster_tall.length/2)-1);
-    },
-    mounted : async function (){
+        this.metadat = await getMetadata(this.id);
+        let meta1 = JSON.parse(localStorage.getItem('meta'));
+        this.metadat.images.poster_tall = meta1.images.poster_tall;
+        this.metadat.url = `/${channel.replace('-','')}/`+meta1.id;
+        this.image = Math.floor((this.metadat.images.poster_tall.length - 1) /2); 
+        // always take the second image if available
+        console.log(this.image)
         // access the proxy data from the template
         let sources = await getVideos(this.id);
         /* let next = this.findNextEpisode(this.id); */
         this.videos = sources.streams;
         var hls = null;
-        this.instance = new Artplayer({
+        this.player = new Artplayer({
             url: this.videos.reverse()[0].url,
-            container: "#player",
+            container: this.$refs.artPlayer,
             volume: 0.5,
             isLive: false,
             muted: false,
@@ -208,7 +204,7 @@ export default {
                         switch: true,
                         onSwitch: function (item) {
                             item.tooltip = item.switch ? 'Hide' : 'Show';
-                            this.instance.subtitle.show = !item.switch;
+                            this.subtitle.show = !item.switch;
                             return !item.switch;
                         },
                     },
@@ -216,7 +212,7 @@ export default {
                         return {
                             html: sub.html,
                             url: sub.url,
-                            type: 'ass',
+                            type: 'vtt',
                             style: sub.style,
                             encoding: 'utf-8'
                         }
@@ -224,16 +220,17 @@ export default {
 
                 ],
                 onSelect: function (item) {
-                    this.instance.subtitle.switch(item.url, {
+                    this.subtitle.switch(item.url, {
                         name: item.html,
                     });
+                    localStorage.setItem('preferredLanguage', item.html);
                     return item.html;
                 },
             }]
         });
 
-        this.instance.on('ready', async () => {
-            this.instance.controls.add({
+        this.player.on('ready', async () => {
+            this.player.controls.add({
                 position: 'right',
                 html: `<img width="22" heigth="22" src="${qualityicon}">`,
                 selector: hls.levels.map((item, index) => {
@@ -254,32 +251,32 @@ export default {
                         }
                     }
                     hls.on(Hls.Events.LEVEL_SWITCHING, (res) => {
-                        this.instance.notice.show = "CHANGEMENT DE QUALITE";
+                        this.player.notice.show = "CHANGEMENT DE QUALITE";
                         console.info('LEVEL_SWITCHING -->', res);
                         updateHtml();
                     });
                     hls.on(Hls.Events.LEVEL_SWITCHED, (res) => {
-                        this.instance.notice.show = "CHANGEMENT DE QUALITE ";
+                        this.player.notice.show = "CHANGEMENT DE QUALITE ";
                         console.info('LEVEL_SWITCHED -->', res);
                         updateHtml();
                     });
                     hls.on(Hls.Events.LEVEL_LOADING, (res) => {
-                        this.instance.notice.show = "LA QUALITE EST EN COURS DE CHARGEMENT";
+                        this.player.notice.show = "LA QUALITE EST EN COURS DE CHARGEMENT";
                         console.info('LEVEL_LOADING -->', res);
                         updateHtml();
                     });
                     hls.on(Hls.Events.LEVEL_LOADED, (res) => {
-                        this.instance.notice.show = "CHARGEE";
+                        this.player.notice.show = "CHARGEE";
                         console.info('LEVEL_LOADED -->', res);
                         updateHtml();
                     });
                     hls.on(Hls.Events.LEVEL_UPDATED, (res) => {
-                        this.instance.notice.show = "LEVEL_UPDATED";
+                        this.player.notice.show = "LEVEL_UPDATED";
                         console.info('LEVEL_UPDATED -->', res);
                         updateHtml();
                     });
                     hls.on(Hls.Events.LEVELS_UPDATED, (res) => {
-                        this.instance.notice.show = "LEVELS_UPDATED";
+                        this.player.notice.show = "LEVELS_UPDATED";
                         console.info('LEVELS_UPDATED -->', res);
                         updateHtml();
                     });
@@ -294,33 +291,25 @@ export default {
                     console.info('not fullscreen');
                 }
             }
-            this.instance.on('fullscreen', async () => {
-                await getState(this.instance);
+            this.player.on('fullscreen', async () => {
+                await getState(this.player);
             });
-            this.instance.on('', async () => {
-                await getState(this.instance);
+            this.player.on('subtitleSwitch', (item) => {
+                console.info('subtitleSwitch -->', item);
             });
         });
-        /* this.$nextTick(() => {
-            this.$emit("get-instance", this.instance);
-        }); */
+
+        this.$nextTick(() => {
+            this.$emit("get-player", this.player);
+        });
+    },
+    mounted : async function (){
+        
         },
         beforeUnmount() {
-            if (this.instance && this.instance.destroy) {
-                this.instance.destroy(false);
+            if (this.player && this.player.destroy) {
+                this.player.destroy(false);
             }
         }
     }
 </script>
-
-<style scoped>
-
-.loading img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-#player > .art-video-player .art-subtitle {
-    font-size: 50px !important;
-}
-</style>

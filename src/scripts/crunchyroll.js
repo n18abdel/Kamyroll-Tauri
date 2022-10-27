@@ -27,20 +27,23 @@ async function getLastEpisodes(){
         console.log(response);
         return;
     }
-    let result = response.data.items;
-    for (let item of result) {
-        item.url = '';
-        let id = item.series_id;
-        if (channel == 'crunchyroll') {
-            item.url = '/crunchyroll/' + id;
-        } else if (channel == 'adn') {
-            item.url = '/adn/' + id;
-        } else if (channel == 'neko-sama') {
-            item.url = '/nekosama/' + id;
+    try{
+        let result = response.data.items;
+        for (let item of result) {
+            item.url = '';
+            let id = item.series_id;
+            if (channel == 'crunchyroll') {
+                item.url = '/crunchyroll/' + id;
+            } else if (channel == 'adn') {
+                item.url = '/adn/' + id;
+            } else if (channel == 'neko-sama') {
+                item.url = '/nekosama/' + id;
+            }
+            episodes.push(item)
         }
-        episodes.push(item)
+    } catch(e){
+        console.log(e);
     }
-    console.log(episodes);
     return episodes;
 }
 
@@ -204,6 +207,12 @@ async function search(query){
 
 
 async function getVideos(id) {
+    let preferredLanguage = '';
+    if(localStorage.getItem('preferredLanguage') == null){
+        preferredLanguage = 'en-US';
+    } else{
+        preferredLanguage = localStorage.getItem('preferredLanguage');
+    }
     const proxy_url = 'http://127.0.0.1:15411';
     let videos = [];
     let subtitles = [];
@@ -291,7 +300,7 @@ async function getVideos(id) {
 
         // fr-FR in first in the subtitles array
         for(let i = 0; i < subtitles.length; i++){
-            if(subtitles[i].html == 'fr-FR'){
+            if(subtitles[i].html == preferredLanguage){
                 let temp = subtitles[0];
                 subtitles[0] = subtitles[i];
                 subtitles[i] = temp;

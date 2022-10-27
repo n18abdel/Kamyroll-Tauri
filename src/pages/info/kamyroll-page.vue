@@ -32,7 +32,13 @@
               </div>
             </div>
             <div class="action-buttons">
-              <a role="button" tabindex="0" class="action-button c-button -type-one" data-t="watching-btn" href="">
+              <a role="button" tabindex="0" class="action-button c-button -type-one" v-if="type=='movie_listing'" data-t="watching-btn" :href="episodes.items[number].url">
+                <svg class="" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-t="play-line-svg">
+                  <path d="M0,0 L0,20 L20,10 L0,0 Z M2,3 L16,10 L2,17 L2,3 Z"></path>
+                </svg>
+                <span>Start Watching</span>
+              </a>
+              <a role="button" tabindex="0" class="action-button c-button -type-one" v-else data-t="watching-btn" :href="episodes.items[number].episodes[0].url">
                 <svg class="" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-t="play-line-svg">
                   <path d="M0,0 L0,20 L20,10 L0,0 Z M2,3 L16,10 L2,17 L2,3 Z"></path>
                 </svg>

@@ -35,6 +35,9 @@ if(appWindow.isFullscreen() && !window.location.href.includes('watch')){
 }
 
 const app = createApp(App);
+app.config.errorHandler = function(err, vm, info) {
+    console.log(`Error: ${err.toString()}\nInfo: ${info}`);
+  }
 
 app.use(routes);
 app.use(vuetify);
