@@ -17,7 +17,14 @@ import DarkModeToggle from '../../components/DarkModeToggle.vue';
 <script>
 // load the component before the page is rendered
 import { defineAsyncComponent } from 'vue';
-const LastEpisodes = defineAsyncComponent(() => import('../../components/lastepisodes.vue'))
 const Trending = defineAsyncComponent(() => import('../../components/tendance.vue'));
+
+// load lastepisodes only when trending is loaded
+const LastEpisodes = defineAsyncComponent(() => import('../../components/lastepisodes.vue'), {
+  delay: 3000,
+  timeout: 3000,
+  suspend: true
+})
+
 
 </script>

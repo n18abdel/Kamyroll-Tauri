@@ -5,7 +5,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 
 
 <template>
-        <div class="crunchyroll" v-if="channel=='crunchyroll' && trending.length > 1 " >
+        <div class="crunchyroll" v-if="channel=='crunchyroll' && trending.length >= 1 " >
             <div class="erc-feed-container">
             <article class="erc-hero-card" >
                 <div class="erc-hero-card-background-overlay top-angled bottom-angled"><span
@@ -250,11 +250,7 @@ export default {
             }
             
             this.random = '' + getRandomInt(0, this.trending.length);
-            console.log(this.trending,this.random);
-        await invoke('close_splashscreen');
-    },
-    mounted() {
-        setInterval(this.checkChannel, 1000);
+            await invoke('close_splashscreen');
     }
 
 }

@@ -22,7 +22,6 @@ async function getLastEpisodes(){
     }
     let episodes = [];
     let response = await fetch(url, options);
-    console.log(response);
     if (response.status != 200) {
         console.log(response);
         return;
@@ -43,6 +42,7 @@ async function getLastEpisodes(){
         }
     } catch(e){
         console.log(e);
+        return [];
     }
     return episodes;
 }
