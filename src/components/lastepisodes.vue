@@ -1807,12 +1807,11 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
                         }
                     }
                     
-                } else { 
+                } else if (this.channel == 'crunchyroll') { 
                     try{
                         this.episodes = await getLastEpisodes();
                     } catch(e){
                         this.episodes = [];
-                        console.log(e);
                     }
                  }
             },
