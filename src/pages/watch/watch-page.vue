@@ -125,6 +125,7 @@ export default {
             playbackRate: true,
             aspectRatio: true,
             fullscreen: true,
+            fullscreenWeb: true,
             subtitleOffset: true,
             miniProgressBar: true,
             mutex: true,
