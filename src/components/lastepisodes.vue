@@ -4,7 +4,6 @@ import crunchyroll_logo from '../assets/crunchyroll.svg';
 import neko_logo from '../assets/neko-sama.svg';
 </script>
 <template>
-    <!--Tailwind card to show last episodes-->
     <div v-if="channel == 'neko-sama'">
         <div v-if="episodes.length > 1" class="erc-shelf-feed-item" id="last-episodes">
         <h1 class="feed-title">Last Episodes</h1>
@@ -51,8 +50,8 @@ import neko_logo from '../assets/neko-sama.svg';
         </div>
     </div>
     </div>
-    <div v-if="channel == 'crunchyroll' && episodes.length > 1">
-        <div class="erc-shelf-feed-item" id="last-episodes">
+    <div v-if="channel == 'crunchyroll'">
+        <div class="erc-shelf-feed-item" id="last-episodes" v-if="episodes.length > 1">
             <h1 class="feed-title">Last Episodes</h1>
             <div class="erc-cards-collection">
                 <div class="card" v-for="episode of episodes">
@@ -1808,18 +1807,19 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
                         }
                     }
                     
-                } else { 
-                    this.episodes = await getLastEpisodes();
+                } else if (this.channel == 'crunchyroll') { 
+                    try{
+                        this.episodes = await getLastEpisodes();
+                    } catch(e){
+                        this.episodes = [];
+                    }
                  }
             },
             
         },
         beforeMount: function () {
             this.getEpisodes();
-        },
-        mounted: function () {
-            setInterval(this.checkChannel, 1000);
-        },
+        }
     }
     
 </script>

@@ -11,11 +11,7 @@ import download from '/src/assets/download-button.svg';
     <div class="app-body-wrapper">
         <div class="watch-page-container">
             <div ref="artPlayer" id="player" class="video-player-wrapper">
-                <div class="loading" v-if="videos.length == 0">
-                    <div class="loading__spinner">
-                        <img :src="loading" alt="loading">
-                    </div>
-                </div>
+                <img class="loading" v-if="videos.length == 0" :src="loading" alt="loading">
             </div>
             <div class="video-content">
                 <div class="content">
@@ -313,3 +309,21 @@ export default {
         }
     }
 </script>
+
+<style scoped>
+/*centre .loading par rapport à watch-page-container*/
+img.loading {
+    margin: auto;
+    margin-top: 17%;
+    margin-bottom: 20%;
+}
+
+/*when the window is mobile sized */
+@media only screen and (max-width: 958px) {
+    img.loading {
+    margin: auto;
+    margin-top: 25%;
+    margin-bottom: 20%;
+}
+}
+</style>
