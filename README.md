@@ -1,7 +1,7 @@
 <img src='./src/assets/kamyroll_logo.svg' width='200'>
 
 # Kamyroll-Tauri
-[![Version](https://img.shields.io/badge/Version-v1.1.0-green.svg)](https://github.com/kamyroll/Kamyroll-Tauri/releases/tag/v1.0.0)
+[![Version](https://img.shields.io/badge/Version-v1.0.0-green.svg)](https://github.com/kamyroll/Kamyroll-Tauri/releases/tag/v1.0.0)
 
 ## Description
 Kamyroll-Tauri is a computer client allowing you to view your favorite anime thanks to Kamyroll.
