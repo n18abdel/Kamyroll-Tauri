@@ -1590,41 +1590,6 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
                 <div class="card">
                     <div>
-                        <article class="erc-series-movie-card"><a title="Killjoys" class="card-link"
-                                href="/crunchyroll/GY4P94286"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(128, 130, 133);"><img
-                                    src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/vrvselect/6866f722191c71d4d8354102c8af82bb.png"
-                                    class="c-content-image image" alt="Killjoys"><a class="erc-channel-icon"
-                                    href="/vrvselect">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(128, 130, 133);">
-                                        </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/vrvselect/495617604205faf4ef10affdecf12006.png"
-                                            alt="VRV Select icon"><span class="channel-name">VRV Select</span>
-                                    </div>
-                                </a></div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/vrvselect/2f62bf221ad1c00400fb1471b57d9782.png"
-                                        class="c-content-image" alt="Killjoys"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>Killjoys</h1>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group"><span
-                                                class="c-meta-tags__type">Series</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                <div class="card">
-                    <div>
                         <article class="erc-series-movie-card"><a title="Captain Harlock" class="card-link"
                                 href="/crunchyroll/GYGGPD73Y"></a>
                             <div class="watch-tag-list">
