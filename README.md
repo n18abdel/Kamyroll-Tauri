@@ -1,4 +1,6 @@
-<img src='./src/assets/kamyroll_logo.svg' width='200'>
+<p align="center">
+  <img src='./src/assets/kamyroll_logo.svg' width='200'>
+</p>
 
 ![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)![Tauri](https://img.shields.io/badge/tauri-%2324C8DB.svg?style=for-the-badge&logo=tauri&logoColor=%23F0330A)
 # Kamyroll-Tauri
