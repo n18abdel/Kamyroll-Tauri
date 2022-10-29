@@ -207,7 +207,7 @@ import {channelPage} from '../../scripts/channel_id';
         number : 0,
         type : '',
         sortOpen: false,
-        sort: 'episode_number_newest',
+        sort: 'episode_number_oldest',
       }
     },
     methods:{
