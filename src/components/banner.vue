@@ -1,5 +1,5 @@
 <script setup>
-import Channel from './channelid.vue';
+
 import {channel,channels,getChannelinUse,setChannel} from '../scripts/channel_id';
 
 </script>
@@ -186,6 +186,10 @@ export default {
 }
 #below{
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 10px;
+}
+
+.erc-nav-dropdown-item{
+  cursor: pointer;
 }
 
 </style>
