@@ -2,10 +2,11 @@
   <img src='./src/assets/kamyroll_logo.svg' width='200'>
 </p>
 
-![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)![Tauri](https://img.shields.io/badge/tauri-%2324C8DB.svg?style=for-the-badge&logo=tauri&logoColor=%23F0330A)
+![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)![Tauri](https://img.shields.io/badge/tauri-%2324C8DB.svg?style=for-the-badge&logo=tauri)
 # Kamyroll-Tauri
-[![Version](https://img.shields.io/badge/Version-v1.0.0-green.svg)](https://github.com/kamyroll/Kamyroll-Tauri/releases/tag/v1.0.0)
-[![ci-build](https://github.com/kamyroll/Kamyroll-Tauri/actions/workflows/main.yml/badge.svg)](https://github.com/kamyroll/Kamyroll-Tauri/actions/workflows/main.yml/)
+[![GitHub release](https://img.shields.io/github/v/release/kamyroll/kamyroll-tauri?color=Green&label=Version&style=for-the-badge)](https://github.com/kamyroll/Kamyroll-Tauri/releases/)
+[![ci-build](https://img.shields.io/github/workflow/status/kamyroll/kamyroll-tauri/Release?style=for-the-badge)](https://github.com/kamyroll/Kamyroll-Tauri/actions/workflows/main.yml/)
+[![downloads](https://img.shields.io/github/downloads/kamyroll/Kamyroll-Tauri/total.svg?style=for-the-badge)](https://github.com/kamyroll/Kamyroll-Tauri/releases/)
 
 
 ## Description
