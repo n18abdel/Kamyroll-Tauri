@@ -1,7 +1,7 @@
 [package]
 name = "kamyroll"
-version = "1.0.0"
-description = "A tauri app for the Kamyroll project"
+version = "1.0.1"
+description = "A computer client allowing you to view your favorite anime thanks to Kamyroll."
 authors = ["Nabil"]
 license = ""
 repository = "https://github.com/kamyroll/Kamyroll-Tauri"

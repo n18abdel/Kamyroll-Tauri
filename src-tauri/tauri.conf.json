@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "Kamyroll",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "build": {
     "distDir": "../dist",
@@ -27,7 +27,7 @@
       ],
       "resources": [],
       "externalBin": ["proxy/pstream/main"],
-      "copyright": "Nabil 2022",
+      "copyright": "Kamyroll OSS 2022",
       "category": "DeveloperTool",
       "shortDescription": "",
       "longDescription": "",
