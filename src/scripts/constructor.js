@@ -61,9 +61,9 @@ function Videos(quality, link) {
     this.url = link;
 }
 
-function Subs(html, link, style, type) {
+function Subs(html, url, style, type) {
     this.html = html;
-    this.url = link;
+    this.url = url;
     this.style = style;
     this.type = type;
 }
