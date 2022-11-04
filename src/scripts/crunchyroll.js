@@ -2,7 +2,7 @@ import {
     fetch
 } from '@tauri-apps/api/http'
 import {
-    episode,finalData,Videos,Subs
+    finalData,Videos,Subs
 } from './constructor.js'
 
 import {
@@ -15,7 +15,7 @@ async function getLastEpisodes(){
     let url = `https://api.kamyroll.tech/content/v1/updated?channel_id=${channel}&locale=en-US&limit=20`;
     const options = {
         headers: {
-            'User-Agent': 'Kamyroll/0.3.6 Tauri-Rust',
+            'User-Agent': 'Kamyroll/1.0.1 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         },
         method: "GET",
@@ -26,19 +26,19 @@ async function getLastEpisodes(){
         console.log(response);
         return episodes;
     }
-        let result = response.data.items;
-        for (let item of result) {
-            item.url = '';
-            let id = item.series_id;
-            if (channel == 'crunchyroll') {
-                item.url = '/crunchyroll/' + id;
-            } else if (channel == 'adn') {
-                item.url = '/adn/' + id;
-            } else if (channel == 'neko-sama') {
-                item.url = '/nekosama/' + id;
-            }
-            episodes.push(item)
+    let result = response.data.items;
+    for (let item of result) {
+        item.url = '';
+        let id = item.id;
+        if (channel == 'crunchyroll') {
+            item.url = '/crunchyroll/watch/' + id;
+        } else if (channel == 'adn') {
+            item.url = '/adn/watch/' + id;
+        } else if (channel == 'neko-sama') {
+            item.url = '/nekosama/watch/' + id;
         }
+        episodes.push(item)
+    }
     return episodes;
 }
 
@@ -53,7 +53,7 @@ async function getEpisodes(slug, type) {
     }
     const options = {
         headers: {
-            'User-Agent': 'Kamyroll/0.3.6 Tauri-Rust',
+            'User-Agent': 'Kamyroll/1.0.1 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         },
         method: "GET",
@@ -65,71 +65,36 @@ async function getEpisodes(slug, type) {
     }
     let result = response.data;
     if (type == 'series') {
-        /* for (let season of result.items) {
-            let season_title = season.title;
-            for (let epi of season.episodes) {
-                if (epi.episode != 'Bande Annonce') {
-                    let titre = `S${epi.season_number} Episode ${epi.episode}: ` + epi.title;
-                    let id = epi.id;
-                    if(id.includes('vf')){
-                        titre += ' (VF)';
-                    }else if(id.includes('vostfr')){
-                        titre += ' (VOSTFR)';
-                    }
-                    let desc = epi.description;
-                    let image = "";
-                    try {
-                        image = epi.images.thumbnail[1].source;
-                    } catch (e) {
-                        image = epi.images.thumbnail[0].source;
-                    }
-                    let link = '';
-                    if (channel ==  'crunchyroll') {
-                        link = '/crunchyroll/watch/' + id;
-                    } else if(channel ==  'adn'){
-                        link = '/adn/watch/' + id;
-                    }else if(channel ==  'neko-sama'){
-                        link = '/nekosama/watch/' + id;
-                    }
-                    let is_dubbed = epi.is_dubbed;
-                    let is_subbed = epi.is_subbed;
-                    let duration = epi.duration_ms;
-                    duration = Math.floor(duration / 60000);
-                    let finalData = new episode(titre, link, desc, image, is_dubbed, is_subbed,duration);
-                    episodes.push(finalData);
-                }
-            }
-        } */
-        for (let season of result.items){
+        for (let season of result.items) {
             for (let epi of season.episodes) {
                 if (epi.episode != 'Bande Annonce') {
                     epi.title = `S${epi.season_number} Episode ${epi.episode}: ` + epi.title;
-                    if(epi.id.includes('vf')){
+                    if (epi.id.includes('vf')) {
                         epi.title += ' (VF)';
-                    }else if(epi.id.includes('vostfr')){
+                    } else if (epi.id.includes('vostfr')) {
                         epi.title += ' (VOSTFR)';
                     }
                     epi.url = '';
-                    if(channel ==  'crunchyroll'){
+                    if (channel == 'crunchyroll') {
                         epi.url = '/crunchyroll/watch/' + epi.id;
-                    } else if(channel ==  'adn'){
+                    } else if (channel == 'adn') {
                         epi.url = '/adn/watch/' + epi.id;
-                    } else if(channel ==  'neko-sama'){
+                    } else if (channel == 'neko-sama') {
                         epi.url = '/nekosama/watch/' + epi.id;
                     }
                     epi.duration_ms = epi.duration_ms;
                     epi.duration_ms = Math.floor(epi.duration_ms / 60000);
                 }
+            }
         }
-    }
     } else if (type == 'movie_listing') {
         for (const epi of result.items) {
-            epi.url="";
-            if(channel ==  'crunchyroll'){
+            epi.url = "";
+            if (channel == 'crunchyroll') {
                 epi.url = '/crunchyroll/watch/' + epi.id;
-            } else if(channel ==  'adn'){
+            } else if (channel == 'adn') {
                 epi.url = '/adn/watch/' + epi.id;
-            } else if(channel ==  'neko-sama'){
+            } else if (channel == 'neko-sama') {
                 epi.url = '/nekosama/watch/' + epi.id;
             }
             epi.duration_ms = epi.duration_ms;
@@ -144,7 +109,7 @@ async function search(query){
     const options = {
         method: 'GET',
         headers: {
-            'User-Agent': 'Kamyroll/0.3.6 Tauri-Rust',
+            'User-Agent': 'Kamyroll/1.0.1 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         }
     };
@@ -212,6 +177,15 @@ async function getVideos(id) {
     let videos = [];
     let subtitles = [];
     var streams = '';
+    const style = {
+        /* filter : 'drop-shadow(2px 2px 1px black)',
+        fontSize : '45px',
+        letterSpacing : '-2px',
+        fontFamily : '"Trebuc Bold", "Trebuc", "Helvetica", "Arial", sans-serif',
+        textShadow : '2px 2px 1px black',
+        '-webkit-text-stroke': '2px black',
+        'padding-bottom' : '20px', */
+    };
     const url = `https://api.kamyroll.tech/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=ass`;
     const headers = {
         'Authorization': 'Bearer ' + token,
@@ -233,13 +207,7 @@ async function getVideos(id) {
                 for (let subs of result.subtitles) {
                     let lang = subs.locale;
                     let link = subs.url;
-                    if (link.includes('kamyroll')) {
-                        link = 'https://corsproxy.io/?' + encodeURIComponent(link);
-                    }
                     let type = subs.format;
-                    let style = {
-                        fontSize: '40px'
-                    };
                     let finalData = new Subs(lang, link, style, type);
                     subtitles.push(finalData);
             }
@@ -264,14 +232,7 @@ async function getVideos(id) {
                 for (let subs of result.subtitles) {
                     let lang = subs.locale;
                     let link = subs.url;
-                    if (link.includes('kamyroll')) {
-                        link = 'https://corsproxy.io/?' + encodeURIComponent(link);
-                    }
                     let type = subs.format;
-                    let style = {
-                        fontSize: '40px',
-                        paddingBottom: '10px'
-                    };
                     let finalData = new Subs(lang, link, style, type);
                     subtitles.push(finalData);
             }
@@ -303,7 +264,7 @@ async function getVideos(id) {
         }
 
         return {
-            streams:videos, 
+            streams:videos.reverse(), 
             subs: subtitles
         };
     } catch (e) {
