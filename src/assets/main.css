@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Trebuc';
+  src: url('/fonts/trebuc.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Trebuc Bold';
+    src: url('/fonts/TREBUCBD.ttf') format('truetype');
+}
+
+
 
 body::-webkit-scrollbar {
     display: none;
@@ -6766,16 +6777,7 @@ img {
     }
 }
 
-.erc-sunset-top-home-background {
-    background-image: url(/vrvweb/assets/img/index/top-home-mo.jpg);
-    background-size: cover;
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: -1
-}
+
 
 .erc-sunset-top-home-background:after {
     background: linear-gradient(-180deg, rgba(27, 26, 38, 0) 30%, #1b1a26 60%);
@@ -6789,7 +6791,7 @@ img {
 
 @media screen and (min-width:35.5em) {
     .erc-sunset-top-home-background {
-        background-image: url(/vrvweb/assets/img/index/top-home-tt.jpg);
+        background-image: url();
         background-position: 50%;
         background-size: cover;
         opacity: .2
@@ -6802,7 +6804,7 @@ img {
 
 @media screen and (min-width:50em) {
     .erc-sunset-top-home-background {
-        background-image: url(/vrvweb/assets/img/index/top-home-dt.jpg);
+        background-image: url();
         opacity: .4
     }
 }
@@ -8016,7 +8018,7 @@ screen and (min-width:35.5em) and (max-height:50rem) {
 }
 
 .erc-input-field.state-valid:before {
-    background: url(/vrvweb/assets/svg/input/check.svg) no-repeat
+    background: url(/img/check.svg) no-repeat
 }
 
 .erc-input-field.state-invalid:after {
@@ -8024,7 +8026,7 @@ screen and (min-width:35.5em) and (max-height:50rem) {
 }
 
 .erc-input-field.state-invalid:before {
-    background: url(/vrvweb/assets/svg/input/skull.svg) no-repeat
+    background: url(/img/skull.svg) no-repeat
 }
 
 .erc-input-field.state-invalid input {
@@ -8069,7 +8071,7 @@ screen and (min-width:35.5em) and (max-height:50rem) {
 }
 
 .erc-email-field.icon:before {
-    background: url(/vrvweb/assets/svg/input/mail.svg) no-repeat
+    background: url(/img/mail.svg) no-repeat
 }
 
 .erc-email-field.state-focus .faded-text {
@@ -8482,7 +8484,7 @@ screen and (min-width:35.5em) and (max-height:50rem) {
 }
 
 .erc-password-field.icon:before {
-    background: url(/vrvweb/assets/svg/input/bosskey.svg) no-repeat
+    background: url(/img/bosskey.svg) no-repeat
 }
 
 .erc-password-field.icon .toggle-password-visibility,
@@ -9345,7 +9347,7 @@ screen and (min-width:35.5em) and (max-height:50rem) {
 }
 
 .erc-box-toggle .toggle-option.state-active:before {
-    background: url(/vrvweb/assets/svg/input/check.svg) no-repeat;
+    background: url(/img/check.svg) no-repeat;
     content: "";
     display: block;
     height: 1.125rem;
@@ -10921,165 +10923,6 @@ body.state-scroll-fixed {
     }
 }
 
-.erc-subscription-flow {
-    position: relative
-}
-
-.erc-subscription-flow .erc-error-to-next-action,
-.erc-subscription-flow .spinner-view {
-    min-height: 20.625rem
-}
-
-.erc-subscription-flow .spinner-view {
-    align-items: center;
-    display: flex
-}
-
-.erc-subscription-flow .subscription-overlay {
-    align-items: center;
-    background: rgba(48, 46, 66, .88);
-    bottom: 0;
-    display: flex;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0
-}
-
-.erc-subscription-flow .erc-spinner {
-    text-rendering: optimizeLegibility;
-    color: #f9f9fa;
-    font-family: markpro, Helvetica Neue, helvetica, sans-serif;
-    font-size: .875rem;
-    font-weight: 500;
-    line-height: 1.43;
-    margin: 0 auto;
-    text-transform: uppercase
-}
-
-.erc-subscription-flow .erc-spinner svg {
-    margin-bottom: 1.25rem
-}
-
-@media screen and (min-width:35.5em) {
-    .erc-subscription-flow .erc-upsell-footer {
-        margin-top: -1.25rem
-    }
-}
-
-.erc-error-to-next-action {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 1.25rem
-}
-
-.erc-error-to-next-action .error-message {
-    margin-bottom: 1.25rem;
-    text-align: center
-}
-
-.gift-card-submit {
-    padding: 2.5rem 0
-}
-
-.gift-card-submit.redirect .gift-card-header h1 {
-    text-align: left
-}
-
-.gift-card-submit .erc-text-field {
-    margin-bottom: 2.5rem
-}
-
-.gift-card-submit .erc-text-field:before {
-    background: url(/vrvweb/assets/svg/input/cc-giftcard.svg) no-repeat;
-    content: "";
-    height: 1.5rem;
-    position: absolute;
-    right: 0;
-    top: 1.4375rem;
-    width: 1.5rem
-}
-
-.gift-card-submit .gift-card-header {
-    display: flex;
-    margin-bottom: 1.25rem
-}
-
-.gift-card-submit .gift-card-header h1 {
-    flex: 1;
-    font-size: 1.25rem;
-    line-height: 1.4;
-    text-align: center
-}
-
-.gift-card-submit .gift-card-header .secure-link,
-.gift-card-submit .gift-card-header h1 {
-    text-rendering: optimizeLegibility;
-    color: #f9f9fa;
-    font-family: markpro, Helvetica Neue, helvetica, sans-serif;
-    font-weight: 500;
-    text-transform: uppercase
-}
-
-.gift-card-submit .gift-card-header .secure-link {
-    background: transparent;
-    border: none;
-    color: #00b4ff;
-    cursor: pointer;
-    flex: 0 0 12.5rem;
-    font-size: .875rem;
-    line-height: 1.43;
-    padding: 0;
-    position: absolute;
-    right: 2.5rem;
-    text-align: right;
-    top: -2.85rem
-}
-
-.gift-card-submit .gift-card-header .right-arrow {
-    fill: #00b4ff;
-    height: 1.16875rem;
-    vertical-align: middle;
-    width: 1.3125rem
-}
-
-.gift-card-submit .account-balance {
-    background-color: #1b1a26;
-    margin-bottom: 1.875rem;
-    padding: 1.25rem 0;
-    text-align: center
-}
-
-.gift-card-submit .account-balance h1 {
-    font-size: .875rem;
-    font-weight: 500;
-    line-height: 1.43
-}
-
-.gift-card-submit .account-balance .value,
-.gift-card-submit .account-balance h1 {
-    text-rendering: optimizeLegibility;
-    color: #f9f9fa;
-    font-family: markpro, Helvetica Neue, helvetica, sans-serif
-}
-
-.gift-card-submit .account-balance .value {
-    font-size: 1.875rem;
-    font-weight: 200;
-    line-height: 1.33;
-    text-transform: uppercase
-}
-
-@media screen and (min-width:35.5em) {
-    .gift-card-submit .gift-card-header .secure-link {
-        position: static;
-        right: auto;
-        top: auto
-    }
-}
-
 .erc-cards-collection {
     display: flex;
     flex-wrap: wrap;
@@ -11746,250 +11589,6 @@ body.state-scroll-fixed {
         font-weight: 400;
         line-height: 1.5
     }
-}
-
-.erc-gopremium {
-    background-color: #1b1a26;
-    box-sizing: border-box;
-    min-height: 100vh;
-    padding-top: 4.5rem
-}
-
-.erc-gopremium,
-.erc-gopremium .gopremium-content {
-    position: relative
-}
-
-.erc-gopremium .gopremium-content:before {
-    background-image: url(/vrvweb/assets/img/gopremium/gopremium-t.png);
-    background-position: top;
-    background-size: cover;
-    bottom: 0;
-    content: "";
-    display: block;
-    left: 0;
-    opacity: .17;
-    position: absolute;
-    right: 0;
-    top: 0
-}
-
-.erc-gopremium .content {
-    box-sizing: border-box;
-    margin: 0 auto;
-    max-width: 50rem;
-    padding: 2.5rem 1.25rem 3.125rem;
-    position: relative;
-    text-align: center;
-    width: 100%
-}
-
-.erc-gopremium .vrv-premium-logo {
-    height: 2.1875rem;
-    width: 17.5rem
-}
-
-.erc-gopremium .description {
-    color: #b0aebb;
-    font-family: rubik, Helvetica Neue, helvetica, sans-serif;
-    font-size: .8rem;
-    font-weight: 400;
-    line-height: 1.41;
-    margin-bottom: 1.25rem
-}
-
-.erc-gopremium .price-indent {
-    color: #f9f9fa
-}
-
-.erc-gopremium .channel-logo-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 1rem auto;
-    max-width: 21rem;
-    padding: 0 .9375rem
-}
-
-.erc-gopremium .channel-logo-item {
-    margin: .3125rem
-}
-
-.erc-gopremium .channel-logo-item img {
-    width: 2.5rem
-}
-
-.erc-gopremium .gopremium-bottom {
-    background-color: #1b1a26;
-    padding: .625rem 0 0;
-    position: relative
-}
-
-.erc-gopremium .gopremium-benefits-list {
-    margin-bottom: 2.5rem;
-    padding: 0 2.5rem
-}
-
-.erc-gopremium .gopremium-benefits-item {
-    margin: 1.875rem auto 0;
-    max-width: 18.4375rem;
-    text-align: center
-}
-
-.erc-gopremium .gopremium-benefits-item:last-child .benefits-title {
-    margin-bottom: 0
-}
-
-.erc-gopremium .icon-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-bottom: .625rem
-}
-
-.erc-gopremium .benefits-title {
-    text-rendering: optimizeLegibility;
-    color: #f9f9fa;
-    font-family: markpro, Helvetica Neue, helvetica, sans-serif;
-    font-size: .875rem;
-    font-weight: 500;
-    line-height: 1.43;
-    margin-bottom: .25rem;
-    text-transform: uppercase
-}
-
-.erc-gopremium .benefits-description {
-    color: #b0aebb;
-    font-family: rubik, Helvetica Neue, helvetica, sans-serif;
-    font-size: .8rem;
-    font-weight: 400;
-    line-height: 1.41
-}
-
-.erc-gopremium .icon {
-    fill: #fd0;
-    height: 2.5rem
-}
-
-.erc-gopremium .benefit-price {
-    font-size: 1.875rem;
-    font-weight: 200;
-    line-height: 1.33;
-    text-transform: uppercase;
-    text-transform: none
-}
-
-.erc-gopremium .benefit-price,
-.erc-gopremium .benefit-tax-notify {
-    text-rendering: optimizeLegibility;
-    color: #f9f9fa;
-    font-family: markpro, Helvetica Neue, helvetica, sans-serif
-}
-
-.erc-gopremium .benefit-tax-notify {
-    font-size: 1.25rem;
-    font-weight: 500;
-    line-height: 1.4
-}
-
-@media screen and (min-width:35.5em) {
-    .erc-gopremium {
-        display: flex;
-        flex-direction: column
-    }
-
-    .erc-gopremium .content {
-        padding: 8.875rem 1.25rem
-    }
-
-    .erc-gopremium .gopremium-content {
-        align-items: center;
-        display: flex;
-        flex: 1
-    }
-
-    .erc-gopremium .gopremium-benefits-list {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin: 0 auto 1.25rem;
-        max-width: 65.63rem;
-        padding: 0
-    }
-
-    .erc-gopremium .gopremium-bottom {
-        background-color: #1b1a26;
-        flex-shrink: 1
-    }
-
-    .erc-gopremium .gopremium-benefits-item {
-        max-width: 11.875rem;
-        padding: 0 .625rem
-    }
-
-    .erc-gopremium .description {
-        color: #b0aebb;
-        font-family: rubik, Helvetica Neue, helvetica, sans-serif;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        margin: 0 auto 1.25rem;
-        max-width: 33.75rem
-    }
-
-    .erc-gopremium .channel-logo-list {
-        max-width: 30rem;
-        padding: 0
-    }
-
-    .erc-gopremium .channel-logo-item {
-        margin: .4375rem
-    }
-
-    .erc-gopremium .channel-logo-item img {
-        width: 3.125rem
-    }
-}
-
-@media screen and (min-width:50em) {
-    .erc-gopremium .channel-logo-list {
-        max-width: 39rem
-    }
-
-    .erc-gopremium .gopremium-content:before {
-        background-image: url(/vrvweb/assets/img/gopremium/gopremium-dt.png)
-    }
-
-    .erc-gopremium .content {
-        padding: 7.5rem 1.25rem
-    }
-
-    .erc-gopremium .vrv-premium-logo {
-        height: 3.625rem;
-        width: 28.75rem
-    }
-
-    .erc-gopremium .gopremium-benefits-item {
-        flex: 0 0 20%
-    }
-}
-
-@media screen and (min-width:50em) and (min-height:40.625rem) {
-    .erc-gopremium .gopremium-benefits-item {
-        max-width: 11.875rem
-    }
-
-    .erc-gopremium .channel-logo-item {
-        margin: .3125rem
-    }
-
-    .erc-gopremium .channel-logo-item img {
-        width: 3.75rem
-    }
-}
-
-.erc-bundle-button .state-premium {
-    background: #ffea62;
-    cursor: default
 }
 
 .erc-search-filter {
@@ -12671,11 +12270,6 @@ body.state-scroll-fixed {
     margin-bottom: .25rem
 }
 
-.erc-comment .bg-comment-spoiler {
-    background: url(/vrvweb/assets/img/comment/spoiler_bg.png) repeat-x;
-    background-size: 1.5rem;
-    height: 1.125rem
-}
 
 .erc-comment .expand-comment {
     background: none;
@@ -14314,7 +13908,7 @@ body.state-scroll-fixed {
 
 .erc-hero-card-background-overlay.bottom-angled:after,
 .erc-hero-card-background-overlay.top-angled:before {
-    background-image: url(/src/assets/hero_lead_triangle.svg)
+    background-image: url(/img/hero_lead_triangle.svg)
 }
 
 .erc-hero-card-background-overlay .background-gradient {
@@ -15690,7 +15284,7 @@ body.state-scroll-fixed {
 }
 
 .top-home-container .background-image {
-    background-image: url(/vrvweb/assets/img/index/top-home-mo.jpg);
+    background-image: url();
     background-size: cover;
     bottom: 0;
     left: 0;
@@ -15806,7 +15400,7 @@ body.state-scroll-fixed {
     }
 
     .top-home-container .background-image {
-        background-image: url(/vrvweb/assets/img/index/top-home-tt.jpg);
+        background-image: url();
         background-position: 50%;
         background-size: cover;
         opacity: .2
@@ -15853,10 +15447,6 @@ body.state-scroll-fixed {
         display: none
     }
 
-    .top-home-container .background-image {
-        background-image: url(/vrvweb/assets/img/index/top-home-dt.jpg);
-        opacity: .4
-    }
 
     .top-home-container .info-text {
         max-width: 32.44rem
@@ -15906,13 +15496,6 @@ body.state-scroll-fixed {
     text-align: center
 }
 
-.bottom-home-container .combo-pack-section {
-    background: url(/vrvweb/assets/img/index/combo-upsell-art-small.jpg) no-repeat top;
-    background-size: 100% auto;
-    padding-top: 2.5rem;
-    position: relative;
-    text-align: center
-}
 
 .bottom-home-container .triangle {
     display: none
@@ -15972,12 +15555,6 @@ body.state-scroll-fixed {
 }
 
 @media screen and (min-width:35.5em) {
-    .bottom-home-container .combo-pack-section {
-        background: url(/vrvweb/assets/img/index/combo-upsell-art.jpg) no-repeat 0 0;
-        background-size: 100% auto;
-        min-height: 28.125rem;
-        position: relative
-    }
 
     .bottom-home-container .triangle {
         fill: #1b1a26;

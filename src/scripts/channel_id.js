@@ -1,7 +1,7 @@
 import {reactive} from 'vue';
-import adn_logo from '/src/assets/adn.svg';
-import crunchyroll_logo from '/src/assets/crunchyroll.svg';
-import nekosama_logo from '/src/assets/neko-sama.svg';
+import adn_logo from '/img/adn.svg';
+import crunchyroll_logo from '/img/crunchyroll.svg';
+import nekosama_logo from '/img/neko-sama.svg';
 
 
 const CRUNCHYROLL = 'crunchyroll';

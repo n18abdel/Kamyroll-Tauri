@@ -1,6 +1,6 @@
 <script setup>
 import {fetch ,Body} from '@tauri-apps/api/http';
-import { invoke } from '@tauri-apps/api/tauri'
+
 </script>
 
 
@@ -157,9 +157,14 @@ export default {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
                         },
-                        body: Body.text(JSON.stringify(params))
+                        body: Body.text(JSON.stringify(params)),
+                        timeout : 2000
                     });
                     let trends = [];
+                    if(response.status != 200) {
+                        console.log('Error: ' + response.status);
+                        return [];
+                    }
                     for (var x = 0; x < response.data.data.Page.media.length; x++) {
                         let tMedia = response.data.data.Page.media[x];
                         let providers = tMedia.externalLinks;
@@ -248,9 +253,7 @@ export default {
                 }
                 this.trending = trends;
             }
-            
             this.random = '' + getRandomInt(0, this.trending.length);
-            await invoke('close_splashscreen');
     }
 
 }

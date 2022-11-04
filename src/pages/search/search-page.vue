@@ -1,8 +1,3 @@
-<script setup>
-
-import spinner from '/src/assets/loading.svg';
-
-</script>
 <template>
     <div class="search">
         <div class="erc-search">
@@ -28,7 +23,7 @@ import spinner from '/src/assets/loading.svg';
             </div>
             <div class="search-results-wrapper state-search-results">
                 <div class="loading" >
-                    <div class="loading__spinner" v-show="loading"><img :src="spinner" alt="loading"></div>
+                    <div class="loading__spinner" v-show="loading"><img src="/img/loading.svg" alt="loading"></div>
                 </div>
                 <div class="content" v-if="results != null">
                     <div class="search-result-collection">

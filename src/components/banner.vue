@@ -1,6 +1,8 @@
 <script setup>
 
 import {channel,channels,getChannelinUse,setChannel} from '../scripts/channel_id';
+import k_logo from '/img/k.png';
+import kamyroll_logo from '/img/kamyroll_logo.svg';
 
 </script>
 <template>
@@ -11,7 +13,7 @@ import {channel,channels,getChannelinUse,setChannel} from '../scripts/channel_id
         <div id="below" class="flex-1 flex">
           <div class="flex-none flex items-center">
             <a href="/">
-              <img class="lg:block h-8 w-auhref " src="/src/assets/kamyroll_logo.svg" alt="Kamyroll">
+              <img class="lg:block h-8 w-auhref " src="/kamyroll_logo.svg" alt="Kamyroll">
             </a>
           </div>
           <div class="hidden sm:block sm:ml-6">
@@ -49,7 +51,7 @@ import {channel,channels,getChannelinUse,setChannel} from '../scripts/channel_id
             <div tabindex="0" class="nav-item-clickable">
 
             </div>
-            <a tabindex="0" :style="{'background-color':channelInUse.color}" class="item-logo" src="/src/assets/kamyroll_logo.svg">
+            <a tabindex="0" :style="{'background-color':channelInUse.color}" class="item-logo" src="/kamyroll_logo.svg">
               <img
                 class="icon-home" :src="channelInUse.icon">
               </a>
@@ -90,9 +92,9 @@ import {channel,channels,getChannelinUse,setChannel} from '../scripts/channel_id
         </ul>
       </div>
       <div class="header-center">
-        <a tabindex="0" class="erc-logo" href="/"><img class="logo-full hidden-mobile" src="/src/assets/kamyroll_logo.svg">
+        <a tabindex="0" class="erc-logo" href="/"><img class="logo-full hidden-mobile" :src="kamyroll_logo">
             
-          <img class="logo-short hidden-desktop c-svg-vrv-icon" src="/src/assets/k.png" >
+          <img class="logo-short hidden-desktop c-svg-vrv-icon" :src="k_logo" >
         </a>
       </div>
       <div class="header-right">

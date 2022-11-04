@@ -1,11 +1,7 @@
-<script setup>
-  import loading from '../../assets/loading.svg';
-</script>
-
 <template>
   <div class="loading" v-if="episodes == null">
     <div class="loading__spinner">
-      <img :src="loading" alt="loading">
+      <img src="/img/loading.svg" alt="loading">
     </div>
   </div>
   <div v-if="episodes != null" class="backdrop-blur-sm hover:backdrop-blur-lg">
@@ -238,7 +234,6 @@ import {channelPage} from '../../scripts/channel_id';
       const slug = this.slug;
       console.log(slug);
       this.meta = await getMetadata(slug);
-      localStorage.setItem('meta', JSON.stringify(this.meta));
       let episodes = await getEpisodes(slug,this.meta.__class__);
       localStorage.setItem('episodes', JSON.stringify(episodes));
       this.type = this.meta.__class__;

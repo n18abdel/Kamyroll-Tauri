@@ -1,7 +1,7 @@
 <script setup>
-import adn_logo from '../assets/adn.svg';
-import crunchyroll_logo from '../assets/crunchyroll.svg';
-import neko_logo from '../assets/neko-sama.svg';
+import adn_logo from '/img/adn.svg';
+import crunchyroll_logo from '/img/crunchyroll.svg';
+import neko_logo from '/img/neko-sama.svg';
 </script>
 <template>
     <div v-if="channel == 'neko-sama'">
@@ -76,7 +76,7 @@ import neko_logo from '../assets/neko-sama.svg';
                             </div>
                             <div class="body-section">
                                 <div class="poster-image"><img
-                                        :src="episode.images.thumbnail[0].source"
+                                        :src="episode.images.poster_tall[3].source"
                                         class="c-content-image" :alt="episode.series_title"></div>
                                 <div class="info">
                                     <div class="description-metadata">
@@ -97,7 +97,7 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
-        <v-lazy>
+        <div v-if="episodes.length > 1 || counter >= 5">
         <div class="erc-shelf-feed-item" id="browse_popular">
             <h1 class="feed-title">Most Popular</h1>
             <div class="erc-cards-collection">
@@ -115,7 +115,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -151,7 +151,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -187,7 +187,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -223,7 +223,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -259,7 +259,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -295,7 +295,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -320,8 +320,7 @@ import neko_logo from '../assets/neko-sama.svg';
                 
             </div>
         </div>
-        </v-lazy>
-        <v-lazy>
+        
         <div class="erc-shelf-feed-item" id="GYXM79M56">
             <h1 class="feed-title">DRAGON QUEST The Adventure of Dai</h1>
             <div class="erc-cards-collection">
@@ -339,7 +338,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -373,8 +372,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
-        </v-lazy>
-        <v-lazy>
+        
+        
         <div class="erc-shelf-feed-item" id="G8DHV7W3N">
             <h1 class="feed-title">CUE!</h1>
             <div class="erc-cards-collection">
@@ -392,7 +391,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -430,8 +429,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
-        </v-lazy>
-        <v-lazy>
+        
+        
         <div class="erc-shelf-feed-item" id="browse_newly">
             <h1 class="feed-title">Just Updated</h1>
             <div class="erc-cards-collection">
@@ -449,7 +448,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -485,7 +484,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -521,7 +520,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -557,7 +556,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -593,7 +592,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -629,7 +628,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -653,8 +652,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
                 
             </div>
-        </div> </v-lazy>
-        <v-lazy>
+        </div> 
+        
         <div class="erc-shelf-feed-item" id="G64PEME0R">
             <h1 class="feed-title">Historical figures but not really</h1>
             <div class="erc-cards-collection">
@@ -672,7 +671,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -710,7 +709,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -747,7 +746,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -783,7 +782,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -807,8 +806,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
-    </v-lazy>
-    <v-lazy>
+    
+    
         <div class="erc-shelf-feed-item" id="G0XHWM380">
             <h1 class="feed-title">Seirei Gensouki: Spirit Chronicles</h1>
             <div class="erc-cards-collection">
@@ -826,7 +825,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -858,8 +857,8 @@ import neko_logo from '../assets/neko-sama.svg';
                     </div>
                 </div>
             </div>
-        </div></v-lazy>
-    <v-lazy>
+        </div>
+    
         <div class="erc-shelf-feed-item" id="GY8VEQ95Y">
             <h1 class="feed-title">DARLING in the FRANXX</h1>
             <div class="erc-cards-collection">
@@ -877,7 +876,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -909,8 +908,8 @@ import neko_logo from '../assets/neko-sama.svg';
                     </div>
                 </div>
             </div>
-        </div>  </v-lazy>
-    <v-lazy>
+        </div>  
+    
         <div class="erc-shelf-feed-item" id="GYG53DGDY">
             <h1 class="feed-title">Not saying it was aliens... but it was ALIENS</h1>
             <div class="erc-cards-collection">
@@ -928,7 +927,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -964,7 +963,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1000,7 +999,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1036,7 +1035,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1072,7 +1071,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1108,7 +1107,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1132,8 +1131,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
                 
             </div>
-        </div> </v-lazy>
-        <v-lazy>
+        </div> 
+        
         <div class="erc-shelf-feed-item" id="GRDQN479Y">
             <h1 class="feed-title">Haven’t You Heard? I’m Sakamoto</h1>
             <div class="erc-cards-collection">
@@ -1151,7 +1150,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1180,8 +1179,8 @@ import neko_logo from '../assets/neko-sama.svg';
                     </div>
                 </div>
             </div>
-        </div></v-lazy>
-        <v-lazy>
+        </div>
+        
         <div class="erc-shelf-feed-item" id="GYP8DP1MY">
             <h1 class="feed-title">JoJo's Bizarre Adventure</h1>
             <div class="erc-cards-collection">
@@ -1199,7 +1198,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1233,8 +1232,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
-    </v-lazy>
-    <v-lazy>
+    
+    
         <div class="erc-shelf-feed-item" id="G6EXQQGGR">
             <h1 class="feed-title">A Whole New World</h1>
             <div class="erc-cards-collection">
@@ -1252,7 +1251,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1288,7 +1287,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1324,7 +1323,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1362,7 +1361,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1399,7 +1398,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1435,7 +1434,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1460,8 +1459,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 
             </div>
         </div>
-    </v-lazy>
-    <v-lazy>
+    
+    
         <div class="erc-shelf-feed-item" id="GRVNXWQZY">
             <h1 class="feed-title">March comes in like a lion</h1>
             <div class="erc-cards-collection">
@@ -1479,7 +1478,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1511,8 +1510,8 @@ import neko_logo from '../assets/neko-sama.svg';
                 </div>
             </div>
         </div>
-    </v-lazy>
-    <v-lazy>
+    
+    
         <div class="erc-shelf-feed-item" id="GRKEQXWWR">
             <h1 class="feed-title">Space Oddity</h1>
             <div class="erc-cards-collection">
@@ -1530,7 +1529,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1566,7 +1565,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1602,7 +1601,7 @@ import neko_logo from '../assets/neko-sama.svg';
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);">
                                         </div><img class="channel-icon"
-                                            src="https://beta.crunchyroll.com/imgsrv/display/thumbnail/92x92/catalog/crunchyroll/2f608375a63408fd2a808049ebe1177d.png"
+                                            :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
                                     </div>
                                 </a></div>
@@ -1625,10 +1624,9 @@ import neko_logo from '../assets/neko-sama.svg';
                     </div>
                 </div>
             </div>
-        </div> </v-lazy>
-
-    
+        </div> 
     </div>
+</div>
 
     <!-- <div v-else-if="channel == 'adn'">
         <div  class="erc-shelf-feed-item" id="last-episodes">
@@ -1738,7 +1736,8 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
         data() {
             return {
                 episodes: [],
-                channel: localStorage.getItem('channel')
+                channel: localStorage.getItem('channel'),
+                counter : 0
             }
         },
         methods: {
@@ -1767,7 +1766,14 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
                     if(response.status === 200){
                         const data = response.data.shows;
                         for (let i = 0; i < data.length; i++) {
-                            data[i].urlPath = "/adn/" + data[i].id;
+                            let series_id = data[i].id;
+                            let url = `https://gw.api.animationdigitalnetwork.fr/video/show/${series_id}/?offset=0&limit=-1&order=desc`;
+                            const response = await fetch(url, {
+                                responseType: 1
+                            });
+                            
+                            data[i].urlPath = "/adn/watch/" + response.data.videos[0].id;
+                            data[i].imageHorizontal2x = response.data.videos[0].image2x;
                             this.episodes.push(data[i]);
                         }
                     }
@@ -1784,7 +1790,16 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
         },
         beforeMount: function () {
             this.getEpisodes();
-        }
+        },
+        mounted: function () {
+            if (this.channel == 'crunchyroll') {
+                while (this.counter >= 5) {
+                    setInterval(() => {
+                        this.counter++;
+                    }, 1000);
+                }
+            }
+        },
     }
     
 </script>
