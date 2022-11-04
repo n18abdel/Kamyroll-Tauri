@@ -93,6 +93,7 @@
                         switch: true,
                         onSwitch: function (item) {
                             item.tooltip = item.switch ? 'Hide' : 'Show';
+                            art.query('.libassjs-canvas-parent').style.display = item.switch ? 'none' : 'block'
                             this.subtitle.show = !item.switch;
                             return !item.switch;
                         },
