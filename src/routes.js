@@ -4,7 +4,6 @@ import {
 } from "vue-router";
 
 import Home from './pages/home/home-page.vue';
-import List from './pages/contact/list-page.vue';
 import Kamyroll from './pages/info/kamyroll-page.vue';
 import Error from './pages/error/error-page.vue';
 import Watch from './pages/watch/watch-page.vue';
@@ -17,10 +16,6 @@ export default createRouter({
   routes: [{
       path: '/',
       component: Home
-    },
-    {
-      path: '/liste',
-      component: List
     },
     {
       path: '/crunchyroll/:id',
