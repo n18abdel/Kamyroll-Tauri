@@ -6,7 +6,7 @@
             </div>
             <Artplayer v-else @get-instance="getInstance" :option="option" :subs="subs" :videos="videos" />
             <div class="video-content" >
-                <div class="content" v-if="JSON.stringify(metadat).length > 10">
+                <div class="content" v-if="loaded">
                     <div class="media-metadata"><a class="poster-image-wrapper" :href="metadat.url"><span
                                 class="poster-hover-layer">to
                                 series</span><img :src="metadat.images?.poster_tall[image].source" class="c-content-image"
@@ -52,6 +52,7 @@ export default {
             metadat: '',
             image: 0,
             nextepisode: '',
+            loaded : false,
             option: {}
         }
     },
@@ -103,6 +104,7 @@ export default {
         let sources = await getVideos(this.id);
         this.videos = sources.streams;
         this.subs = sources.subs;
+        this.loaded = true;
     }
 }
 </script>
