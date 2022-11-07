@@ -203,7 +203,7 @@
                 tooltip: 'Show',
                 switch: eval(localStorage.miniProgressBar),
                 onSwitch: function (item) {
-                    item.tooltip = eval(localStorage.miniProgressBar) ? 'Show' : 'Hide';
+                    item.tooltip = eval(localStorage.miniProgressBar) ? 'Off' : 'On';
                     item.switch = !eval(localStorage.miniProgressBar);
                     if(!item.switch){
                         localStorage.setItem('miniProgressBar',false);
