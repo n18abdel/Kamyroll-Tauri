@@ -35,7 +35,7 @@
                 <span>Start Watching</span>
               </a>
               <a role="button" tabindex="0" class="action-button c-button -type-one" v-else data-t="watching-btn" :href="episodes.items[number].episodes[0].url">
-                <svg class="" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-t="play-line-svg">
+                <svg class="" viewBox="3 -1 10 22" xmlns="http://www.w3.org/2000/svg" data-t="play-line-svg">
                   <path d="M0,0 L0,20 L20,10 L0,0 Z M2,3 L16,10 L2,17 L2,3 Z"></path>
                 </svg>
                 <span>Start Watching</span>
@@ -51,7 +51,7 @@
                 <div :class="sortOpen  ?'c-dropdown c-dropdown--open erc-sort-dropdown':'c-dropdown erc-sort-dropdown'"
                   @click="sortOpen = !sortOpen">
                   <div class="c-dropdown-trigger sort-dropdown-trigger" ><svg class="sort-icon"
-                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" data-t="sort-svg">
+                      xmlns="http://www.w3.org/2000/svg" viewBox="3 -1 10 22" data-t="sort-svg">
                       <path d="M2,5.2V2H18V5.2Zm0,6.4V8.4H12.667v3.2ZM2,18V14.8H6.267V18Z"></path>
                     </svg>
                     <div class="sort-title">Sort</div>

@@ -137,6 +137,14 @@ img {
     border-style: none
 }
 
+*, ::before, ::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
+    border-radius: 10px;
+}
+
 svg:not(:root) {
     overflow: hidden
 }
@@ -16902,6 +16910,7 @@ body.state-scroll-fixed {
 }
 
 .watch-page-container {
+    padding-top: 70px;
     display: flex;
     flex-direction: column;
     min-width: 20rem
