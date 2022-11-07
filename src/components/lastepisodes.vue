@@ -4,6 +4,11 @@ import crunchyroll_logo from '/img/crunchyroll.svg';
 import neko_logo from '/img/neko-sama.svg';
 </script>
 <template>
+    <div class="erc-shelf-feed-item" v-if="!(episodes.length > 1)">
+        <div class="erc-cards-collection" >
+            <img src="/img/loading.svg" alt="loading" style ="left:50%; right: 50%; position: absolute; transform: translate(-50%, 50%);">
+        </div>
+    </div>
     <div v-if="channel == 'neko-sama'">
         <div v-if="episodes.length > 1" class="erc-shelf-feed-item" id="last-episodes">
         <h1 class="feed-title">Last Episodes</h1>
@@ -1626,8 +1631,7 @@ import neko_logo from '/img/neko-sama.svg';
             </div>
         </div> 
     </div>
-</div>
-
+    </div>
     <!-- <div v-else-if="channel == 'adn'">
         <div  class="erc-shelf-feed-item" id="last-episodes">
             <h1 class="feed-title">Last Episodes</h1>
@@ -1771,7 +1775,6 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
                             const response = await fetch(url, {
                                 responseType: 1
                             });
-                            
                             data[i].urlPath = "/adn/watch/" + response.data.videos[0].id;
                             data[i].imageHorizontal2x = response.data.videos[0].image2x;
                             this.episodes.push(data[i]);

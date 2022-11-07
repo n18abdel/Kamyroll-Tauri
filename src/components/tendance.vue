@@ -5,6 +5,11 @@ import {fetch ,Body} from '@tauri-apps/api/http';
 
 
 <template>
+        <div class="erc-feed-container" v-if="!(trending.length >= 1)">
+            <article class="erc-hero-card" >
+                <img src="/img/loading.svg" alt="loading" style ="left:50%; right: 50%; position: absolute; transform: translate(-50%, -30%);">
+            </article>
+        </div>
         <div class="crunchyroll" v-if="channel=='crunchyroll' && trending.length >= 1 " >
             <div class="erc-feed-container">
             <article class="erc-hero-card" >
@@ -29,7 +34,7 @@ import {fetch ,Body} from '@tauri-apps/api/http';
                                 class="go-watch c-button -type-one-weak" data-t="watching-btn"
                                 :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
-                                    <polygon points="0 0 0 20 20 10"></polygon>
+                                    <polygon points="4 3 4 20 20 10"></polygon>
                                 </svg><span>Start Watching</span></a></div>
                     </section>
                 </div>
@@ -57,9 +62,9 @@ import {fetch ,Body} from '@tauri-apps/api/http';
                         <p class="description">{{trending[random].description}}</p>
                         <div class="watch-actions"><a role="button" tabindex="0"
                                 class="go-watch c-button -type-one-weak" data-t="watching-btn"
-                                :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
+                                :href="trending[random].link"><svg class="" viewBox="3 -1 10 22"
                                     xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
-                                    <polygon points="0 0 0 20 20 10"></polygon>
+                                    <polygon points="4 3 4 20 20 10"></polygon>
                                 </svg><span>Start Watching</span></a></div>
                     </section>
                 </div>
@@ -90,7 +95,7 @@ import {fetch ,Body} from '@tauri-apps/api/http';
                                 class="go-watch c-button -type-one-weak" data-t="watching-btn"
                                 :href="trending[random].link"><svg class="" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg" data-t="play-arrow-svg">
-                                    <polygon points="0 0 0 20 20 10"></polygon>
+                                    <polygon points="4 3 4 20 20 10"></polygon>
                                 </svg><span>Start Watching</span></a></div>
                     </section>
                 </div>
