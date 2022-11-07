@@ -12,6 +12,23 @@ import banner from './components/banner.vue'
   </v-app>
 </template>
 
+<script>
+export default {
+  methods: {
+    generateNewToken(){
+      localStorage.clear();
+    }
+  },
+  mounted : function (){
+    document.addEventListener('keydown', (event) => {
+      if (event.ctrlKey && event.key === 't') {
+        this.generateNewToken();
+      }
+    });
+  }
+}
+</script>
+
 
 <style>
 

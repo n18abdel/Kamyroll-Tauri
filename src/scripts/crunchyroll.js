@@ -10,12 +10,16 @@ import {
 } from './channel_id.js'
 import pStreamExtractor from './pstreamextractor.js'
 
-const token = localStorage.getItem('token');
+var token = localStorage.getItem('token');
+
 async function getLastEpisodes(){
+    if(token == null){
+        token = localStorage.getItem('token');
+    }
     let url = `https://api.kamyroll.tech/content/v1/updated?channel_id=${channel}&locale=en-US&limit=20`;
     const options = {
         headers: {
-            'User-Agent': 'Kamyroll/1.0.1 Tauri-Rust',
+            'User-Agent': 'Kamyroll/1.0.2 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         },
         method: "GET",
@@ -45,6 +49,9 @@ async function getLastEpisodes(){
 
 async function getEpisodes(slug, type) {
     channelPage();
+    if(token == null){
+        token = localStorage.getItem('token');
+    }
     let url = "";
     if (type == 'movie_listing') {
         url = `https://api.kamyroll.tech/content/v1/movies?id=${slug}&channel_id=${channel}`;
@@ -53,7 +60,7 @@ async function getEpisodes(slug, type) {
     }
     const options = {
         headers: {
-            'User-Agent': 'Kamyroll/1.0.1 Tauri-Rust',
+            'User-Agent': 'Kamyroll/1.0.2 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         },
         method: "GET",
@@ -105,11 +112,14 @@ async function getEpisodes(slug, type) {
 }
 
 async function search(query){
+    if(token == null){
+        token = localStorage.getItem('token');
+    }
     let results = [];
     const options = {
         method: 'GET',
         headers: {
-            'User-Agent': 'Kamyroll/1.0.1 Tauri-Rust',
+            'User-Agent': 'Kamyroll/1.0.2 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         }
     };
@@ -167,6 +177,9 @@ async function search(query){
 
 
 async function getVideos(id) {
+    if(token == null){
+        token = localStorage.getItem('token');
+    }
     let preferredLanguage = '';
     if(localStorage.getItem('preferredLanguage') == null){
         preferredLanguage = 'en-US';
@@ -176,7 +189,6 @@ async function getVideos(id) {
     const proxy_url = 'http://127.0.0.1:15411';
     let videos = [];
     let subtitles = [];
-    var streams = '';
     const style = {
         /* filter : 'drop-shadow(2px 2px 1px black)',
         fontSize : '45px',
@@ -198,7 +210,7 @@ async function getVideos(id) {
                 headers: headers
             });
             let result = response.data;
-            for (streams of result.streams) {
+            for (let streams of result.streams) {
                 var quality = streams.audio_locale + ' ' + streams.hardsub_locale;
                 var link = streams.url;
                 videos.push(new Videos(quality, link));

@@ -11,24 +11,33 @@ import 'vue-global-api/reactive';
 import 'vue-global-api/computed';
 import 'vue-global-api/watch';
 import 'vue-global-api/watchEffect';
-import { getToken,testToken, generateNewToken } from './scripts/token';
+import {testToken, generateNewToken } from './scripts/token';
 import { appWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/tauri';
 
-let token = await getToken();
 
-if (localStorage.getItem('token_valid') >  Date.now()) {
-    let tokenWorks = await testToken(localStorage.getItem('token'));
-    if (tokenWorks) {
-        console.log('token works');
-        let rndate = new Date();
-        // add 6 hours
-        rndate.setHours(rndate.getHours() + 6);
-        console.log(rndate);
-        localStorage.setItem('token_valid', rndate.getTime());
-    } else {
-        console.log('token does not work');
-        token = await generateNewToken();
+let first_launch = '';
+if(localStorage.getItem('miniProgressBar') == null){
+    localStorage.setItem('miniProgressBar', 'false');
+}
+if(localStorage.length == 0){
+    first_launch = true;
+} else {
+    first_launch = false;
+}
+console.log('first launch: ' + first_launch);
+if(!first_launch){ 
+    await invoke('close_splashscreen');
+} else {
+    console.log('first launch');
+    await generateNewToken();
+    await invoke('close_splashscreen');
+}
+
+if(((new Date(Date.now()) > new Date(eval(localStorage.getItem('token_valid')))))){
+    let test = await testToken(localStorage.getItem('token'));
+    if(test == false){
+        await generateNewToken();
     }
 }
 
@@ -38,12 +47,10 @@ if(appWindow.isFullscreen() && !window.location.href.includes('watch')){
 }
 
 const app = createApp(App);
-/* app.config.errorHandler = function(err, vm, info) {
+app.config.errorHandler = function(err, vm, info) {
     console.log(`Error: ${err.toString()}\nInfo: ${info}`);
 }
- */
+
 app.use(routes);
 app.use(vuetify);
 app.mount('#app');
-
-await invoke('close_splashscreen');
