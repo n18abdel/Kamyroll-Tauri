@@ -1,5 +1,9 @@
 import{fetch,Body} from "@tauri-apps/api/http";
 
+let token_expire = localStorage.getItem('token_expire');
+let token_valid = localStorage.getItem('token_valid');
+let currentDate = Math.floor(new Date().getTime() / 1000);
+
 async function testToken(token){
   const url = 'https://api.kamyroll.tech/content/v1/search?query=naruto&limit=1&channel_id=adn';
   const response = await fetch(url, {
@@ -24,8 +28,8 @@ function createRandomId (){
   }
 
 async function getToken() {
-    if(localStorage.getItem('token') == undefined || (new Date(eval(localStorage.getItem('token_expire'))) < new Date(Date.now()) && new Date(Date.now()) > new Date(eval(localStorage.getItem('token_valid'))))){
-        console.log('token expired');
+    if(localStorage.getItem('token') == undefined || Number(token_expire) < currentDate ){
+        console.log('token is undefined or expired');
         const url = 'https://api.kamyroll.tech/auth/v1/token';
         const APP_TOKEN = 'HMbQeThWmZq4t7w';
         let device_id = localStorage.getItem('device_id');
@@ -47,12 +51,11 @@ async function getToken() {
           let result = response.data;
           console.log(response);
           localStorage.setItem('token', result.access_token);
-          // expire token
           localStorage.setItem('token_expire', result.expires_in);
-          // token valid for 6 hours
           let rndate = new Date();
           rndate.setHours(rndate.getHours() + 6);
-          localStorage.setItem('token_valid', rndate.getTime());
+          rndate = Math.floor(rndate.getTime() / 1000);
+          localStorage.setItem('token_valid', rndate);
           return result.access_token;
     } catch (e) {
       console.log(e);
