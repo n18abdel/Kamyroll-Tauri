@@ -67,6 +67,11 @@
           } else {
                 this.option.fullscreen = true
           }
+          if(localStorage.getItem('miniProgressBar')=='true'){
+                this.option.miniProgressBar = true;
+          } else {
+                this.option.miniProgressBar = false;
+          }
           var hls = null;
           var art = new Artplayer({
             ...this.option,
@@ -133,7 +138,6 @@
               playsInline: true,
               autoPlayback: true,
               airplay: true,
-              miniProgressBar: false,
               theme: '#f00',
               icons: {
                   loading: `<img src="${loading}">`
@@ -188,11 +192,28 @@
                       tooltip: '+15',
                       click: function () {
                           this.forward = 15;
-                      },
+                    },
                   }
               ],
           });
           art.on('ready', () => {
+              art.setting.add({
+                // switch to disable the mini progress bar
+                html: 'Mini Progress Bar',
+                tooltip: 'Show',
+                switch: eval(localStorage.miniProgressBar),
+                onSwitch: function (item) {
+                    item.tooltip = eval(localStorage.miniProgressBar) ? 'Show' : 'Hide';
+                    item.switch = !eval(localStorage.miniProgressBar);
+                    if(!item.switch){
+                        localStorage.setItem('miniProgressBar',false);
+                    } else {
+                        localStorage.setItem('miniProgressBar',true);
+                    }
+                    window.location.reload();
+                    return !item.switch;
+                },
+              })
               art.controls.add({
                   width: 200,
                   position: 'right',
