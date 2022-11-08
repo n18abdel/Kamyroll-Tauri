@@ -64,15 +64,16 @@
           }
           if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
                 this.option.fullscreenWeb = true;
+                this.option.fullscreen = false;
           } else {
                 this.option.fullscreen = true
           }
-          if(localStorage.getItem('miniProgressBar')=='true'){
-                this.option.miniProgressBar = true;
+          if(localStorage.getItem('miniProgressBar')==='true'){
+                this.option.miniProgressBar = true;  
           } else {
-                this.option.miniProgressBar = false;
-                this.option.fullscreenWeb = true;
+                this.option.miniProgressBar = false;  
           }
+          this.option.fullscreenWeb = true;
           var hls = null;
           var art = new Artplayer({
             ...this.option,
