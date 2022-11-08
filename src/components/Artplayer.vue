@@ -64,14 +64,16 @@
           }
           if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
                 this.option.fullscreenWeb = true;
+                this.option.fullscreen = false;
           } else {
                 this.option.fullscreen = true
           }
-          if(localStorage.getItem('miniProgressBar')=='true'){
-                this.option.miniProgressBar = true;
+          if(localStorage.getItem('miniProgressBar')==='true'){
+                this.option.miniProgressBar = true;  
           } else {
-                this.option.miniProgressBar = false;
+                this.option.miniProgressBar = false;  
           }
+          this.option.fullscreenWeb = true;
           var hls = null;
           var art = new Artplayer({
             ...this.option,
@@ -200,15 +202,15 @@
               art.setting.add({
                 // switch to disable the mini progress bar
                 html: 'Mini Progress Bar',
-                tooltip: 'Show',
-                switch: eval(localStorage.miniProgressBar),
+                tooltip: localStorage.miniProgressBar === 'false' ? 'Off' : 'On',
+                switch: localStorage.miniProgressBar === 'false' ? false : true,
                 onSwitch: function (item) {
-                    item.tooltip = eval(localStorage.miniProgressBar) ? 'Off' : 'On';
-                    item.switch = !eval(localStorage.miniProgressBar);
-                    if(!item.switch){
-                        localStorage.setItem('miniProgressBar',false);
-                    } else {
+                    item.tooltip = localStorage.miniProgressBar ==='false' ? 'Off' : 'On';
+                    item.switch =  localStorage.miniProgressBar === 'false' ? false : true;
+                    if(item.switch == false){
                         localStorage.setItem('miniProgressBar',true);
+                    } else {
+                        localStorage.setItem('miniProgressBar',false);
                     }
                     window.location.reload();
                     return !item.switch;
