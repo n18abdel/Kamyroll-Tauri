@@ -232,7 +232,7 @@ async function getVideos(id) {
                 headers: headers
             });
             let result = response.data;
-            for (streams of result.streams) {
+            for (let streams of result.streams) {
                 let quality = streams.audio_locale + ' ' + streams.hardsub_locale;
                 let link = streams.url;
                 const video_url = link;
