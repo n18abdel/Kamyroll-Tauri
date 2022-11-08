@@ -66,6 +66,7 @@
                 this.option.fullscreenWeb = true;
           } else {
                 this.option.fullscreen = true
+                this.option.fullscreenWeb = true;
           }
           if(localStorage.getItem('miniProgressBar')=='true'){
                 this.option.miniProgressBar = true;
@@ -82,7 +83,7 @@
                     artplayerPluginAss({
                         debug: true, 
                         fonts: [`/fonts/TREBUCBD.ttf`],
-                        subUrl: this.subs[0].url,
+                        subUrl: this.subs[0].url.length > 0 ? this.subs[0].url : '',
                         workerUrl: `/ass-sub/subtitles-octopus-worker.js`,
                         legacyWorkerUrl: `/ass-sub/subtitles-octopus-worker-legacy.js`
                     })
@@ -158,6 +159,23 @@
               moreVideoAttr: {
                   crossOrigin: 'anonymous',
               },
+              settings: [{
+                // switch to disable the mini progress bar
+                html: 'Mini Progress Bar',
+                switch: localStorage.miniProgressBar === 'true' ? true : false,
+                tooltip: localStorage.miniProgressBar === 'false' ? 'Off' : 'On',
+                onSwitch: function (item) {
+                    item.tooltip = localStorage.miniProgressBar === 'false' ? 'On' : 'Off';
+                    item.switch = localStorage.miniProgressBar;
+                    if(!item.switch){
+                        localStorage.setItem('miniProgressBar',false);
+                    } else {
+                        localStorage.setItem('miniProgressBar',true);
+                    }
+                    window.location.reload();
+                    return !item.switch;
+                },
+              }],
               controls: [
                   //download button
                   {
@@ -197,23 +215,6 @@
               ],
           });
           art.on('ready', () => {
-              art.setting.add({
-                // switch to disable the mini progress bar
-                html: 'Mini Progress Bar',
-                tooltip: 'Show',
-                switch: eval(localStorage.miniProgressBar),
-                onSwitch: function (item) {
-                    item.tooltip = eval(localStorage.miniProgressBar) ? 'Off' : 'On';
-                    item.switch = !eval(localStorage.miniProgressBar);
-                    if(!item.switch){
-                        localStorage.setItem('miniProgressBar',false);
-                    } else {
-                        localStorage.setItem('miniProgressBar',true);
-                    }
-                    window.location.reload();
-                    return !item.switch;
-                },
-              })
               art.controls.add({
                   width: 200,
                   position: 'right',
