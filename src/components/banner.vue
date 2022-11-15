@@ -6,50 +6,12 @@ import kamyroll_logo from '/img/kamyroll_logo.svg';
 
 </script>
 <template>
-  <!-- <nav>
-    <div class="erc-header">
-    <div class="max-w-8xl">
-      <div id="navbar" class="relative flex items-center justify-between h-16" :style="style">
-        <div id="below" class="flex-1 flex">
-          <div class="flex-none flex items-center">
-            <a href="/">
-              <img class="lg:block h-8 w-auhref " src="/kamyroll_logo.svg" alt="Kamyroll">
-            </a>
-          </div>
-          <div class="hidden sm:block sm:ml-6">
-            <div class="flex space-x-4">
-             <a href="/search" id="search-buthrefn-disclosed" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                Recherche
-              </a>
-            </div>
-          </div>
-        </div>
-        <div v-if="inRightPlace">
-          <Channel></Channel>
-        </div>
-        <div v-else>
-          <v-btn id="back-buthrefn" @click="this.$router.go(-1)">Back</v-btn>
-        </div>
-        
-      </div>
-      
-    </div>
-    </div>
-
-    <div class="sm:hidden" id="mobile-menu">
-      <div class="px-2 pt-2 pb-3 space-y-1">
-        <a href="/search"
-          class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Recherche</a>
-      </div>
-    </div>
-  </nav> -->
   <div class="erc-header">
     <div class="header-content">
       <div class="header-left">
         <div class="erc-nav-header-item" v-if="inRightPlace" @click="toggleMenu">
           <div class="wrapper">
             <div tabindex="0" class="nav-item-clickable">
-
             </div>
             <a tabindex="0" :style="{'background-color':channelInUse.color}" class="item-logo" src="/kamyroll_logo.svg">
               <img
@@ -100,7 +62,7 @@ import kamyroll_logo from '/img/kamyroll_logo.svg';
       <div class="header-right">
         <ul class="erc-user-actions">
           <li class="user-actions-item">
-            <div class="erc-header-tile" @click="goToSearch">
+            <div class="erc-header-tile" v-if="!isSearch" @click="goToSearch">
               <div class="erc-header-svg">
                 <svg class="header-svg-icon" xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20" data-t="search-svg">
@@ -110,6 +72,13 @@ import kamyroll_logo from '/img/kamyroll_logo.svg';
                 </svg>
               </div>
             </div>
+            <ul class="erc-user-actions" v-else>
+              <li class="user-actions-item">
+                <div class="erc-header-tile" @click="$router.go(-1)">
+                  <div class="erc-header-svg"><svg class="header-svg-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="white" d="M19 11H7.14l3.63-4.36a1 1 0 1 0-1.54-1.28l-5 6a1.19 1.19 0 0 0-.09.15c0 .05 0 .08-.07.13A1 1 0 0 0 4 12a1 1 0 0 0 .07.36c0 .05 0 .08.07.13a1.19 1.19 0 0 0 .09.15l5 6A1 1 0 0 0 10 19a1 1 0 0 0 .64-.23a1 1 0 0 0 .13-1.41L7.14 13H19a1 1 0 0 0 0-2Z"/></svg></div>
+                </div>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -126,8 +95,9 @@ export default {
       inRightPlace: false,
       style : '',
       isOuvert : false,
-      channelInUse : getChannelinUse(channel),
+      channelInUse : getChannelinUse(localStorage.getItem('channel')),
       chan: localStorage.getItem('channel'),
+      isSearch : false,
     }
   },
   methods : {
@@ -156,6 +126,9 @@ export default {
   mounted: async function () {
     if(window.location.href.includes('/search') || window.location.href.split('/').pop().length == 0){
       this.inRightPlace = true;
+    }
+    if(window.location.href.includes('/search')){
+      this.isSearch = true;
     }
     if(channel=='crunchyroll'){
       this.style = 'background-color: #ff6600';
