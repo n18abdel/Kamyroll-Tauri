@@ -21,7 +21,12 @@ export default {
   },
   mounted : function (){
     document.addEventListener('keydown', (event) => {
+      // ctrl + t
       if (event.ctrlKey && event.key === 't') {
+        this.generateNewToken();
+      }
+      // cmd + t 
+      if (event.metaKey && event.key === 't') {
         this.generateNewToken();
       }
     });
