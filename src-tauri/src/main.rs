@@ -14,9 +14,11 @@ use tauri::{
    SystemTrayEvent,
 
 };
+use system_uri::{install, App, SystemUriError};
 use std::process::Command as StdCommand;
 use std::io::BufReader;
 use command_group::CommandGroup;
+use unwrap::unwrap;
 
 
 #[tauri::command]
@@ -66,11 +68,25 @@ async fn download_file <R: Runtime>(
   Ok(())
 }
  */
+fn install_schema() -> Result<(), SystemUriError> {
+  let exec = String::from(unwrap!(unwrap!(std::env::current_exe()).to_str()));
+  let app = App::new(
+    "com.nabil.kamyroll".to_string(),
+    "Kamyroll OSS".to_string(),
+    "Kamyroll".to_string(),
+    exec,
+    None,
+  );
+  let schema = "kamyroll".to_string();
 
+  install(&app, &[schema.clone()]).and_then(|()| Ok(()))
+}
 
 fn main() {
 
-
+  if let Err(ref e) = install_schema() {
+    println!("error: {}", e);
+  }
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let hide = CustomMenuItem::new("hide".to_string(), "Hide");
   let show = CustomMenuItem::new("show".to_string(),"Show");
@@ -144,7 +160,9 @@ fn main() {
   });
   Ok(())
 })
+    .plugin(tauri_plugin_window_state::Builder::default().build())
     .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */])
     .run(tauri::generate_context!())
+    
     .expect("failed to run app");
 }
