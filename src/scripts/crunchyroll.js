@@ -19,7 +19,7 @@ async function getLastEpisodes(){
     let url = `https://api.kamyroll.tech/content/v1/updated?channel_id=${channel}&locale=en-US&limit=20`;
     const options = {
         headers: {
-            'User-Agent': 'Kamyroll/1.0.2 Tauri-Rust',
+            'User-Agent': 'Kamyroll/1.0.4 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         },
         method: "GET",
@@ -60,7 +60,7 @@ async function getEpisodes(slug, type) {
     }
     const options = {
         headers: {
-            'User-Agent': 'Kamyroll/1.0.2 Tauri-Rust',
+            'User-Agent': 'Kamyroll/1.0.4 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         },
         method: "GET",
@@ -75,11 +75,11 @@ async function getEpisodes(slug, type) {
         for (let season of result.items) {
             for (let epi of season.episodes) {
                 if (epi.episode != 'Bande Annonce') {
+                    if(channel != "neko-sama"){
                     epi.title = `S${epi.season_number} Episode ${epi.episode}: ` + epi.title;
+                    }
                     if (epi.id.includes('vf')) {
                         epi.title += ' (VF)';
-                    } else if (epi.id.includes('vostfr')) {
-                        epi.title += ' (VOSTFR)';
                     }
                     epi.url = '';
                     if (channel == 'crunchyroll') {
@@ -119,7 +119,7 @@ async function search(query){
     const options = {
         method: 'GET',
         headers: {
-            'User-Agent': 'Kamyroll/1.0.2 Tauri-Rust',
+            'User-Agent': 'Kamyroll/1.0.4 Tauri-Rust',
             'Authorization': `Bearer ${token}`,
         }
     };

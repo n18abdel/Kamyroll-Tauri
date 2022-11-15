@@ -22,9 +22,6 @@ export default {
   components: {
     Trending,
     LastEpisodes
-  },
-  mounted: async function () {
-    console.log(Trending.$data)
   }
 }
 
