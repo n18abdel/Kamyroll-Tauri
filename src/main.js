@@ -24,11 +24,17 @@ if(localStorage.getItem('miniProgressBar') == null){
 
 
 if(Number(token_valid) < currentDate){
+    console.log('Testing the token validity');
     let result = await testToken(localStorage.getItem('token'));
     if(result == false){
+        console.log('Token is invalid, generating new token');
         await generateNewToken();
     } else {
-        console.log('token is still valid');
+        console.log('token is still valid, adding 6 hours to the token_valid date');
+        let curDatePlusSix = new Date();
+        curDatePlusSix.setHours(curDatePlusSix.getHours() + 6);
+        curDatePlusSix = Math.floor(curDatePlusSix.getTime() / 1000);
+        localStorage.setItem('token_valid', curDatePlusSix);
     }
 }
 
