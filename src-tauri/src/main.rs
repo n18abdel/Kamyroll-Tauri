@@ -31,7 +31,7 @@ async fn close_splashscreen(window: tauri::Window) {
   window.get_window("main").unwrap().show().unwrap();
 }
 
-/* #[tauri::command]
+/*  #[tauri::command]
 async fn download_file <R: Runtime>(
   window: tauri::Window<R>,
   args: Vec<String>,
@@ -67,7 +67,7 @@ async fn download_file <R: Runtime>(
   });
   Ok(())
 }
-
+   */
 
 #[cfg(not(target_os = "macos"))]
 fn install_schema() -> Result<(), SystemUriError> {
@@ -88,7 +88,7 @@ fn main() {
 
   if let Err(ref e) = install_schema() {
     println!("error: {}", e);
-    
+  }
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let hide = CustomMenuItem::new("hide".to_string(), "Hide");
   let show = CustomMenuItem::new("show".to_string(),"Show");
@@ -165,6 +165,6 @@ fn main() {
     .plugin(tauri_plugin_window_state::Builder::default().build())
     .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */])
     .run(tauri::generate_context!())
-    
+
     .expect("failed to run app");
 }
