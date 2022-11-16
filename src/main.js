@@ -15,6 +15,7 @@ import { testToken, generateNewToken } from './scripts/token';
 import { appWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/tauri';
 
+
 let token_valid = localStorage.getItem('token_valid');
 let currentDate = Math.floor(new Date().getTime() / 1000);
 
