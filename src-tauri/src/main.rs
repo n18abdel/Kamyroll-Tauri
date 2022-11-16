@@ -14,10 +14,12 @@ use tauri::{
    SystemTrayEvent,
 
 };
-use system_uri::{install, App, SystemUriError};
+
 use std::process::Command as StdCommand;
 use std::io::BufReader;
 use command_group::CommandGroup;
+#[cfg(not(target_os = "macos"))]
+use system_uri::{install, App, SystemUriError};
 use unwrap::unwrap;
 
 
@@ -86,9 +88,11 @@ fn install_schema() -> Result<(), SystemUriError> {
 
 fn main() {
 
+  #[cfg(not(target_os = "macos"))]
   if let Err(ref e) = install_schema() {
     println!("error: {}", e);
   }
+
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let hide = CustomMenuItem::new("hide".to_string(), "Hide");
   let show = CustomMenuItem::new("show".to_string(),"Show");
