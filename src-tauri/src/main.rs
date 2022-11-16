@@ -67,7 +67,7 @@ async fn download_file <R: Runtime>(
   });
   Ok(())
 }
- */
+
 
 #[cfg(not(target_os = "macos"))]
 fn install_schema() -> Result<(), SystemUriError> {
@@ -80,16 +80,15 @@ fn install_schema() -> Result<(), SystemUriError> {
     None,
   );
   let schema = "kamyroll".to_string();
-
   install(&app, &[schema.clone()]).and_then(|()| Ok(()))
 }
+
 
 fn main() {
 
   if let Err(ref e) = install_schema() {
     println!("error: {}", e);
-  }
-  
+    
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let hide = CustomMenuItem::new("hide".to_string(), "Hide");
   let show = CustomMenuItem::new("show".to_string(),"Show");
