@@ -14,10 +14,13 @@ use tauri::{
    SystemTrayEvent,
 
 };
-use system_uri::{install, App, SystemUriError};
+
 use std::process::Command as StdCommand;
 use std::io::BufReader;
 use command_group::CommandGroup;
+#[cfg(not(target_os = "macos"))]
+use system_uri::{install, App, SystemUriError};
+#[cfg(not(target_os = "macos"))]
 use unwrap::unwrap;
 
 
@@ -31,7 +34,7 @@ async fn close_splashscreen(window: tauri::Window) {
   window.get_window("main").unwrap().show().unwrap();
 }
 
-/* #[tauri::command]
+/*  #[tauri::command]
 async fn download_file <R: Runtime>(
   window: tauri::Window<R>,
   args: Vec<String>,
@@ -67,7 +70,9 @@ async fn download_file <R: Runtime>(
   });
   Ok(())
 }
- */
+   */
+
+#[cfg(not(target_os = "macos"))]
 fn install_schema() -> Result<(), SystemUriError> {
   let exec = String::from(unwrap!(unwrap!(std::env::current_exe()).to_str()));
   let app = App::new(
@@ -78,15 +83,17 @@ fn install_schema() -> Result<(), SystemUriError> {
     None,
   );
   let schema = "kamyroll".to_string();
-
   install(&app, &[schema.clone()]).and_then(|()| Ok(()))
 }
 
+
 fn main() {
 
+  #[cfg(not(target_os = "macos"))]
   if let Err(ref e) = install_schema() {
     println!("error: {}", e);
   }
+
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let hide = CustomMenuItem::new("hide".to_string(), "Hide");
   let show = CustomMenuItem::new("show".to_string(),"Show");
@@ -163,6 +170,6 @@ fn main() {
     .plugin(tauri_plugin_window_state::Builder::default().build())
     .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */])
     .run(tauri::generate_context!())
-    
+
     .expect("failed to run app");
 }
