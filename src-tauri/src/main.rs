@@ -20,6 +20,7 @@ use std::io::BufReader;
 use command_group::CommandGroup;
 #[cfg(not(target_os = "macos"))]
 use system_uri::{install, App, SystemUriError};
+#[cfg(not(target_os = "macos"))]
 use unwrap::unwrap;
 
 
