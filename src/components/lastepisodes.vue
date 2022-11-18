@@ -67,9 +67,9 @@ import neko_logo from '/img/neko-sama.svg';
                             <div class="watch-tag-list">
                                 <div class="erc-info-tags-group"></div>
                             </div>
-                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
-                                    :src="episode.images.thumbnail[0].source"
-                                    class="c-content-image image" :alt="episode.title">
+                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);">
+                                <img v-if="Object.keys(episode.images).length == 3" :src="episode.images.thumbnail[1].source" class="c-content-image image" :alt="episode.title">
+                                <img v-else :src="episode.images.poster_wide[1].source" class="c-content-image image" :alt="episode.title">
                                 <span class="erc-channel-icon">
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);"></div>
