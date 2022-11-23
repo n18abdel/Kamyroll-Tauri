@@ -42,3 +42,4 @@ jobs:
         with:
           tagName: v__VERSION__-beta
           releaseName: v__VERSION__-beta
+          prerelease: true
