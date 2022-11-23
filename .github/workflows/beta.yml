@@ -29,8 +29,10 @@ jobs:
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: `v${process.env.PACKAGE_VERSION}`,
+              tag_name: `v${process.env.PACKAGE_VERSION}`,
+              name: `Beta v${process.env.PACKAGE_VERSION}`,
               body: 'Take a look at the assets to download and install this app.',
+              draft: true,
               prerelease: true
             })
 
@@ -86,5 +88,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               release_id: process.env.release_id,
+              draft: false,
               prerelease: true
             })
