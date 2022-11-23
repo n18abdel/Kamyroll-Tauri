@@ -1,28 +1,31 @@
-name: "Beta"
+name: Beta
+
 on:
   push:
     branches:
       - dev
 
 jobs:
-  build-tauri:
-    needs: create-release
+  release:
     strategy:
       fail-fast: false
       matrix:
         platform: [macos-latest, ubuntu-latest, windows-latest]
-
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v2
-      - name: setup node
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node
         uses: actions/setup-node@v1
         with:
           node-version: 18
-      - name: install Rust stable
+
+      - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+
       - name: Install Dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
         run: |
@@ -39,4 +42,3 @@ jobs:
         with:
           tagName: v__VERSION__-beta
           releaseName: v__VERSION__-beta
-          prerelease: true
