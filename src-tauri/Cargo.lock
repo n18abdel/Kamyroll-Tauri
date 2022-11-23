@@ -1280,7 +1280,7 @@ dependencies = [
 
 [[package]]
 name = "kamyroll"
-version = "1.0.4"
+version = "1.0.5"
 dependencies = [
  "command-group",
  "serde",
