@@ -6,7 +6,7 @@ on:
       - dev
 
 jobs:
-  release:
+  beta-release:
     strategy:
       fail-fast: false
       matrix:
