@@ -60,7 +60,7 @@ jobs:
         with:
           tagName: v__VERSION__-beta
           releaseName: v__VERSION__-beta
-          releaseNotes: |
+          releaseBody: |
             - __VERSION__-beta
           includeDebug: true
           prerelease: true
