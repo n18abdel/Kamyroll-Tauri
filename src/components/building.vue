@@ -1,4 +1,5 @@
 <template>
+    <!-- Make a in building component -->
     <div class="" id="building">
         <div class="building__container">
             <div class="building__container__title">
@@ -15,13 +16,3 @@
         </div>
     </div>
 </template>
-
-<style scoped>
-/* center everything */
-#building {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-</style>
