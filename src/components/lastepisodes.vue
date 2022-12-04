@@ -15,9 +15,11 @@ import neko_logo from '/img/neko-sama.svg';
                             <div class="erc-info-tags-group"></div>
                         </div>
                         <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><a class="erc-channel-icon"
-                                href="/crunchyroll">
+                                href="#">
                                 <div class="channel-mask">
-                                    <div class="channel-background" style="background-color: rgb(244, 117, 33);"></div>
+                                    <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                    <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                    <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
                                     <img class="channel-icon" v-if="channel == 'crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
                                     <img class="channel-icon" v-else-if="channel == 'adn'" :src="adn_logo" alt="Anime Digital Network icon">
                                     <img class="channel-icon" v-else-if="channel == 'neko-sama'" :src="neko_logo" alt="Neko-sama icon">
@@ -53,7 +55,9 @@ import neko_logo from '/img/neko-sama.svg';
                                 <img v-else :src="episode.images.poster_wide[1].source" class="c-content-image image" :alt="episode.title">
                                 <span class="erc-channel-icon">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
                                         <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
                                         <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
                                         <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
