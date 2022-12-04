@@ -18,9 +18,9 @@ use tauri::{
 use std::process::Command as StdCommand;
 use std::io::BufReader;
 use command_group::CommandGroup;
-#[cfg(not(target_os = "macos"))]
+
 use system_uri::{install, App, SystemUriError};
-#[cfg(not(target_os = "macos"))]
+
 use unwrap::unwrap;
 
 
@@ -72,7 +72,7 @@ async fn download_file <R: Runtime>(
 }
    */
 
-#[cfg(not(target_os = "macos"))]
+
 fn install_schema() -> Result<(), SystemUriError> {
   let exec = String::from(unwrap!(unwrap!(std::env::current_exe()).to_str()));
   let app = App::new(
@@ -89,7 +89,7 @@ fn install_schema() -> Result<(), SystemUriError> {
 
 fn main() {
 
-  #[cfg(not(target_os = "macos"))]
+  
   if let Err(ref e) = install_schema() {
     println!("error: {}", e);
   }
