@@ -45,3 +45,4 @@ jobs:
           releaseNotes: |
             - __VERSION__-beta
           includeDebug: true
+          prerelease: true
