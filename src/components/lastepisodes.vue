@@ -4,12 +4,40 @@ import crunchyroll_logo from '/img/crunchyroll.svg';
 import neko_logo from '/img/neko-sama.svg';
 </script>
 <template>
-    <div class="erc-shelf-feed-item" v-if="!(episodes.length > 1)">
+    <div class="erc-shelf-feed-item" v-if="!(episodes.length > 1)" id="last-episodes-placeholder">
+        <h1 class="feed-title">Last Episodes</h1>
         <div class="erc-cards-collection" >
-            <img src="/img/loading.svg" alt="loading" style ="left:50%; right: 50%; position: absolute; transform: translate(-50%, 50%);">
+            <div class="erc-cards-collection">
+                <div class="card placeholder" v-for="anime in 12">
+                    <article class="erc-series-movie-card placeholder">
+                        <a title="" class="card-link" href=""></a>
+                        <div class="watch-tag-list">
+                            <div class="erc-info-tags-group"></div>
+                        </div>
+                        <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><a class="erc-channel-icon"
+                                href="/crunchyroll">
+                                <div class="channel-mask">
+                                    <div class="channel-background" style="background-color: rgb(244, 117, 33);"></div>
+                                    <img class="channel-icon" v-if="channel == 'crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                    <img class="channel-icon" v-else-if="channel == 'adn'" :src="adn_logo" alt="Anime Digital Network icon">
+                                    <img class="channel-icon" v-else-if="channel == 'neko-sama'" :src="neko_logo" alt="Neko-sama icon">
+                                </div>
+                            </a></div>
+                        <div class="body-section">
+                            <div class="poster-image"></div>
+                            <div class="info">
+                                <div class="description-metadata"></div>
+                                <div class="details-metadata">
+                                    <div class="c-meta-tags media-tag-group"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="erc-shelf-feed-item" id="last-episodes" v-if="episodes.length > 1">
+    <div class="erc-shelf-feed-item" id="last-episodes" v-else>
             <h1 class="feed-title">Last Episodes</h1>
             <div class="erc-cards-collection">
                 <div class="card" v-for="episode of episodes">
@@ -26,7 +54,9 @@ import neko_logo from '/img/neko-sama.svg';
                                 <span class="erc-channel-icon">
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);"></div>
-                                        <img class="channel-icon" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
                                     </div>
                                 </span>
                             </div>
@@ -1581,12 +1611,10 @@ import neko_logo from '/img/neko-sama.svg';
                 </div>
             </div>
         </div> 
-    </div>
+        </div>
 </template>
 
 <script>
-
-import {fetch} from '@tauri-apps/api/http';
 import {getLastEpisodes} from '../scripts/crunchyroll.js';
     export default {
         data() {

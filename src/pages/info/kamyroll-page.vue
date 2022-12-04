@@ -1,12 +1,250 @@
 <template>
-  <div class="loading" v-if="episodes == null">
-    <div class="loading__spinner">
-      <img src="/img/loading.svg" alt="loading">
-    </div>
-  </div>
-  <div v-if="episodes != null" class="backdrop-blur-sm hover:backdrop-blur-lg">
-    <div class="series-page-container">
+  <div class="series-page-container" v-if="(episodes == null && meta == null)">
       <div class="content">
+        <div class="series-metadata">
+          <div class="erc-series-poster series-poster placeholder">
+          </div>
+          <div class="text-wrapper">
+            <div class="erc-series-tags series-tags">
+            </div>
+            <div class="erc-series-info">
+              <div class="series-title"></div>
+              <div class="erc-hero-description">
+                <div class="description-wrapper">
+                  <p class="description-text"></p>
+                </div>
+              </div>
+            </div>
+            <div class="action-buttons">
+              <div tabindex="0" class="action-button c-button -type-one" data-t="watching-btn">
+                <svg class="" viewBox="3 -1 10 22" xmlns="http://www.w3.org/2000/svg" data-t="play-line-svg">
+                  <path d="M0,0 L0,20 L20,10 L0,0 Z M2,3 L16,10 L2,17 L2,3 Z"></path>
+                </svg>
+                <span>Start Watching</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="information-tabs-wrapper">
+          <div class="erc-tabs">
+            <div class="tabs-header state-hidden tab-button-align-center">
+              <div class="button-wrapper"><a class="tab-button">series info</a><a
+                  class="tab-button state-active">episodes</a></div>
+            </div>
+            <div class="item-list-wrapper">
+              <div class="erc-content-list-controls">
+                <div class="c-dropdown erc-sort-dropdown">
+                  <div class="c-dropdown-trigger sort-dropdown-trigger"><svg class="sort-icon"
+                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" data-t="sort-svg">
+                      <path d="M2,5.2V2H18V5.2Zm0,6.4V8.4H12.667v3.2ZM2,18V14.8H6.267V18Z"></path>
+                    </svg>
+                    <div class="sort-title">Sort</div>
+                  </div>
+                  <div class="c-dropdown-content sort-dropdown-content">
+                    <div class="c-dropdown-item sort-dropdown-item state-active">Oldest First</div>
+                    <div class="c-dropdown-item sort-dropdown-item">Newest First</div>
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="erc-series-media-list-element xl-card">
+                  <article class="erc-episode-card xl-episode placeholder">
+                    <div class="watch-tag-list">
+                      <div class="erc-info-tags-group"></div>
+                    </div>
+                    <div class="h-thumbnail">
+                      <div class="c-content-image image"><svg class="c-svg-no-image" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 30 30" data-t="no-image-svg">
+                          <path d="M0,4V26H30V4ZM28,24H2V6H28Z"></path>
+                          <polygon points="26 19 23 16 19 20 10 11 4 17 4 22 26 22 26 19"></polygon>
+                          <rect x="17.586" y="10.586" width="2.828" height="2.828"
+                            transform="translate(-2.92 16.95) rotate(-45)"></rect>
+                        </svg></div>
+                      <div class="art-overlay"></div>
+                    </div>
+                    <section class="info">
+                      <h2 class="episode-title"></h2>
+                      <p class="episode-description"></p>
+                    </section>
+                  </article>
+                </div>
+                <div class="erc-series-media-list-element">
+                  <article class="erc-episode-card placeholder">
+                    <div class="watch-tag-list">
+                      <div class="erc-info-tags-group"></div>
+                    </div>
+                    <div class="h-thumbnail">
+                      <div class="c-content-image image"><svg class="c-svg-no-image" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 30 30" data-t="no-image-svg">
+                          <path d="M0,4V26H30V4ZM28,24H2V6H28Z"></path>
+                          <polygon points="26 19 23 16 19 20 10 11 4 17 4 22 26 22 26 19"></polygon>
+                          <rect x="17.586" y="10.586" width="2.828" height="2.828"
+                            transform="translate(-2.92 16.95) rotate(-45)"></rect>
+                        </svg></div>
+                      <div class="art-overlay"></div>
+                    </div>
+                    <section class="info">
+                      <h2 class="episode-title"></h2>
+                      <p class="episode-description"></p>
+                    </section>
+                  </article>
+                </div>
+                <div class="erc-series-media-list-element">
+                  <article class="erc-episode-card placeholder">
+                    <div class="watch-tag-list">
+                      <div class="erc-info-tags-group"></div>
+                    </div>
+                    <div class="h-thumbnail">
+                      <div class="c-content-image image"><svg class="c-svg-no-image" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 30 30" data-t="no-image-svg">
+                          <path d="M0,4V26H30V4ZM28,24H2V6H28Z"></path>
+                          <polygon points="26 19 23 16 19 20 10 11 4 17 4 22 26 22 26 19"></polygon>
+                          <rect x="17.586" y="10.586" width="2.828" height="2.828"
+                            transform="translate(-2.92 16.95) rotate(-45)"></rect>
+                        </svg></div>
+                      <div class="art-overlay"></div>
+                    </div>
+                    <section class="info">
+                      <h2 class="episode-title"></h2>
+                      <p class="episode-description"></p>
+                    </section>
+                  </article>
+                </div>
+                <div class="erc-series-media-list-element">
+                  <article class="erc-episode-card placeholder">
+                    <div class="watch-tag-list">
+                      <div class="erc-info-tags-group"></div>
+                    </div>
+                    <div class="h-thumbnail">
+                      <div class="c-content-image image"><svg class="c-svg-no-image" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 30 30" data-t="no-image-svg">
+                          <path d="M0,4V26H30V4ZM28,24H2V6H28Z"></path>
+                          <polygon points="26 19 23 16 19 20 10 11 4 17 4 22 26 22 26 19"></polygon>
+                          <rect x="17.586" y="10.586" width="2.828" height="2.828"
+                            transform="translate(-2.92 16.95) rotate(-45)"></rect>
+                        </svg></div>
+                      <div class="art-overlay"></div>
+                    </div>
+                    <section class="info">
+                      <h2 class="episode-title"></h2>
+                      <p class="episode-description"></p>
+                    </section>
+                  </article>
+                </div>
+                <div class="erc-series-media-list-element">
+                  <article class="erc-episode-card placeholder">
+                    <div class="watch-tag-list">
+                      <div class="erc-info-tags-group"></div>
+                    </div>
+                    <div class="h-thumbnail">
+                      <div class="c-content-image image"><svg class="c-svg-no-image" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 30 30" data-t="no-image-svg">
+                          <path d="M0,4V26H30V4ZM28,24H2V6H28Z"></path>
+                          <polygon points="26 19 23 16 19 20 10 11 4 17 4 22 26 22 26 19"></polygon>
+                          <rect x="17.586" y="10.586" width="2.828" height="2.828"
+                            transform="translate(-2.92 16.95) rotate(-45)"></rect>
+                        </svg></div>
+                      <div class="art-overlay"></div>
+                    </div>
+                    <section class="info">
+                      <h2 class="episode-title"></h2>
+                      <p class="episode-description"></p>
+                    </section>
+                  </article>
+                </div>
+                <div class="erc-series-media-list-element">
+                  <article class="erc-episode-card placeholder">
+                    <div class="watch-tag-list">
+                      <div class="erc-info-tags-group"></div>
+                    </div>
+                    <div class="h-thumbnail">
+                      <div class="c-content-image image"><svg class="c-svg-no-image" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 30 30" data-t="no-image-svg">
+                          <path d="M0,4V26H30V4ZM28,24H2V6H28Z"></path>
+                          <polygon points="26 19 23 16 19 20 10 11 4 17 4 22 26 22 26 19"></polygon>
+                          <rect x="17.586" y="10.586" width="2.828" height="2.828"
+                            transform="translate(-2.92 16.95) rotate(-45)"></rect>
+                        </svg></div>
+                      <div class="art-overlay"></div>
+                    </div>
+                    <section class="info">
+                      <h2 class="episode-title"></h2>
+                      <p class="episode-description"></p>
+                    </section>
+                  </article>
+                </div>
+                <div class="erc-series-media-list-element">
+                  <article class="erc-episode-card placeholder">
+                    <div class="watch-tag-list">
+                      <div class="erc-info-tags-group"></div>
+                    </div>
+                    <div class="h-thumbnail">
+                      <div class="c-content-image image"><svg class="c-svg-no-image" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 30 30" data-t="no-image-svg">
+                          <path d="M0,4V26H30V4ZM28,24H2V6H28Z"></path>
+                          <polygon points="26 19 23 16 19 20 10 11 4 17 4 22 26 22 26 19"></polygon>
+                          <rect x="17.586" y="10.586" width="2.828" height="2.828"
+                            transform="translate(-2.92 16.95) rotate(-45)"></rect>
+                        </svg></div>
+                      <div class="art-overlay"></div>
+                    </div>
+                    <section class="info">
+                      <h2 class="episode-title"></h2>
+                      <p class="episode-description"></p>
+                    </section>
+                  </article>
+                </div>
+                <div class="erc-series-media-list-element">
+                  <article class="erc-episode-card placeholder">
+                    <div class="watch-tag-list">
+                      <div class="erc-info-tags-group"></div>
+                    </div>
+                    <div class="h-thumbnail">
+                      <div class="c-content-image image"><svg class="c-svg-no-image" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 30 30" data-t="no-image-svg">
+                          <path d="M0,4V26H30V4ZM28,24H2V6H28Z"></path>
+                          <polygon points="26 19 23 16 19 20 10 11 4 17 4 22 26 22 26 19"></polygon>
+                          <rect x="17.586" y="10.586" width="2.828" height="2.828"
+                            transform="translate(-2.92 16.95) rotate(-45)"></rect>
+                        </svg></div>
+                      <div class="art-overlay"></div>
+                    </div>
+                    <section class="info">
+                      <h2 class="episode-title"></h2>
+                      <p class="episode-description"></p>
+                    </section>
+                  </article>
+                </div>
+                <div class="erc-series-media-list-element">
+                  <article class="erc-episode-card placeholder">
+                    <div class="watch-tag-list">
+                      <div class="erc-info-tags-group"></div>
+                    </div>
+                    <div class="h-thumbnail">
+                      <div class="c-content-image image"><svg class="c-svg-no-image" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 30 30" data-t="no-image-svg">
+                          <path d="M0,4V26H30V4ZM28,24H2V6H28Z"></path>
+                          <polygon points="26 19 23 16 19 20 10 11 4 17 4 22 26 22 26 19"></polygon>
+                          <rect x="17.586" y="10.586" width="2.828" height="2.828"
+                            transform="translate(-2.92 16.95) rotate(-45)"></rect>
+                        </svg></div>
+                      <div class="art-overlay"></div>
+                    </div>
+                    <section class="info">
+                      <h2 class="episode-title"></h2>
+                      <p class="episode-description"></p>
+                    </section>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="backdrop-blur-sm hover:backdrop-blur-lg" v-else>
+    <div class="series-page-container">
+      <div class="content"> 
         <div class="series-metadata">
           <div class="erc-series-poster series-poster">
             <img :src="meta.images.poster_tall[image].source" class="c-content-image" :alt="meta.title">
