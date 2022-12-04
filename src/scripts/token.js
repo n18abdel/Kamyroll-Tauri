@@ -1,8 +1,8 @@
 import{fetch,Body} from "@tauri-apps/api/http";
 
-let token_expire = localStorage.getItem('token_expire');
+
 let token_valid = localStorage.getItem('token_valid');
-let currentDate = Math.floor(new Date().getTime() / 1000);
+
 
 async function testToken(token){
   const url = 'https://api.kamyroll.tech/content/v1/search';
@@ -28,7 +28,9 @@ function createRandomId (){
   }
 
 async function getToken() {
-    if(localStorage.getItem('token') == undefined || Number(token_expire) < currentDate ){
+    let currentDate = Math.floor(new Date().getTime() / 1000);
+    let token_expire = localStorage.getItem('token_expire');
+    if(localStorage.getItem('token') == undefined || Number(token_expire) < currentDate || testToken(localStorage.getItem('token')) == false){
         console.log('token is undefined or expired');
         const url = 'https://api.kamyroll.tech/auth/v1/token';
         const APP_TOKEN = 'HMbQeThWmZq4t7w';
