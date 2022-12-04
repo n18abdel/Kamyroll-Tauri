@@ -8,6 +8,7 @@ import Kamyroll from './pages/info/kamyroll-page.vue';
 import Error from './pages/error/error-page.vue';
 import Watch from './pages/watch/watch-page.vue';
 import Search from './pages/search/search-page.vue';
+import Favorites from './pages/favorites/watchlist-page.vue';
 
 
 
@@ -48,6 +49,10 @@ export default createRouter({
     {
       path: '/search/',
       component: Search
+    },
+    {
+      path:'/favorites',
+      component: Favorites
     }
 
   ]
