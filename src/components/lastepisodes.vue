@@ -9,54 +9,7 @@ import neko_logo from '/img/neko-sama.svg';
             <img src="/img/loading.svg" alt="loading" style ="left:50%; right: 50%; position: absolute; transform: translate(-50%, 50%);">
         </div>
     </div>
-    <div v-if="channel == 'neko-sama'">
-        <div v-if="episodes.length > 1" class="erc-shelf-feed-item" id="last-episodes">
-        <h1 class="feed-title">Last Episodes</h1>
-        <div class="erc-cards-collection">
-            <div class="card" v-for="episode of episodes">
-                <div>
-                    <article class="erc-series-movie-card">
-                        <a :title="episode.title" class="card-link"
-                            :href="episode.anime_url"></a>
-                        <div class="watch-tag-list">
-                            <div class="erc-info-tags-group"></div>
-                        </div>
-                        <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
-                                :src="episode.url_bg"
-                                class="c-content-image image" :alt="episode.title">
-                            <span class="erc-channel-icon">
-                                <div class="channel-mask">
-                                    <div class="channel-background" style="background-color: rgb(28, 185, 244)"></div>
-                                    <img class="channel-icon"
-                                        :src="neko_logo"
-                                        alt="Neko-sama icon">
-                                </div>
-                            </span>
-                        </div>
-                        <div class="body-section">
-                            <div class="poster-image"><img
-                                    :src="episode.url_image"
-                                    class="c-content-image" alt="One Piece"></div>
-                            <div class="info">
-                                <div class="description-metadata">
-                                    <h1>{{episode.title}}</h1>
-                                </div>
-                                <div class="details-metadata">
-                                    <div class="c-meta-tags media-tag-group">
-                                        <span class="c-meta-tags__type">{{episode.episode}}</span>
-                                        <span class="c-meta-tags__language">{{episode.lang}}</span>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-    <div v-if="channel == 'crunchyroll'">
-        <div class="erc-shelf-feed-item" id="last-episodes" v-if="episodes.length > 1">
+    <div class="erc-shelf-feed-item" id="last-episodes" v-if="episodes.length > 1">
             <h1 class="feed-title">Last Episodes</h1>
             <div class="erc-cards-collection">
                 <div class="card" v-for="episode of episodes">
@@ -68,24 +21,22 @@ import neko_logo from '/img/neko-sama.svg';
                                 <div class="erc-info-tags-group"></div>
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);">
-                                <img v-if="Object.keys(episode.images).length == 3" :src="episode.images.thumbnail[1].source" class="c-content-image image" :alt="episode.title">
+                                <img v-if="(Object.keys(episode.images).length == 3 && episode.images.thumbnail.length >= 2)" :src="episode.images.thumbnail[1].source" class="c-content-image image" :alt="episode.title">
                                 <img v-else :src="episode.images.poster_wide[1].source" class="c-content-image image" :alt="episode.title">
                                 <span class="erc-channel-icon">
                                     <div class="channel-mask">
                                         <div class="channel-background" style="background-color: rgb(244, 117, 33);"></div>
-                                        <img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <img class="channel-icon" :src="crunchyroll_logo" alt="Crunchyroll icon">
                                     </div>
                                 </span>
                             </div>
                             <div class="body-section">
-                                <div class="poster-image"><img
-                                        :src="episode.images.poster_tall[3].source"
-                                        class="c-content-image" :alt="episode.series_title"></div>
+                                <div class="poster-image">
+                                    <img :src="episode.images.poster_tall[2].source" class="c-content-image" :alt="episode.series_title">
+                                </div>
                                 <div class="info">
                                     <div class="description-metadata">
-                                        <h1>{{episode.season_title}}</h1>
+                                        <h1>{{episode.series_title}}</h1>
                                     </div>
                                     <div class="details-metadata">
                                         <div class="c-meta-tags media-tag-group">
@@ -102,7 +53,7 @@ import neko_logo from '/img/neko-sama.svg';
                 </div>
             </div>
         </div>
-        <div v-if="episodes.length > 1 || counter >= 5">
+        <div v-if="((episodes.length > 1 || counter >= 5) && channel=='crunchyroll')">
         <div class="erc-shelf-feed-item" id="browse_popular">
             <h1 class="feed-title">Most Popular</h1>
             <div class="erc-cards-collection">
@@ -1631,105 +1582,6 @@ import neko_logo from '/img/neko-sama.svg';
             </div>
         </div> 
     </div>
-    </div>
-    <!-- <div v-else-if="channel == 'adn'">
-        <div  class="erc-shelf-feed-item" id="last-episodes">
-            <h1 class="feed-title">Last Episodes</h1>
-            <div class="erc-cards-collection">
-                <div class="card" v-for="episode of episodes">
-                    <div>
-                        <article class="erc-series-movie-card" :id="episode.id">
-                            <a :title="episode.title" class="card-link"
-                                :href="episode.url"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
-                                    :src="episode.images.thumbnail[0].source"
-                                    class="c-content-image image" :alt="episode.title">
-                                <span class="erc-channel-icon">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(28, 185, 244);"></div>
-                                        <img class="channel-icon"
-                                            :src="adn_logo"
-                                            alt="ADN icon">
-                                    </div>
-                                </span>
-                            </div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        :src="episode.images.thumbnail[0].source"
-                                        class="c-content-image" :alt="episode.series_title"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>{{episode.series_title}}</h1>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group">
-                                            <span class="c-meta-tags__type">Ep.{{episode.episode}}</span>
-                                            <span class="c-meta-tags__language" v-if="episode.is_subbed && episode.is_dubbed">Sub | Dub</span>
-                                            <span class="c-meta-tags__language" v-else-if="episode.is_subbed">Sub</span>
-                                            <span class="c-meta-tags__language" v-else-if="episode.is_dubbed">Dub</span>
-                                            <span class="c-meta-tags__language" v-else >Unknown</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <div v-else-if="channel == 'adn'">
-        <div v-if="episodes.length > 1" class="erc-shelf-feed-item" id="last-episodes">
-            <h1 class="feed-title">Last Episodes</h1>
-            <div class="erc-cards-collection">
-                <div class="card" v-for="episode of episodes">
-                    <div>
-                        <article class="erc-series-movie-card" :id="episode.id">
-                            <a :title="episode.title" class="card-link"
-                                :href="episode.urlPath"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
-                            </div>
-                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
-                                    :src="episode.imageHorizontal2x"
-                                    class="c-content-image image" :alt="episode.title">
-                                <span class="erc-channel-icon">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(28, 185, 244);"></div>
-                                        <img class="channel-icon"
-                                            :src="adn_logo"
-                                            alt="ADN icon">
-                                    </div>
-                                </span>
-                            </div>
-                            <div class="body-section">
-                                <div class="poster-image"><img
-                                        :src="episode.image"
-                                        class="c-content-image" :alt="episode.series_title"></div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>{{episode.title}}</h1>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group">
-                                            <span class="c-meta-tags__type">Ep.{{episode.episodeCount}}</span>
-                                            <span class="c-meta-tags__language" v-if="episode.languages.length >= 2">Sub | Dub</span>
-                                            <span class="c-meta-tags__language" v-else-if="episode.languages[0]=='vostf'">Sub</span>
-                                            <span class="c-meta-tags__language" v-else-if="episode.languages[0]=='vf'">Dub</span>
-                                            <span class="c-meta-tags__language" v-else >Unknown</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </template>
 
 <script>
@@ -1746,48 +1598,11 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
         },
         methods: {
             async getEpisodes() {
-                if(this.channel =='neko-sama'){
-                    const response = await fetch('https://neko-sama.fr', {
-                        responseType: 2
-                    });
-                    if (response.status === 200) {
-                        const data = response.data;
-                        // Parse the data AS HTML 
-                        let json = data.split("var lastEpisodes = ")[1].split(";")[0];
-                        // Parse the JSON
-                        json = JSON.parse(json);
-                        // Set the data
-                        for (let i = 0; i < json.length; i++) {
-                            json[i].anime_url = "/nekosama/" + json[i].anime_url.split('/').pop().split('-')[0];
-                            json[i].lang = json[i].lang.toUpperCase();
-                            this.episodes.push(json[i]);
-                        }
-                    }
-                }else if(this.channel == 'adn'){
-                    const response = await fetch('https://gw.api.animationdigitalnetwork.fr/show/catalog?distribution=simulcast&order=new&offset=0&limit=12', {
-                        responseType: 1
-                    });
-                    if(response.status === 200){
-                        const data = response.data.shows;
-                        for (let i = 0; i < data.length; i++) {
-                            let series_id = data[i].id;
-                            let url = `https://gw.api.animationdigitalnetwork.fr/video/show/${series_id}/?offset=0&limit=-1&order=desc`;
-                            const response = await fetch(url, {
-                                responseType: 1
-                            });
-                            data[i].urlPath = "/adn/watch/" + response.data.videos[0].id;
-                            data[i].imageHorizontal2x = response.data.videos[0].image2x;
-                            this.episodes.push(data[i]);
-                        }
-                    }
-                    
-                } else if (this.channel == 'crunchyroll') { 
                     try{
                         this.episodes = await getLastEpisodes();
                     } catch(e){
                         this.episodes = [];
                     }
-                 }
             },
             
         },

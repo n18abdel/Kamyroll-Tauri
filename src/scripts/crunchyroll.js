@@ -26,11 +26,13 @@ async function getLastEpisodes(){
     }
     let episodes = [];
     let response = await fetch(url, options);
+    
     if (response.status != 200) {
         console.log(response);
         return episodes;
     }
     let result = response.data.items;
+    console.log(result);
     for (let item of result) {
         item.url = '';
         let id = item.id;
