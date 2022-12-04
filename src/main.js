@@ -45,8 +45,11 @@ if(appWindow.isFullscreen() && !window.location.href.includes('watch')){
 }
 
 const app = createApp(App);
-app.config.errorHandler = function(err, vm, info) {
-    console.log(`Error: ${err.toString()}\nInfo: ${info}`);
+
+if(!process.env.CHANNEL.includes('Dev')){
+    app.config.errorHandler = function(err, vm, info) {
+        console.log(`Error: ${err.toString()}\nInfo: ${info}`);
+    }
 }
 
 app.use(routes);
