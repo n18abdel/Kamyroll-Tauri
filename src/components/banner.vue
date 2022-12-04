@@ -61,7 +61,7 @@ import kamyroll_logo from '/img/kamyroll_logo.svg';
       </div>
       <div class="header-right">
         <ul class="erc-user-actions">
-          <li class="user-actions-item watchlist-wrapper"><a tabindex="0" class="erc-header-tile" href="/watchlist">
+          <li class="user-actions-item watchlist-wrapper"><a tabindex="0" class="erc-header-tile" href="/favorites">
               <div class="erc-header-svg"><svg class="header-svg-icon" xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24" data-t="watchlist-svg">
                   <path d="M9.6,12,16,15.2,9.6,18.4ZM3.2,21.6H20.8V8.8H3.2ZM6.4,4H17.6V2.4H6.4ZM4.8,7.2H19.2V5.6H4.8Z">
