@@ -10,7 +10,10 @@ export default defineConfig({
     vuetify()
   ],
   define: {
-    'process.env': {}
+    'process.env': {
+      APP_VERSION : JSON.stringify(require('./package.json').version),
+      CHANNEL : 'Dev'
+    }
   },
   rollupOptions: {
   	output: {
