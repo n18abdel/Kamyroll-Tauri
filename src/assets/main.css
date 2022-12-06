@@ -137,6 +137,10 @@ img {
     border-style: none
 }
 
+.icon {
+    border-radius: 0px !important;
+}
+
 *, ::before, ::after {
     box-sizing: border-box;
     border-width: 0;
