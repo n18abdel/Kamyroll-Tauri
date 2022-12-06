@@ -332,9 +332,45 @@
                 </div>
               </div>
               <div class="item-list" v-if="type == 'series'">
-                <div v-for="season in episodes.items" :id="season.id"
-                  :style="{'box-sizing': 'border-box', 'flex': '1 20 39%', 'padding': '.3125rem', 'display': 'flex', 'flex-wrap': 'wrap', 'flex-direction': 'row','display':`${id == season.id ? 'contents' : 'none'}`}">
-                  <div v-if="season.episodes.length >= 1 && id==season.id" v-for="episode in season.episodes"
+                <div v-for="season in episodes.items" :id="season.id" :style="{'box-sizing': 'border-box', 'flex': '1 20 39%', 'padding': '.3125rem', 'display': 'flex', 'flex-wrap': 'wrap', 'flex-direction': 'row','display':`${id == season.id ? 'contents' : 'none'}`}">
+                  <div class="erc-series-media-list-element xl-card">
+                    <article class="erc-episode-card xl-episode">
+                      <a :title="season.episodes[0].title" class="card-link" :href="season.episodes[0].url"></a>
+                      <div class="watch-tag-list">
+                        <div class="erc-info-tags-group"></div>
+                      </div>
+                      <div class="h-thumbnail">
+                        <img v-if="season.episodes[0].images.thumbnail >= 1" :src="season.episodes[0].images.thumbnail[1].source"
+                          class="c-content-image image" :alt="season.episodes[0].title">
+                        <img v-else :src="season.episodes[0].images.thumbnail[0].source" class="c-content-image image"
+                          :alt="season.episodes[0].title">
+                        <div class="art-overlay"><svg class="art-overlay-icon icon c-svg-play-icon"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" data-t="play-icon-svg">
+                            <circle class="circle" cx="30" cy="30" r="30"></circle>
+                            <path class="play"
+                              d="M22,20,42,30,22,40Zm8,36A26,26,0,1,0,4,30,26,26,0,0,0,30,56Zm0,4A30,30,0,1,1,60,30,30,30,0,0,1,30,60Z">
+                            </path>
+                          </svg></div>
+                        <div class="c-duration episode-duration">{{season.episodes[0].duration_ms}}m</div>
+                      </div>
+                      <section class="info">
+                        <h3 class="series-title">{{ meta.title }}</h3>
+                        <h2 class="episode-title">{{ season.episodes[0].title }}</h2>
+                        <p class="episode-description">{{ season.episodes[0].description }}</p>
+                        <div class="details-metadata">
+                          <div class="c-meta-tags media-tag-group">
+                            <span class="c-meta-tags__type" v-if="meta.__class__ == 'series'">Episode</span>
+                            <span class="c-meta-tags__type" v-else-if="meta.__class__ == 'movie_listing'">Movie</span>
+                            <span v-if="season.episodes[0].is_subbed" class="c-meta-tags__language">Sub</span>
+                            <span v-else-if="season.episodes[0].is_dubbed" class="c-meta-tags__language">Dub</span>
+                            <span v-else-if="season.episodes[0].is_subbed==true && season.episodes[0].is_dubbed==true"
+                              class="c-meta-tags__language">Sub | Dub</span>
+                          </div>
+                        </div>
+                      </section>
+                    </article>
+                  </div>
+                  <div v-if="(season.episodes.length >= 1)" v-for="(episode) in (season.episodes.slice(1,season.episodes.length)) "
                     class="erc-series-media-list-element">
                     <article class="erc-episode-card">
                       <a :title="episode.title" class="card-link" :href="episode.url"></a>
@@ -373,6 +409,7 @@
                     </article>
                   </div>
                 </div>
+                
               </div>
               <div class="item-list" v-else="type == 'movie_listing'">
                 <div v-for="episode in episodes.items" class="media-list-element xl-card" :style="{'display': `${episode.id == id ? 'contents' : 'none'}`}">
