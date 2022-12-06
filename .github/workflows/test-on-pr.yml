@@ -24,9 +24,36 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+    - name: Get current date
+      run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      if: matrix.platform == 'macos-latest' || matrix.platform == 'ubuntu-latest'
+
+    - name: Get current date
+      if: matrix.platform == 'windows-latest'
+      run: echo "CURRENT_DATE=$(Get-Date -Format "yyyy-MM-dd")" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+    - name: Cache CLI cargo target
+      uses: actions/cache@v2
+      with:
+          path: src-tauri/target
+          # Add date to the cache to keep it up to date
+          key: ${{ matrix.platform }}-stable-cargo-cli-${{ hashFiles('src-tauri/Cargo.lock') }}-${{ env.CURRENT_DATE }}
+          # Restore from outdated cache for speed
+          restore-keys: |
+            ${{ matrix.platform }}-stable-cargo-cli-${{ hashFiles('src-tauri/Cargo.lock') }}
+            ${{ matrix.platform }}-stable-cargo-cli-    
     - name: install app dependencies and build it
       run: npm i && npm run build:web
       
     - uses: tauri-apps/tauri-action@v0
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+      with:
+          tagName: v__VERSION__-beta
+          releaseName: v__VERSION__-beta
+          releaseBody: |
+            - This was created to test the build that is created on a pull request, it's really early in development and will be improved over time.
+          includeDebug: true
+          releaseDraft: true
+          prerelease: false
