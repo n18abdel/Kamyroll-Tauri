@@ -333,7 +333,7 @@
               </div>
               <div class="item-list" v-if="type == 'series'">
                 <div v-for="season in episodes.items" :id="season.id" :style="{'box-sizing': 'border-box', 'flex': '1 20 39%', 'padding': '.3125rem', 'display': 'flex', 'flex-wrap': 'wrap', 'flex-direction': 'row','display':`${id == season.id ? 'contents' : 'none'}`}">
-                  <div class="erc-series-media-list-element xl-card">
+                  <div class="erc-series-media-list-element xl-card" v-if="id==season.id">
                     <article class="erc-episode-card xl-episode">
                       <a :title="season.episodes[0].title" class="card-link" :href="season.episodes[0].url"></a>
                       <div class="watch-tag-list">
@@ -370,7 +370,7 @@
                       </section>
                     </article>
                   </div>
-                  <div v-if="(season.episodes.length >= 1)" v-for="(episode) in (season.episodes.slice(1,season.episodes.length)) "
+                  <div v-if="(season.episodes.length >= 1) && id==season.id" v-for="(episode) in (season.episodes.slice(1,season.episodes.length)) "
                     class="erc-series-media-list-element">
                     <article class="erc-episode-card">
                       <a :title="episode.title" class="card-link" :href="episode.url"></a>
