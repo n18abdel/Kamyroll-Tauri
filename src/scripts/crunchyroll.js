@@ -19,14 +19,13 @@ async function getLastEpisodes(){
     let url = `https://api.kamyroll.tech/content/v1/updated?channel_id=${channel}&locale=en-US&limit=20`;
     const options = {
         headers: {
-            'User-Agent': 'Kamyroll/1.0.4 Tauri-Rust',
+             'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
             'Authorization': `Bearer ${token}`,
         },
         method: "GET",
     }
     let episodes = [];
     let response = await fetch(url, options);
-    
     if (response.status != 200) {
         console.log(response);
         return episodes;
@@ -62,7 +61,7 @@ async function getEpisodes(slug, type) {
     }
     const options = {
         headers: {
-            'User-Agent': 'Kamyroll/1.0.4 Tauri-Rust',
+             'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
             'Authorization': `Bearer ${token}`,
         },
         method: "GET",
@@ -121,7 +120,7 @@ async function search(query){
     const options = {
         method: 'GET',
         headers: {
-            'User-Agent': 'Kamyroll/1.0.4 Tauri-Rust',
+             'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
             'Authorization': `Bearer ${token}`,
         }
     };
@@ -204,6 +203,7 @@ async function getVideos(id) {
     const headers = {
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/x-www-form-urlencoded',
+        'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')} Tauri-Rust`
     };
     try {
         if (window.location.href.includes('/crunchyroll/')) {

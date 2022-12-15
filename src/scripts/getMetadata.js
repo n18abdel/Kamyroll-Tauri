@@ -7,7 +7,7 @@ async function getMetadata(slug){
     let url = `https://api.kamyroll.tech/content/v1/media?id=${slug}&channel_id=${chan}`;
     let options = {
       headers: {
-        'User-Agent': 'Kamyroll/0.3.6 Tauri-Rust',
+        'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
         'Authorization': `Bearer ${TOKEN}`,
       },
       method: "GET",
