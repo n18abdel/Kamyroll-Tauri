@@ -1,5 +1,5 @@
 <template>
-  <div class="series-page-container" v-if="(episodes == null && meta == null)">
+  <div class="series-page-container" v-if="(episodes.items.length == 0 || meta.images.length == 0)">
       <div class="content">
         <div class="series-metadata">
           <div class="erc-series-poster series-poster placeholder">
@@ -242,10 +242,10 @@
         </div>
       </div>
     </div>
-  <div class="backdrop-blur-sm hover:backdrop-blur-lg" v-else>
+  <div class="backdrop-blur-sm hover:backdrop-blur-lg">
     <div class="series-page-container">
       <div class="content"> 
-        <div class="series-metadata">
+        <div class="series-metadata" v-if="meta.images.poster_tall.length >= 1">
           <div class="erc-series-poster series-poster">
             <img :src="meta.images.poster_tall[image].source" class="c-content-image" :alt="meta.title">
           </div>
@@ -265,7 +265,7 @@
                 </div>
               </div>
             </div>
-            <div class="action-buttons">
+            <div class="action-buttons" v-if="episodes.items?.length > 1">
               <a role="button" tabindex="0" class="action-button c-button -type-one" v-if="type=='movie_listing'" data-t="watching-btn" :href="episodes.items[number].url">
                 <svg class="" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-t="play-line-svg">
                   <path d="M0,0 L0,20 L20,10 L0,0 Z M2,3 L16,10 L2,17 L2,3 Z"></path>
@@ -457,7 +457,7 @@
     </div>
     <div v-if="meta.images.poster_wide.length >= 5" class="erc-background-image background-image"
       :style="{'background-image': `url(${meta.images.poster_wide[4].source})`}"></div>
-    <div v-else class="erc-background-image background-image"
+    <div v-else-if="meta.images.poster_wide.length >= 1" class="erc-background-image background-image"
       :style="{'background-image': `url(${meta.images.poster_tall[image].source})`}"></div>
   </div>
 </template>
@@ -469,8 +469,15 @@ import {channelPage} from '../../scripts/channel_id';
   export default {
     data() {
       return {
-        meta:null,
-        episodes: null,
+        meta: {
+          images: {
+            poster_wide: [],
+            poster_tall: []
+          },
+        },
+        episodes: {
+          items: []
+        },
         slug : window.location.href.split('/').pop(),
         isOpen: false,
         image : 0,
@@ -510,7 +517,6 @@ import {channelPage} from '../../scripts/channel_id';
       console.log(slug);
       this.meta = await getMetadata(slug);
       let episodes = await getEpisodes(slug,this.meta.__class__);
-      localStorage.setItem('episodes', JSON.stringify(episodes));
       this.type = this.meta.__class__;
       this.id = episodes.items[this.number].id;
       this.image = Math.floor((this.meta.images.poster_tall.length / 2 ) - 1);

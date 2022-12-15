@@ -75,6 +75,7 @@ export default {
             loading : false,
             chan : null,
             style: '',
+            channel: channel
         }
     },
     methods:{
@@ -88,9 +89,9 @@ export default {
         }
     },
     mounted(){
-        if(channel=='crunchyroll'){
+        if(this.channel=='crunchyroll'){
         this.style = 'border-color: #ff6600';
-        } else if(channel == 'neko-sama'){
+        } else if(this.channel == 'neko-sama'){
         this.style = 'border-color: #1cb9f4';
         } else {
         this.style = 'border-color: #0095ff';
