@@ -30,6 +30,7 @@ if(Number(token_valid) < currentDate){
     if(result == false){
         console.log('Token is invalid, generating new token');
         await generateNewToken();
+        window.location.reload();
     } else {
         console.log('token is still valid, adding 6 hours to the token_valid date');
         let curDatePlusSix = new Date();
