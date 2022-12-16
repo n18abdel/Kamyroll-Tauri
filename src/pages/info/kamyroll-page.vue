@@ -455,9 +455,9 @@
         </div>
       </div>
     </div>
-    <div v-if="meta.images.poster_wide.length >= 5" class="erc-background-image background-image"
+    <div v-if="meta.images.poster_wide.length >= 5 && episodes.items.length > 1" class="erc-background-image background-image"
       :style="{'background-image': `url(${meta.images.poster_wide[4].source})`}"></div>
-    <div v-else-if="meta.images.poster_wide.length >= 1" class="erc-background-image background-image"
+    <div v-else-if="meta.images.poster_wide.length >= 1  && episodes.items.length > 1" class="erc-background-image background-image"
       :style="{'background-image': `url(${meta.images.poster_tall[image].source})`}"></div>
   </div>
 </template>
