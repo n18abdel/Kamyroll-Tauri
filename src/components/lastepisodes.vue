@@ -4,6 +4,7 @@ import crunchyroll_logo from '/img/crunchyroll.svg';
 import neko_logo from '/img/neko-sama.svg';
 </script>
 <template>
+<div class="erc-feed-container">
     <div class="erc-shelf-feed-item" v-if="!(episodes.length > 1)" id="last-episodes-placeholder">
         <h1 class="feed-title">Last Episodes</h1>
         <div class="erc-cards-collection" >
@@ -1616,6 +1617,7 @@ import neko_logo from '/img/neko-sama.svg';
             </div>
         </div> 
         </div>
+    </div>
 </template>
 
 <script>
