@@ -4,11 +4,13 @@ import {
 import {
     finalData,Videos,Subs
 } from './constructor.js'
-
 import {
     channel,channelPage
 } from './channel_id.js'
 import pStreamExtractor from './pstreamextractor.js'
+import axios from 'axios';
+import axiosTauriApiAdapter from 'axios-tauri-api-adapter';
+const client = axios.create({ adapter: axiosTauriApiAdapter });
 
 var token = localStorage.getItem('token');
 
@@ -25,14 +27,13 @@ async function getLastEpisodes(){
         method: "GET",
     }
     let episodes = [];
-    let response = await fetch(url, options);
-    if (response.status != 200) {
-        console.log(response);
-        return episodes;
-    }
-    let result = response.data.items;
-    console.log(result);
-    for (let item of result) {
+    let response = await client.get(url, options).then((response) => {
+        return response.data.items;
+    }).catch((error) => {
+        console.log(error);
+        return [];
+    });
+    for (let item of response) {
         item.url = '';
         let id = item.id;
         if (channel == 'crunchyroll') {
@@ -66,12 +67,12 @@ async function getEpisodes(slug, type) {
         },
         method: "GET",
     }
-    let response = await fetch(url, options);
-    if (response.status != 200) {
-        console.log(response);
-        return;
-    }
-    let result = response.data;
+    let result = await client.get(url, options).then((response) => {
+        return response.data;
+    }).catch((error) => {
+        console.log(error);
+        return [];
+    });
     if (type == 'series') {
         for (let season of result.items) {
             for (let epi of season.episodes) {
@@ -120,20 +121,18 @@ async function search(query){
     const options = {
         method: 'GET',
         headers: {
-             'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
+            'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
             'Authorization': `Bearer ${token}`,
         }
     };
     console.log(query);
-    let url = `https://api.kamyroll.tech/content/v1/search?query=${query.replaceAll(' ','+')}&limit=100&channel_id=${channel}`;
-    console.log(url);
-    let request = await fetch(url,options);
-    let response = request.data;
-    if(request.status != 200){
-        console.log(response);
-        return;
-    }
-    let data = response;
+    let url = `https://api.kamyroll.tech/content/v1/search?query=${query.replaceAll(' ','+')}&channel_id=${channel}`;
+    let data = await client.get(url,options).then((response) => {
+        return response.data;
+    }).catch((error) => {
+        console.log(error);
+        return [];
+    });
     for (let anime of data.items) {
         for (let item of anime.items) {
             let title = item.title;
@@ -207,11 +206,12 @@ async function getVideos(id) {
     };
     try {
         if (window.location.href.includes('/crunchyroll/')) {
-            const response = await fetch(url, {
-                method: "GET",
-                headers: headers
+            let result = await client.get(url, { headers: headers }).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                console.log(error);
+                return [];
             });
-            let result = response.data;
             for (let streams of result.streams) {
                 var quality = streams.audio_locale + ' ' + streams.hardsub_locale;
                 var link = streams.url;
@@ -229,11 +229,12 @@ async function getVideos(id) {
                 subtitles.push(new Subs('No subtitles', '', {}, ''));
             }
         } else if (window.location.href.includes('/adn/')) {
-            const response = await fetch(url, {
-                method: "GET",
-                headers: headers
+            let result = await client.get(url, { headers: headers }).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                console.log(error);
+                return [];
             });
-            let result = response.data;
             for (let streams of result.streams) {
                 let quality = streams.audio_locale + ' ' + streams.hardsub_locale;
                 let link = streams.url;
@@ -254,11 +255,12 @@ async function getVideos(id) {
                 subtitles.push(new Subs('No subtitles', '', style, ''));
             }
         } else if (window.location.href.includes('/nekosama/')) {
-            const response = await fetch(url, {
-                method: "GET",
-                headers: headers
+            let result = await client.get(url, { headers: headers }).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                console.log(error);
+                return [];
             });
-            let result = response.data;
             let quality = result.streams[0].audio_locale + ' ' + result.streams[0].hardsub_locale;
             let pstreamlink = result.streams[0].url.url + '&key=clear';
             const video_url = pstreamlink;
@@ -268,7 +270,6 @@ async function getVideos(id) {
             subtitles.push(new Subs('No subtitles', '', {}, ''));
         }
 
-        // fr-FR in first in the subtitles array
         for(let i = 0; i < subtitles.length; i++){
             if(subtitles[i].html == preferredLanguage){
                 let temp = subtitles[0];
