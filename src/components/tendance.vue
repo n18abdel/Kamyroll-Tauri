@@ -206,7 +206,7 @@ export default {
                 let response = request.data;
                 let parser = new DOMParser();
                 let doc = parser.parseFromString(response, "text/html");
-                let trendings = doc.querySelectorAll('#home > div > div:nth-child(6) .row.anime-listing div.text-left');
+                let trendings = doc.querySelectorAll('.row.anime-listing')[1].querySelectorAll('.text-left');
                 let trends = [];
                 for (var x = 0; x < trendings.length; x++) {
                     let tMedia = trendings[x];
