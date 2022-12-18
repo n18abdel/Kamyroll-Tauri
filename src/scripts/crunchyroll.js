@@ -1,7 +1,4 @@
 import {
-    fetch
-} from '@tauri-apps/api/http'
-import {
     finalData,Videos,Subs
 } from './constructor.js'
 import {
