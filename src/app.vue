@@ -9,8 +9,24 @@ import banner from './components/banner.vue'
     <v-main>
        <router-view/>
     </v-main>
-    <v-snackbar v-model="snackbar" :timeout="timeout" :bottom="true" :right="true">
+    
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      :bottom="true"
+      :right="true"
+    >
       {{ text }}
+
+      <template v-slot:actions>
+        <v-btn
+          color="white"
+          variant="text"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
     </v-snackbar>
   </v-app>
   <footer class="app-footer-wrapper">
@@ -29,24 +45,34 @@ import banner from './components/banner.vue'
 export default {
   data() {
     return {
-      version: '',
+      version: 'v' + process.env.APP_VERSION.replaceAll('"', '') + ' - ' + process.env.CHANNEL.replaceAll('"', ''),
       snackbar: false,
       text: '',
       timeout: 2000,
     }
   },
   methods: {
-    generateNewToken() {
-      localStorage.clear();
+    async ctrlt() {
+      let status = await generateNewToken();
+      if(status == true){
+        this.text = 'Token is generated, reloading the page';
+        this.snackbar = true;
+        window.location.reload();
+      } else {
+        this.text = `Token is not generated, please try again. (${status})`;
+        this.snackbar = true;
+      }
     }
   },
   mounted: async function () {
+    let token_expire = localStorage.getItem('token_expire');
     let token_valid = localStorage.getItem('token_valid');
     let currentDate = Math.floor(new Date().getTime() / 1000);
 
     if (localStorage.getItem('miniProgressBar') == null) {
       localStorage.setItem('miniProgressBar', 'false');
     }
+
     if (Number(token_valid) < currentDate) {
       console.log('Testing the token validity');
       let result = await testToken(localStorage.getItem('token'));
@@ -72,11 +98,39 @@ export default {
         localStorage.setItem('token_valid', curDatePlusSix);
       }
     }
-    this.version = 'v' + process.env.APP_VERSION.replaceAll('"', '') + ' - ' + process.env.CHANNEL.replaceAll('"', '');
+    if(localStorage.getItem('token') == undefined || Number(token_expire) < currentDate || testToken(localStorage.getItem('token')) == false){
+        console.log('token is undefined or expired');
+        this.text = 'Token is expired, generating new token';
+        if (this.snackbar = true) {
+          this.snackbar = false;
+        }
+        this.snackbar = true;
+        let generate = await generateNewToken();
+        if (generate == true) {
+          if (this.snackbar = true) {
+            this.snackbar = false;
+          }
+          this.text = 'Token is generated, reloading the page';
+          this.snackbar = true;
+          window.location.reload();
+        } else {
+          if (this.snackbar = true) {
+            this.snackbar = false;
+          }
+          this.text = `Token is not generated, please try again. (${generate})`;
+          this.snackbar = true;
+        }
+    } 
+    
     document.addEventListener('keydown', (event) => {
       // ctrl + t  || cmd + t => generate new token
       if (event.ctrlKey && event.key === 't' || event.metaKey && event.key === 't') {
-        this.generateNewToken();
+        if (this.snackbar = true) {
+          this.snackbar = false;
+        }
+        this.text = 'A new token is being generated';
+        this.snackbar = true;
+        this.ctrlt();
       }
     });
   }
