@@ -72,7 +72,9 @@ export default {
     if (localStorage.getItem('miniProgressBar') == null) {
       localStorage.setItem('miniProgressBar', 'false');
     }
+    if(token_expire != null){
 
+    
     if (Number(token_valid) < currentDate) {
       console.log('Testing the token validity');
       let result = await testToken(localStorage.getItem('token'));
@@ -98,7 +100,7 @@ export default {
         localStorage.setItem('token_valid', curDatePlusSix);
       }
     }
-    if(localStorage.getItem('token') == undefined || Number(token_expire) < currentDate || testToken(localStorage.getItem('token')) == false){
+    if(localStorage.getItem('token') == undefined || Number(token_expire) < currentDate){
         console.log('token is undefined or expired');
         this.text = 'Token is expired, generating new token';
         if (this.snackbar = true) {
@@ -121,6 +123,9 @@ export default {
           this.snackbar = true;
         }
     } 
+  } else {
+      await generateNewToken();
+    }
     
     document.addEventListener('keydown', (event) => {
       // ctrl + t  || cmd + t => generate new token

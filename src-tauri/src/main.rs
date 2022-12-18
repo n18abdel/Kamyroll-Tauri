@@ -12,16 +12,28 @@ use tauri::{
    SystemTrayMenu,
    SystemTrayMenuItem,
    SystemTrayEvent,
+   State
+};
 
+use declarative_discord_rich_presence::{
+  DeclarativeDiscordIpcClient,
+  activity::Activity,
+  activity::Assets,
+  activity::Button,
+/*   activity::Party,
+  activity::Secrets,
+  activity::Timestamps, */
 };
 
 use std::process::Command as StdCommand;
 use std::io::BufReader;
 use command_group::CommandGroup;
+/* use std::thread; */
 
 use system_uri::{install, App, SystemUriError};
 
 use unwrap::unwrap;
+/* use discord_rpc_client::Client; */
 
 
 #[tauri::command]
@@ -32,6 +44,28 @@ async fn close_splashscreen(window: tauri::Window) {
   }
   // Show main window
   window.get_window("main").unwrap().show().unwrap();
+}
+
+#[tauri::command]
+fn set_activity(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, state : &str,page: &str, channel: &str, doing: &str) {
+  if let Err(why) = discord_ipc_client.set_activity(
+    Activity::new()
+      .state(state)
+      .details(page)
+      .assets(
+        Assets::new()
+            .large_image("cover")
+            .large_text("Kamyroll")
+            .small_image(channel)
+            .small_text(doing)
+      ).buttons(vec![Button::new(
+        "Get Kamyroll".to_string(),
+        "https://github.com/kamyroll/Kamyroll-Tauri/releases".to_string(),
+    )])
+  ) {
+      println!("Failed to set presence: {}", why);
+  } 
+  println!("Activity set to: {} - {} - {} - {}", state, page, channel, doing);
 }
 
 /*  #[tauri::command]
@@ -87,8 +121,8 @@ fn install_schema() -> Result<(), SystemUriError> {
 }
 
 
-fn main() {
 
+fn main() {
   
   if let Err(ref e) = install_schema() {
     println!("error: {}", e);
@@ -103,7 +137,7 @@ fn main() {
     .add_item(quit)
     .add_native_item(SystemTrayMenuItem::Separator)
     .add_item(show);
-  tauri::Builder::default()
+   tauri::Builder::default()
   .system_tray(SystemTray::new().with_menu(tray_menu))
   .on_system_tray_event(|app, event| match event {
     SystemTrayEvent::LeftClick {
@@ -144,32 +178,54 @@ fn main() {
         _ => {}
     },
     _ => {}
-})
-.setup(|_app| {
-  tauri::async_runtime::spawn(async move {
-    let tauri_cmd = Command::new_sidecar("main").expect("failed to setup `proxy` sidecar");
-    let mut std_cmd = StdCommand::from(tauri_cmd);
-    let mut child = std_cmd
-      .group_spawn() // !
-      .expect("failed to spawn `proxy` sidecar");
-    let mut stdout = BufReader::new(child.inner().stdout.take().unwrap());
-    
-     let mut buf = Vec::new();
-    loop {
-      buf.clear();
-      match tauri::utils::io::read_line(&mut stdout, &mut buf) {
-          Ok(_n) => {
-              let _line = String::from_utf8_lossy(&buf);
-          }
-          Err(_e) => panic!("idk something bad happened"),
-      }
-    }
-  });
-  Ok(())
-})
-    /* .plugin(tauri_plugin_window_state::Builder::default().build()) */
-    .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */])
-    .run(tauri::generate_context!())
 
+  })
+  .setup(|app| {  
+    let discord_ipc_client = DeclarativeDiscordIpcClient::new("1037127420324610138");
+    
+    discord_ipc_client.enable();
+
+    if let Err(why) = discord_ipc_client.set_activity(
+      Activity::new()
+        .state("Idle")
+        .details("On home page")
+        .assets(
+          Assets::new()
+              .large_image("cover")
+              .large_text("Kamyroll")
+              .small_image("crunchyroll")
+              .small_text("Watching anime")
+        ).buttons(vec![Button::new(
+          "Get Kamyroll".to_string(),
+          "https://github.com/kamyroll/Kamyroll-Tauri/releases".to_string(),
+      )])
+    ) {
+        println!("Failed to set presence: {}", why);
+    }  
+    app.manage(discord_ipc_client);
+    tauri::async_runtime::spawn(async move {
+      let tauri_cmd = Command::new_sidecar("main").expect("failed to setup `proxy` sidecar");
+      let mut std_cmd = StdCommand::from(tauri_cmd);
+      let mut child = std_cmd
+        .group_spawn() // !
+        .expect("failed to spawn `proxy` sidecar");
+      let mut stdout = BufReader::new(child.inner().stdout.take().unwrap());
+      let mut buf = Vec::new();
+      loop {
+        buf.clear();
+        match tauri::utils::io::read_line(&mut stdout, &mut buf) {
+            Ok(_n) => {
+                let _line = String::from_utf8_lossy(&buf);
+            }
+            Err(_e) => panic!("idk something bad happened"),
+        }
+      }
+    });
+    Ok(())
+  })
+    /* .plugin(tauri_plugin_window_state::Builder::default().build()) */
+    .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */,set_activity])
+    .run(tauri::generate_context!() )
     .expect("failed to run app");
-}
+   
+  }

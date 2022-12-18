@@ -2,11 +2,12 @@ import {
     finalData,Videos,Subs
 } from './constructor.js'
 import {
-    channel,channelPage
+    channel,channelPage, getChannelinUse
 } from './channel_id.js'
 import pStreamExtractor from './pstreamextractor.js'
 import axios from 'axios';
 import axiosTauriApiAdapter from 'axios-tauri-api-adapter';
+import { invoke } from '@tauri-apps/api/tauri';
 const client = axios.create({ adapter: axiosTauriApiAdapter });
 
 var token = localStorage.getItem('token');
@@ -15,6 +16,12 @@ async function getLastEpisodes(){
     if(token == null){
         token = localStorage.getItem('token');
     }
+    await invoke('set_activity', {
+        state : getChannelinUse(localStorage.getItem('channel')).short_label,
+        page : 'On home page',
+        channel : channel,
+        doing : `Looking at the home page`
+    });
     let url = `https://api.kamyroll.tech/content/v1/updated?channel_id=${channel}&locale=en-US&limit=20`;
     const options = {
         headers: {
@@ -48,6 +55,12 @@ async function getLastEpisodes(){
 
 async function getEpisodes(slug, type) {
     channelPage();
+    await invoke('set_activity', {
+        state : getChannelinUse(localStorage.getItem('channel')).short_label,
+        page : 'On info page',
+        channel : channel,
+        doing : `Looking for ${type} ${slug}`
+    })
     if(token == null){
         token = localStorage.getItem('token');
     }
@@ -114,6 +127,12 @@ async function search(query){
     if(token == null){
         token = localStorage.getItem('token');
     }
+    await invoke('set_activity', {
+        state : getChannelinUse(localStorage.getItem('channel')).short_label,
+        page : `On search page looking for ${query}`,
+        channel : channel,
+        doing : `Looking for ${query}`
+    })
     let results = [];
     const options = {
         method: 'GET',
@@ -197,7 +216,7 @@ async function getVideos(id) {
     };
     const url = `https://api.kamyroll.tech/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=ass`;
     const headers = {
-        'Authorization': 'Bearer ' + token,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/x-www-form-urlencoded',
         'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')} Tauri-Rust`
     };

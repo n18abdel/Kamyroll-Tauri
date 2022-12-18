@@ -464,7 +464,8 @@
 <script>
 import getMetadata from '../../scripts/getMetadata.js';
 import {getEpisodes} from '../../scripts/crunchyroll.js';
-import {channelPage} from '../../scripts/channel_id';
+import {channelPage,getChannelinUse } from '../../scripts/channel_id';
+import { invoke } from '@tauri-apps/api/tauri';
 
   export default {
     data() {
@@ -521,6 +522,12 @@ import {channelPage} from '../../scripts/channel_id';
       this.id = episodes.items[this.number].id;
       this.image = Math.floor((this.meta.images.poster_tall.length / 2 ) - 1);
       this.episodes = episodes; 
+      await invoke('set_activity', {
+        state : getChannelinUse(localStorage.getItem('channel')).short_label,
+        page : `On the info page of ${this.meta.title}`,
+        channel : localStorage.getItem('channel'),
+        doing : `Looking at the info page for ${this.meta.title}`
+    })
     }
 }
 </script>

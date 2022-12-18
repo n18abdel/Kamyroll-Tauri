@@ -36,10 +36,11 @@
 
 </template>
 <script>
-import { channel} from '../../scripts/channel_id';
+import { channel,getChannelinUse} from '../../scripts/channel_id';
 import { getVideos } from '../../scripts/crunchyroll.js';
 import Artplayer from "../../components/Artplayer.vue";
 import getMetadata from '../../scripts/getMetadata';
+import { invoke} from '@tauri-apps/api/tauri';
 export default {
     data() {
         return {
@@ -105,6 +106,12 @@ export default {
         this.videos = sources.streams;
         this.subs = sources.subs;
         this.loaded = true;
+        await invoke('set_activity', {
+        state : getChannelinUse(localStorage.getItem('channel')).short_label,
+        page : `Watching ${this.metadat.title}`,
+        channel : channel,
+        doing : `${this.metadat.series_title}`
+    })
     }
 }
 </script>

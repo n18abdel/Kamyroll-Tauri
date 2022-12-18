@@ -13,6 +13,7 @@ import 'vue-global-api/watch';
 import 'vue-global-api/watchEffect';
 import { appWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/tauri';
+import { getChannelinUse,channel } from './scripts/channel_id.js';
 
 
 if(appWindow.isFullscreen() && !window.location.href.includes('watch')){
@@ -35,3 +36,13 @@ app.mount('#app');
 
 
 await invoke('close_splashscreen');
+
+// every 5 min set the user status as idle
+setInterval(async () => {
+    await invoke('set_activity', {
+        state : getChannelinUse(localStorage.getItem('channel')).short_label,
+        page : `Doing nothing`,
+        channel : channel,
+        doing : `Idle`
+    })
+}, 300000);
