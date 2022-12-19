@@ -113,7 +113,7 @@ export default {
             var id = this.metadat.series_id == undefined ? this.id : this.metadat.series_id;
             var meta1 = await getMetadata(id);
             console.log(meta1);
-            if (this.metadat.images.length > 1) {
+            if (Object.keys(this.metadat.images).length > 1)  {
                 this.metadat.images.poster_tall = meta1.images.poster_tall;
             } else {
                 this.metadat.images.poster_tall = meta1.images.thumbnail ;
