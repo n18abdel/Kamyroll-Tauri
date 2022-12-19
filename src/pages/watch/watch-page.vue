@@ -32,8 +32,17 @@
                 </div>
             </div>
         </div>
-    </div>
+        <v-snackbar v-model="snackbar" :bottom="true" :right="true">
+            {{ text }}
 
+            <template v-slot:actions>
+                <v-btn color="white" variant="text" @click="snackbar = false">
+                    Close
+                </v-btn>
+            </template>
+        </v-snackbar>
+    </div>
+    
 </template>
 <script>
 import { channel,getChannelinUse} from '../../scripts/channel_id';
@@ -53,8 +62,10 @@ export default {
             metadat: '',
             image: 0,
             nextepisode: '',
-            loaded : false,
-            option: {}
+            loaded: false,
+            option: {},
+            snackbar: false,
+            text: '',
         }
     },
     components: {
@@ -96,22 +107,50 @@ export default {
             return art;
         }
     },
-    beforeMount: async function () {
-        this.metadat = await getMetadata(this.id);
-        let meta1 = await getMetadata(this.metadat.series_id);
-        this.metadat.images.poster_tall = meta1.images.poster_tall;
-        this.metadat.url = `/${channel.replace('-','')}/`+meta1.id;
-        this.image = Math.floor((this.metadat.images.poster_tall.length - 1) /2); 
-        let sources = await getVideos(this.id);
-        this.videos = sources.streams;
-        this.subs = sources.subs;
-        this.loaded = true;
+    mounted: async function () {
+        try {
+            this.metadat = await getMetadata(this.id);
+            var id = this.metadat.series_id == undefined ? this.id : this.metadat.series_id;
+            var meta1 = await getMetadata(id);
+            console.log(meta1);
+            if (this.metadat.images.length > 1) {
+                this.metadat.images.poster_tall = meta1.images.poster_tall;
+            } else {
+                this.metadat.images.poster_tall = meta1.images.thumbnail ;
+            }
+            this.metadat.url = `/${channel.replace('-','')}/` + meta1.id;
+            this.image = Math.floor((this.metadat.images.poster_tall.length - 1) / 2);
+            let sources = await getVideos(this.id);
+            this.videos = sources.streams;
+            this.subs = sources.subs;
+            this.loaded = true;
+        } catch (e) {
+            this.text = 'Error loading video :' + ' ' + e;
+            this.snackbar = true;
+            console.log(e);
+        }
+
         await invoke('set_activity', {
-        state : getChannelinUse(localStorage.getItem('channel')).short_label,
-        page : `Watching ${this.metadat.title}`,
-        channel : channel,
-        doing : `${this.metadat.series_title}`
-    })
+            state: getChannelinUse(localStorage.getItem('channel')).short_label,
+            page: `Watching ${this.metadat.title}`,
+            channel: channel,
+            doing: `${id}`
+        }).then((res) => {
+            console.log('Activity set')
+        }).catch((err) => {
+            console.log(err);
+        });
+        if (meta1.duration != 0) {
+            setTimeout(async () => {
+                await invoke('set_activity', {
+                    state: getChannelinUse(localStorage.getItem('channel')).short_label,
+                    page: `Doing nothing`,
+                    channel: channel,
+                    doing: `Idle`
+                })
+            }, meta1.duration * 1000 + 60000)
+        }
+
     }
 }
 </script>
