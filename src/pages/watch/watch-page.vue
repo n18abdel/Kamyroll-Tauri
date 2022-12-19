@@ -140,7 +140,7 @@ export default {
         }).catch((err) => {
             console.log(err);
         });
-        if (meta1.duration != 0) {
+        if (meta1.duration_ms != 0) {
             setTimeout(async () => {
                 await invoke('set_activity', {
                     state: getChannelinUse(localStorage.getItem('channel')).short_label,
@@ -148,7 +148,7 @@ export default {
                     channel: channel,
                     doing: `Idle`
                 })
-            }, meta1.duration * 1000 + 60000)
+            }, meta1.duration_ms + 60000)
         }
 
     }
