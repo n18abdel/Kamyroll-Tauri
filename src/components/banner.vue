@@ -91,7 +91,7 @@ import kamyroll_logo from '/img/kamyroll_logo.svg';
       </div>
       <div class="erc-header-bar" :style="style"></div>
     </div>
-    <div :class="isOuvert ? 'erc-page-overlay state-open':'erc-page-overlay'" ></div>
+    <div :class="isOuvert ? 'erc-page-overlay state-open':'erc-page-overlay'" @click="toggleMenu()"></div>
   </div>
 </template>
 
