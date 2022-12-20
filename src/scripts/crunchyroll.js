@@ -4,7 +4,8 @@ import {
 import {
     channel,channelPage, getChannelinUse
 } from './channel_id.js'
-import pStreamExtractor from './pstreamextractor.js'
+import pStreamExtractor from './extractors/pstream.js'
+import streamtapeExtractor from './extractors/streamtape.js'
 import axios from 'axios';
 import axiosTauriApiAdapter from 'axios-tauri-api-adapter';
 import { invoke } from '@tauri-apps/api/tauri';
@@ -208,6 +209,7 @@ async function getVideos(id) {
     const proxy_url = 'http://127.0.0.1:15411';
     let videos = [];
     let subtitles = [];
+    const file_extension = '.m3u8';
     const style = {
         /* filter : 'drop-shadow(2px 2px 1px black)',
         fontSize : '45px',
@@ -254,6 +256,7 @@ async function getVideos(id) {
                 console.log(error);
                 return [];
             });
+            console.log(result);
             for (let streams of result.streams) {
                 let quality = streams.audio_locale + ' ' + streams.hardsub_locale;
                 let link = streams.url;
@@ -280,12 +283,19 @@ async function getVideos(id) {
                 console.log(error);
                 return [];
             });
-            let quality = result.streams[0].audio_locale + ' ' + result.streams[0].hardsub_locale;
-            let pstreamlink = result.streams[0].url.url + '&key=clear';
-            const video_url = pstreamlink;
-            const file_extension = '.m3u8'
-            const hls_proxy_url  = `${proxy_url}/${ btoa(video_url) }${file_extension}`
-            videos.push(new Videos(quality, hls_proxy_url));
+            for(let streams of result.streams){
+                let quality = streams.audio_locale + ' ' + streams.hardsub_locale;
+                let link = streams.url;
+                if(link.url.includes('pstream')){
+                    link = link.url + '&key=clear';
+                    console.log(link);
+                    link = `${proxy_url}/${ btoa(link) }${file_extension}`;
+                } else if (link.includes('streamtape')){
+                    link = await streamtapeExtractor(link);
+                    link = `${proxy_url}/${ btoa(link) }${file_extension}`;
+                }
+                videos.push(new Videos(quality, link));
+            } 
             subtitles.push(new Subs('No subtitles', '', {}, ''));
         }
 
