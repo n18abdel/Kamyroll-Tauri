@@ -18,7 +18,7 @@ use tauri::{
 use declarative_discord_rich_presence::{
   DeclarativeDiscordIpcClient,
   activity::Activity,
-  activity::Assets,
+  activity::{Assets, Timestamps},
   activity::Button,
 /*   activity::Party,
   activity::Secrets,
@@ -66,6 +66,52 @@ fn set_activity(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, stat
       println!("Failed to set presence: {}", why);
   } 
   println!("Activity set to: {} - {} - {} - {}", state, page, channel, doing);
+}
+#[tauri::command]
+fn set_activity_watch_notimestamp(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, state : &str,page: &str, channel: &str, doing: &str, title : &str) {
+  if let Err(why) = discord_ipc_client.set_activity(
+    Activity::new()
+      .state(state)
+      .details(page)
+      .assets(
+        Assets::new()
+            .large_image("cover")
+            .large_text(title)
+            .small_image(channel)
+            .small_text(doing)
+      ).buttons(vec![Button::new(
+        "Get Kamyroll".to_string(),
+        "https://github.com/kamyroll/Kamyroll-Tauri/releases".to_string(),
+    )])
+  ) {
+      println!("Failed to set presence: {}", why);
+  } 
+  println!("Activity set to: {} - {} - {} - {}", state, page, channel, doing);
+}
+
+#[tauri::command]
+fn set_activity_watch_timestamp (discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, state : &str,page: &str, channel: &str, doing: &str, title : &str, start: i64, end: i64) {
+  if let Err(why) = discord_ipc_client.set_activity(
+    Activity::new()
+      .state(state)
+      .details(page)
+      .assets(
+        Assets::new()
+            .large_image("cover")
+            .large_text(title)
+            .small_image(channel)
+            .small_text(doing)
+      ).buttons(vec![Button::new(
+        "Get Kamyroll".to_string(),
+        "https://github.com/kamyroll/Kamyroll-Tauri/releases".to_string(),
+    )])
+    .timestamps(Timestamps::new()
+      .start(start)
+      .end(end))
+  ) {
+      println!("Failed to set presence: {}", why);
+  } 
+  println!("Activity set to: {} - {} - {} - {} - {} - {}", state, page, channel, doing, start, end);
 }
 
 /*  #[tauri::command]
@@ -224,7 +270,7 @@ fn main() {
     Ok(())
   })
     /* .plugin(tauri_plugin_window_state::Builder::default().build()) */
-    .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */,set_activity])
+    .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */,set_activity,set_activity_watch_notimestamp,set_activity_watch_timestamp])
     .run(tauri::generate_context!() )
     .expect("failed to run app");
    
