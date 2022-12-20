@@ -1,5 +1,5 @@
 <template>
-  <div class="series-page-container" v-if="(episodes.items.length == 0 || meta.images.length == 0)">
+  <div class="series-page-container" v-if="(episodes.items.length == 0 && meta.images.poster_tall.length > 1)">
       <div class="content">
         <div class="series-metadata">
           <div class="erc-series-poster series-poster placeholder">
@@ -524,7 +524,7 @@ import { invoke } from '@tauri-apps/api/tauri';
       this.episodes = episodes; 
       await invoke('set_activity', {
         state : getChannelinUse(localStorage.getItem('channel')).short_label,
-        page : `On the info page of ${this.meta.title}`,
+        page : `Looking at ${this.meta.title}`,
         channel : localStorage.getItem('channel'),
         doing : `Looking at the info page for ${this.meta.title}`
     })
