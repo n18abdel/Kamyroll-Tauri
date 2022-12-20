@@ -37,7 +37,7 @@ app.mount('#app');
 
 await invoke('close_splashscreen');
 
-if (!window.location.href.includes('watch') ){
+if (!window.location.href.includes('watch')){
     setInterval(async () => {
         await invoke('set_activity', {
             state : getChannelinUse(localStorage.getItem('channel')).short_label,
