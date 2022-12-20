@@ -14,6 +14,8 @@
   import backforward from '/img/back-forward-15.svg';
   import download from '/img/download-button.svg';
   import SubtitlesOctopus from "../scripts/subtitles-octopus.js";
+  import { invoke } from '@tauri-apps/api/tauri';
+  import { getChannelinUse } from "../scripts/channel_id";
 
   export default {
       data() {
@@ -34,8 +36,12 @@
               type: Array,
               required: true,
           },
+          info : {
+              type: Object,
+              required: true,
+          }
       },
-      mounted: function () {
+      mounted: async function () {
         function artplayerPluginAss(options) {
             return art => {
                 const instance = new SubtitlesOctopus({
@@ -75,6 +81,19 @@
           }
           this.option.fullscreenWeb = true;
           var hls = null;
+          console.log(this.info);
+          var customType = {};
+          if(!this.videos[0].url.includes('streamta')){
+             customType = {
+                  m3u8: function (video, url) {
+                      if (hls) hls.destroy();
+                      // xhrSetup
+                      hls = new Hls();
+                      hls.loadSource(url);
+                      hls.attachMedia(video);
+                  },
+              }
+          }
           var art = new Artplayer({
             ...this.option,
             url: this.videos[0].url,
@@ -147,15 +166,7 @@
               moreVideoAttr: {
                   crossOrigin: 'anonymous',
               },
-              customType: {
-                  m3u8: function (video, url) {
-                      if (hls) hls.destroy();
-                      // xhrSetup
-                      hls = new Hls();
-                      hls.loadSource(url);
-                      hls.attachMedia(video);
-                  },
-              },
+              customType: customType,
               whitelist: ['*'],
               moreVideoAttr: {
                   crossOrigin: 'anonymous',
@@ -198,7 +209,7 @@
                   }
               ],
           });
-          art.on('ready', () => {
+          art.on('ready', async () => {
               art.setting.add({
                 // switch to disable the mini progress bar
                 html: 'Mini Progress Bar',
@@ -216,6 +227,7 @@
                     return !item.switch;
                 },
               })
+              if(!this.videos[0].url.includes('streamta')){
               art.controls.add({
                   width: 200,
                   position: 'right',
@@ -274,8 +286,142 @@
                           updateHtml();
                       });
                   }
-              })
+              }) 
+              }
+              await invoke('set_activity_watch_notimestamp',{
+                title: this.info.title_info.title,
+                state: 'Video is about to start',
+                page: `${this.info.title_info.title} `,
+                channel: localStorage.getItem('channel'),
+                doing: getChannelinUse(localStorage.getItem('channel')).short_label,
+                }).then((res) => {
+                    console.log('Activity set')
+                }).catch((err) => {
+                    console.log(err);
+                });
           });
+
+          art.on('video:play', async () => {
+              let currentTimePlayer = art.currentTime;
+              currentTimePlayer = currentTimePlayer / 60;
+              let duration = art.duration;
+              let currentTime = new Date();
+              duration = duration / 60;
+              let endVideo = currentTime.setMinutes(currentTime.getMinutes() + duration - currentTimePlayer);
+              endVideo = currentTime.getTime();
+              if (this.info.__type__ == 'series' && this.info.episode_number != null) {
+                  await invoke('set_activity_watch_timestamp', {
+                      title: this.info.title_info.title,
+                      state: `Season ${this.info.season_number}, Episode ${this.info.episode_number}`,
+                      page: `${this.info.title_info.title} `,
+                      channel: localStorage.getItem('channel'),
+                      doing: getChannelinUse(localStorage.getItem('channel')).short_label,
+                      start: Date.now(),
+                      end: endVideo
+                  }).then((res) => {
+                      console.log('Activity set with timestamp')
+                  }).catch((err) => {
+                      console.log(err);
+                  });
+              } else {
+                  await invoke('set_activity_watch_timestamp', {
+                      title: this.info.title_info.title,
+                      state: getChannelinUse(localStorage.getItem('channel')).short_label,
+                      page: `${this.info.title_info.title} `,
+                      channel: localStorage.getItem('channel'),
+                      doing: getChannelinUse(localStorage.getItem('channel')).short_label,
+                      start: Date.now(),
+                      end:  endVideo
+                  }).then((res) => {
+                      console.log('Activity set')
+                  }).catch((err) => {
+                      console.log(err);
+                  });
+              }
+          });
+
+          art.on('video:pause',async() => {
+            await invoke('set_activity_watch_notimestamp',{
+                title: this.info.title_info.title,
+                state: 'Paused',
+                page: `${this.info.title_info.title} `,
+                channel: localStorage.getItem('channel'),
+                doing: getChannelinUse(localStorage.getItem('channel')).short_label,
+            }).then((res) => {
+                console.log('Activity set')
+            }).catch((err) => {
+                console.log(err);
+            });
+          })
+
+          art.on('video:seeked', async () => {
+              let currentTimePlayer = art.currentTime;
+              currentTimePlayer = currentTimePlayer / 60;
+              let duration = art.duration;
+              let currentTime = new Date();
+              duration = duration / 60;
+              let endVideo = currentTime.setMinutes(currentTime.getMinutes() + duration - currentTimePlayer);
+              endVideo = currentTime.getTime();
+              if (this.info.__type__ == 'series' && this.info.episode_number != null) {
+                  await invoke('set_activity_watch_timestamp', {
+                      title: this.info.title_info.title,
+                      state: `Season ${this.info.season_number}, Episode ${this.info.episode_number}`,
+                      page: `${this.info.title_info.title} `,
+                      channel: localStorage.getItem('channel'),
+                      doing: getChannelinUse(localStorage.getItem('channel')).short_label,
+                      start: Date.now(),
+                      end: endVideo
+                  }).then((res) => {
+                      console.log('Activity set with timestamp')
+                  }).catch((err) => {
+                      console.log(err);
+                  });
+              } else {
+                  await invoke('set_activity_watch_timestamp', {
+                      title: this.info.title_info.title,
+                      state: getChannelinUse(localStorage.getItem('channel')).short_label,
+                      page: `${this.info.title_info.title} `,
+                      channel: localStorage.getItem('channel'),
+                      doing: getChannelinUse(localStorage.getItem('channel')).short_label,
+                      start: Date.now(),
+                      end:  endVideo
+                  }).then((res) => {
+                      console.log('Activity set')
+                  }).catch((err) => {
+                      console.log(err);
+                  });
+              }
+          });
+
+          art.on('video:ended', async()=> {
+                await invoke('set_activity_watch_notimestamp',{
+                    title: this.info.title_info.title,
+                    state: 'Video has ended, going to idle',
+                    page: `${this.info.title_info.title} `,
+                    channel: localStorage.getItem('channel'),
+                    doing: getChannelinUse(localStorage.getItem('channel')).short_label,
+                }).then((res) => {
+                    console.log('Activity set')
+                }).catch((err) => {
+                    console.log(err);
+                });
+                setTimeout(async () => {
+                    await invoke('set_activity', {
+                        title: this.info.title_info.title,
+                        state: 'Idle',
+                        page: `${this.info.title_info.title} `,
+                        channel: localStorage.getItem('channel'),
+                        doing: getChannelinUse(localStorage.getItem('channel')).short_label,
+                    }).then((res) => {
+                        console.log('Activity set')
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                }, 10000);
+                // sleep for 10 seconds and then set the activity to idle
+
+            });
+
 
           art.on('fullscreen', async () => {
               await getState(art);
@@ -285,6 +431,7 @@
           this.$nextTick(() => {
               this.$emit("get-instance", art);
           });
+        
           
         // when pushing the escape key on the keyboard check if the player is fullscreen and if it is, exit fullscreen
             document.addEventListener('keydown', async (event) => {
