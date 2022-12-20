@@ -4,7 +4,7 @@
             <div class="video-player-wrapper" v-if="videos.length == 0" >
                 <img class="loading"  src="/img/loading.svg" alt="loading">
             </div>
-            <Artplayer v-else @get-instance="getInstance" :option="option" :subs="subs" :videos="videos" />
+            <Artplayer v-else @get-instance="getInstance" :option="option" :subs="subs" :videos="videos" :info="metadat" />
             <div class="video-content" >
                 <div class="content" v-if="loaded">
                     <div class="media-metadata"><a class="poster-image-wrapper" :href="metadat.url"><span
@@ -112,11 +112,12 @@ export default {
             this.metadat = await getMetadata(this.id);
             var id = this.metadat.series_id == undefined ? this.id : this.metadat.series_id;
             var meta1 = await getMetadata(id);
-            console.log(meta1);
+            this.metadat.__type__ = meta1.__class__;
+            this.metadat.title_info = meta1;
             if (Object.keys(this.metadat.images).length > 1)  {
                 this.metadat.images.poster_tall = meta1.images.poster_tall;
             } else {
-                this.metadat.images.poster_tall = meta1.images.thumbnail ;
+                this.metadat.images.poster_tall = this.metadat.images.thumbnail ;
             }
             this.metadat.url = `/${channel.replace('-','')}/` + meta1.id;
             this.image = Math.floor((this.metadat.images.poster_tall.length - 1) / 2);
@@ -131,26 +132,11 @@ export default {
         }
 
         await invoke('set_activity', {
-            state: getChannelinUse(localStorage.getItem('channel')).short_label,
-            page: `Watching ${this.metadat.title}`,
-            channel: channel,
-            doing: `${id}`
-        }).then((res) => {
-            console.log('Activity set')
-        }).catch((err) => {
-            console.log(err);
-        });
-        if (meta1.duration_ms != 0) {
-            setTimeout(async () => {
-                await invoke('set_activity', {
                     state: getChannelinUse(localStorage.getItem('channel')).short_label,
-                    page: `Doing nothing`,
+                    page: `Waiting for ${this.metadat.title} to play`,
                     channel: channel,
                     doing: `Idle`
-                })
-            }, meta1.duration_ms + 60000)
-        }
-
+        });
     }
 }
 </script>
