@@ -43,9 +43,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: src-tauri/target
-          # Add date to the cache to keep it up to date
           key: ${{ matrix.platform }}-stable-cargo-cli-${{ hashFiles('src-tauri/Cargo.lock') }}-${{ env.CURRENT_DATE }}
-          # Restore from outdated cache for speed
           restore-keys: |
             ${{ matrix.platform }}-stable-cargo-cli-${{ hashFiles('src-tauri/Cargo.lock') }}
             ${{ matrix.platform }}-stable-cargo-cli-
