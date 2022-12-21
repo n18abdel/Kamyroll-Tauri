@@ -7,7 +7,7 @@
             <Artplayer v-else @get-instance="getInstance" :option="option" :subs="subs" :videos="videos" :info="metadat" />
             <div class="video-content" >
                 <div class="content" v-if="loaded">
-                    <div class="media-metadata"><a class="poster-image-wrapper" :href="metadat.url"><span
+                    <div class="media-metadata"><a class="poster-image-wrapper" :href="metadat.url"  v-if="Object.keys(metadat.title_info.images).length > 1"><span
                                 class="poster-hover-layer">to
                                 series</span><img :src="metadat.title_info.images?.poster_tall[image].source" class="c-content-image"
                                 :alt="metadat.title"></a>
@@ -114,12 +114,10 @@ export default {
             var meta1 = await getMetadata(id);
             this.metadat.__type__ = meta1.__class__;
             this.metadat.title_info = meta1;
-            if (Object.keys(this.metadat.images).length > 1)  {
-                this.metadat.images.poster_tall = meta1.images.poster_tall;
-            } else {
-                this.metadat.images.poster_tall = this.metadat.images.thumbnail ;
-            }
             this.metadat.url = `/${channel.replace('-','')}/` + meta1.id;
+            if(Object.keys(this.metadat.title_info.images).length == 1 && this.metadat.title_info.images.poster_tall == undefined){
+                this.metadat.title_info.images.poster_tall = this.metadat.images.thumbnail;
+            }
             this.image = Math.floor((this.metadat.title_info.images.poster_tall.length - 1) / 2);
             let sources = await getVideos(this.id);
             this.videos = sources.streams;
