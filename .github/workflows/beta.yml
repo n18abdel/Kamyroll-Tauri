@@ -62,8 +62,9 @@ jobs:
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
         with:
           tagName: v__VERSION__-beta+${{ env.CURRENT_DATE }}.${{ env.COMMIT_HASH }}
-          releaseName: v__VERSION__-beta
+          releaseName: v__VERSION__-beta+${{ env.CURRENT_DATE }}.${{ env.COMMIT_HASH }}
           releaseBody: |
-            - __VERSION__-beta
+            - __VERSION__-beta+${{ env.CURRENT_DATE }}.${{ env.COMMIT_HASH }}
+            - This is a beta release, please report any bugs you find.
           includeDebug: true
           prerelease: true
