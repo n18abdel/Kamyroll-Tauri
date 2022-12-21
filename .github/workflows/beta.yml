@@ -38,9 +38,6 @@ jobs:
       - name: Get current date
         if: matrix.platform == 'windows-latest'
         run: echo "CURRENT_DATE=$(Get-Date -Format "yyyy-MM-dd")" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-      
-      - name: Get commit hash
-        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Cache CLI cargo target
         uses: actions/cache@v2
@@ -61,10 +58,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
         with:
-          tagName: v__VERSION__-beta+${{ env.COMMIT_HASH }}
-          releaseName: v__VERSION__-beta+${{ env.COMMIT_HASH }}
+          tagName: v__VERSION__-beta+${{ env.GITHUB_SHA }}
+          releaseName: v__VERSION__-beta+${{ env.GITHUB_SHA}}
           releaseBody: |
-            - __VERSION__-beta+${{ env.COMMIT_HASH }}
+            - __VERSION__-beta+${{ env.GITHUB_SHA }}
             - This is a beta release, please report any bugs you find.
           includeDebug: true
           prerelease: true
