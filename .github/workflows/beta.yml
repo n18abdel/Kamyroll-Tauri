@@ -59,10 +59,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
         with:
-          tagName: v__VERSION__-beta+${{SHORT_SHA}}
-          releaseName: v__VERSION__-beta+${{SHORT_SHA}}
+          tagName: v__VERSION__-beta+${{env.SHORT_SHA}}
+          releaseName: v__VERSION__-beta+${{env.SHORT_SHA}}
           releaseBody: |
-            - __VERSION__-beta+${{SHORT_SHA}}
+            - __VERSION__-beta+${{env.SHORT_SHA}}
             - This is a beta release, please report any bugs you find.
           includeDebug: true
           prerelease: true
