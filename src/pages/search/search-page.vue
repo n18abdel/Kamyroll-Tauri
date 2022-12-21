@@ -68,7 +68,7 @@
 <script>
 import {getChannelinUse,channel} from '../../scripts/channel_id';
 import {search} from '../../scripts/crunchyroll.js'
-import { invoke } from '@tauri-apps/api/tauri'
+import {defaultRPC} from '../../scripts/misc/rpc'
 export default { 
     data(){
         return{
@@ -89,13 +89,8 @@ export default {
             this.loading = false; 
         }
     },
-    async mounted(){
-        await invoke('set_activity', {
-        state : getChannelinUse(localStorage.getItem('channel')).short_label,
-        page : `On search page`,
-        channel : channel,
-        doing : `No queries`
-        })
+    mounted : async function(){
+        await defaultRPC('On search page','No queries yet')
         if(this.channel=='crunchyroll'){
         this.style = 'border-color: #ff6600';
         } else if(this.channel == 'neko-sama'){

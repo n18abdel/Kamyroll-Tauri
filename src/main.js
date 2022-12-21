@@ -12,8 +12,8 @@ import 'vue-global-api/computed';
 import 'vue-global-api/watch';
 import 'vue-global-api/watchEffect';
 import { appWindow } from '@tauri-apps/api/window';
+import { idleRPC } from './scripts/misc/rpc.js';
 import { invoke } from '@tauri-apps/api/tauri';
-import { getChannelinUse,channel } from './scripts/channel_id.js';
 
 
 if(appWindow.isFullscreen() && !window.location.href.includes('watch')){
@@ -39,11 +39,6 @@ await invoke('close_splashscreen');
 
 if (!window.location.href.includes('watch')){
     setInterval(async () => {
-        await invoke('set_activity', {
-            state : getChannelinUse(localStorage.getItem('channel')).short_label,
-            page : `Doing nothing`,
-            channel : channel,
-            doing : `Idle`
-        })
+        await idleRPC('Doing nothing', 'Idle')
     }, 300000);
 }

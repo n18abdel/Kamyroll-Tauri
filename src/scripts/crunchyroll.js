@@ -9,6 +9,7 @@ import streamtapeExtractor from './extractors/streamtape.js'
 import axios from 'axios';
 import axiosTauriApiAdapter from 'axios-tauri-api-adapter';
 import { invoke } from '@tauri-apps/api/tauri';
+import { defaultRPC } from './misc/rpc.js';
 const client = axios.create({ adapter: axiosTauriApiAdapter });
 
 var token = localStorage.getItem('token');
@@ -17,15 +18,9 @@ async function getLastEpisodes(){
     if(token == null){
         token = localStorage.getItem('token');
     }
-    await invoke('set_activity', {
-        state : getChannelinUse(localStorage.getItem('channel')).short_label,
-        page : 'On home page',
-        channel : channel,
-        doing : `Looking at the home page`
-    });
     let url = `https://api.kamyroll.tech/content/v1/updated?channel_id=${channel}&locale=en-US&limit=20`;
     const options = {
-        timeout: 5000,
+        timeout: 20000,
         headers: {
              'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
             'Authorization': `Bearer ${token}`,
@@ -39,6 +34,7 @@ async function getLastEpisodes(){
         console.log(error);
         return [];
     });
+    console.log(response);
     for (let item of response) {
         item.url = '';
         let id = item.id;
@@ -57,12 +53,7 @@ async function getLastEpisodes(){
 
 async function getEpisodes(slug, type) {
     channelPage();
-    await invoke('set_activity', {
-        state : getChannelinUse(localStorage.getItem('channel')).short_label,
-        page : 'On info page',
-        channel : channel,
-        doing : `Looking for ${type} ${slug}`
-    })
+    await defaultRPC('On Info Page', `Looking for ${type} : ${slug}`)
     if(token == null){
         token = localStorage.getItem('token');
     }
@@ -130,12 +121,7 @@ async function search(query){
     if(token == null){
         token = localStorage.getItem('token');
     }
-    await invoke('set_activity', {
-        state : getChannelinUse(localStorage.getItem('channel')).short_label,
-        page : `On search page looking for ${query}`,
-        channel : channel,
-        doing : `Looking for ${query}`
-    })
+    await defaultRPC('On search page', `Looking for ${query}`);
     let results = [];
     const options = {
         method: 'GET',
@@ -249,17 +235,36 @@ async function getVideos(id) {
             } else {
                 subtitles.push(new Subs('No subtitles', '', {}, ''));
             }
+            let preferredVideo = '';
+            for (let i = 1; i < videos.length; i++) {
+                let video = videos[i];
+                if (video.html.split(' ')[1].includes(preferredLanguage)) {
+                    preferredVideo = video.url;
+                    console.log('Preferred video found', preferredVideo);
+                }
+            }
+            if (preferredVideo == '') {
+                preferredVideo = videos[0].url;
+                localStorage.setItem('master_link', preferredVideo);
+            } else {
+                localStorage.setItem('master_link', preferredVideo);
+            }
         } else if (window.location.href.includes('/adn/')) {
-            let result = await client.get(url, { headers: headers }).then((response) => {
+            let firstVideo = '';
+            let result = await client.get(url, {timeout: 5000, headers: headers }).then((response) => {
                 return response.data;
             }).catch((error) => {
                 console.log(error);
                 return [];
             });
             console.log(result);
-            for (let streams of result.streams) {
+            for (let cpt = 0; cpt < result.streams.length; cpt++) {
+                let streams = result.streams[cpt];
                 let quality = streams.audio_locale + ' ' + streams.hardsub_locale;
                 let link = streams.url;
+                if(cpt == 0){
+                    firstVideo = link;
+                }
                 const video_url = link;
                 const file_extension = '.m3u8';
                 const hls_proxy_url  = `${proxy_url}/${ btoa(video_url) }${file_extension}`;
@@ -276,23 +281,34 @@ async function getVideos(id) {
             } else {
                 subtitles.push(new Subs('No subtitles', '', style, ''));
             }
+            //append the subs with preferredLanguage to the first video
+            let preferredSubs = subtitles.find((sub) => sub.html.includes(preferredLanguage));
+            if (preferredSubs == null) {
+                preferredSubs = subtitles[0];
+            }
+            if (preferredSubs.lang != 'No subtitles') {
+                firstVideo = `${firstVideo}?subs=${preferredSubs.url}`;
+            }
+            localStorage.setItem('master_link', firstVideo);
         } else if (window.location.href.includes('/nekosama/')) {
-            let result = await client.get(url, { headers: headers }).then((response) => {
+            let result = await client.get(url, { timeout: 5000,headers: headers }).then((response) => {
                 return response.data;
             }).catch((error) => {
                 console.log(error);
                 return [];
             });
-            for(let streams of result.streams){
-                let quality = streams.audio_locale + ' ' + streams.hardsub_locale;
-                let link = streams.url;
-                if(link.url.includes('pstream')){
-                    link = link.url + '&key=clear';
+            console.log(result);
+            for(let stream of result.streams){
+                let quality = stream.audio_locale + ' ' + stream.hardsub_locale;
+                let link = stream.url;
+                if(link.includes('pstream')){
+                    link = link + '&key=clear';
                     console.log(link);
+                    localStorage.setItem('master_link', link);
                     link = `${proxy_url}/${ btoa(link) }${file_extension}`;
                 } else if (link.includes('streamtape')){
                     link = await streamtapeExtractor(link);
-                    link = `${proxy_url}/${ btoa(link) }${file_extension}`;
+                    localStorage.setItem('master_link', link);
                 }
                 videos.push(new Videos(quality, link));
             } 

@@ -14,8 +14,7 @@
   import backforward from '/img/back-forward-15.svg';
   import download from '/img/download-button.svg';
   import SubtitlesOctopus from "../scripts/subtitles-octopus.js";
-  import { invoke } from '@tauri-apps/api/tauri';
-  import { getChannelinUse } from "../scripts/channel_id";
+  import { watchEvent,watchRPC_film,watchRPC_series,defaultRPC} from "../scripts/misc/rpc";
 
   export default {
       data() {
@@ -79,9 +78,13 @@
           } else {
                 this.option.miniProgressBar = false;  
           }
+          if(localStorage.getItem('autoplay') === 'true'){
+                this.option.autoplay = true;
+          } else {
+                this.option.autoplay = false;
+          }
           this.option.fullscreenWeb = true;
           var hls = null;
-          console.log(this.info);
           var customType = {};
           if(!this.videos[0].url.includes('streamta')){
              customType = {
@@ -94,6 +97,7 @@
                   },
               }
           }
+          console.log(this.option);
           var art = new Artplayer({
             ...this.option,
             url: this.videos[0].url,
@@ -146,7 +150,6 @@
               volume: 0.5,
               isLive: false,
               muted: false,
-              autoplay: false,
               pip: true,
               screenshot: true,
               setting: true,
@@ -176,9 +179,11 @@
                   {
                       position: 'right',
                       html: `<img width="22" heigth="22" src="${download}">`,
-                      tooltip: 'Soon',
-                      click: function () {
-                          this.tooltip = 'Bah alors bien essayer';
+                      tooltip: 'Copy the video link to the clipboard',
+                      click: function (item) {
+                          let master_link = localStorage.getItem('master_link');
+                          navigator.clipboard.writeText(master_link);                        
+                          art.notice.show = 'Link copied to your clipboard';
                       }
                   },
                   /* {
@@ -222,6 +227,23 @@
                         localStorage.setItem('miniProgressBar',true);
                     } else {
                         localStorage.setItem('miniProgressBar',false);
+                    }
+                    window.location.reload();
+                    return !item.switch;
+                },
+              });
+              art.setting.add({
+                //autoplay switch
+                html: 'Autoplay',
+                tooltip: localStorage.autoplay === 'false' ? 'Off' : 'On',
+                switch: localStorage.autoplay === 'false' ? false : true,
+                onSwitch: function (item) {
+                    item.tooltip = localStorage.autoplay ==='false' ? 'Off' : 'On';
+                    item.switch =  localStorage.autoplay === 'false' ? false : true;
+                    if(item.switch == false){
+                        localStorage.setItem('autoplay',true);
+                    } else {
+                        localStorage.setItem('autoplay',false);
                     }
                     window.location.reload();
                     return !item.switch;
@@ -288,17 +310,11 @@
                   }
               }) 
               }
-              await invoke('set_activity_watch_notimestamp',{
-                title: this.info.title_info.title,
-                state: 'Video is about to start',
-                page: `${this.info.title_info.title} `,
-                channel: localStorage.getItem('channel'),
-                doing: getChannelinUse(localStorage.getItem('channel')).short_label,
-                }).then((res) => {
-                    console.log('Activity set')
-                }).catch((err) => {
-                    console.log(err);
-                });
+                await watchEvent(this.info.title_info.title, 'Video is about to start');
+                setTimeout(async () => {
+                    await watchEvent(this.info.title_info.title, 'Idle')
+                }, 60000);
+
           });
 
           art.on('video:play', async () => {
@@ -310,48 +326,19 @@
               let endVideo = currentTime.setMinutes(currentTime.getMinutes() + duration - currentTimePlayer);
               endVideo = currentTime.getTime();
               if (this.info.__type__ == 'series' && this.info.episode_number != null) {
-                  await invoke('set_activity_watch_timestamp', {
-                      title: this.info.title_info.title,
-                      state: `Season ${this.info.season_number}, Episode ${this.info.episode_number}`,
-                      page: `${this.info.title_info.title} `,
-                      channel: localStorage.getItem('channel'),
-                      doing: getChannelinUse(localStorage.getItem('channel')).short_label,
-                      start: Date.now(),
-                      end: endVideo
-                  }).then((res) => {
-                      console.log('Activity set with timestamp')
-                  }).catch((err) => {
-                      console.log(err);
-                  });
+                  await watchRPC_series(this.info.title_info.title,this.info.episode_number,this.info.season_number,endVideo)
               } else {
-                  await invoke('set_activity_watch_timestamp', {
-                      title: this.info.title_info.title,
-                      state: getChannelinUse(localStorage.getItem('channel')).short_label,
-                      page: `${this.info.title_info.title} `,
-                      channel: localStorage.getItem('channel'),
-                      doing: getChannelinUse(localStorage.getItem('channel')).short_label,
-                      start: Date.now(),
-                      end:  endVideo
-                  }).then((res) => {
-                      console.log('Activity set')
-                  }).catch((err) => {
-                      console.log(err);
-                  });
+                  await watchRPC_film(this.info.title_info.title,endVideo)
               }
           });
 
           art.on('video:pause',async() => {
-            await invoke('set_activity_watch_notimestamp',{
-                title: this.info.title_info.title,
-                state: 'Paused',
-                page: `${this.info.title_info.title} `,
-                channel: localStorage.getItem('channel'),
-                doing: getChannelinUse(localStorage.getItem('channel')).short_label,
-            }).then((res) => {
-                console.log('Activity set')
-            }).catch((err) => {
-                console.log(err);
-            });
+            await watchEvent(this.info.title_info.title,'Paused')
+            // after 1 min, if the video is still paused, set the activity to "Idle"
+            setTimeout(async() => {
+                await watchEvent(this.info.title_info.title,'Turning to idle')
+                await watchEvent(this.info.title_info.title,'Idle')
+            }, 60000);
           })
 
           art.on('video:seeked', async () => {
@@ -363,63 +350,17 @@
               let endVideo = currentTime.setMinutes(currentTime.getMinutes() + duration - currentTimePlayer);
               endVideo = currentTime.getTime();
               if (this.info.__type__ == 'series' && this.info.episode_number != null) {
-                  await invoke('set_activity_watch_timestamp', {
-                      title: this.info.title_info.title,
-                      state: `Season ${this.info.season_number}, Episode ${this.info.episode_number}`,
-                      page: `${this.info.title_info.title} `,
-                      channel: localStorage.getItem('channel'),
-                      doing: getChannelinUse(localStorage.getItem('channel')).short_label,
-                      start: Date.now(),
-                      end: endVideo
-                  }).then((res) => {
-                      console.log('Activity set with timestamp')
-                  }).catch((err) => {
-                      console.log(err);
-                  });
+                await watchRPC_series(this.info.title_info.title,this.info.episode_number,this.info.season_number,endVideo)
               } else {
-                  await invoke('set_activity_watch_timestamp', {
-                      title: this.info.title_info.title,
-                      state: getChannelinUse(localStorage.getItem('channel')).short_label,
-                      page: `${this.info.title_info.title} `,
-                      channel: localStorage.getItem('channel'),
-                      doing: getChannelinUse(localStorage.getItem('channel')).short_label,
-                      start: Date.now(),
-                      end:  endVideo
-                  }).then((res) => {
-                      console.log('Activity set')
-                  }).catch((err) => {
-                      console.log(err);
-                  });
+                await watchRPC_film(this.info.title_info.title,endVideo)
               }
           });
 
           art.on('video:ended', async()=> {
-                await invoke('set_activity_watch_notimestamp',{
-                    title: this.info.title_info.title,
-                    state: 'Video has ended, going to idle',
-                    page: `${this.info.title_info.title} `,
-                    channel: localStorage.getItem('channel'),
-                    doing: getChannelinUse(localStorage.getItem('channel')).short_label,
-                }).then((res) => {
-                    console.log('Activity set')
-                }).catch((err) => {
-                    console.log(err);
-                });
+                await watchEvent(this.info.title_info.title,'Video has ended, going to idle')
                 setTimeout(async () => {
-                    await invoke('set_activity', {
-                        title: this.info.title_info.title,
-                        state: 'Idle',
-                        page: `${this.info.title_info.title} `,
-                        channel: localStorage.getItem('channel'),
-                        doing: getChannelinUse(localStorage.getItem('channel')).short_label,
-                    }).then((res) => {
-                        console.log('Activity set')
-                    }).catch((err) => {
-                        console.log(err);
-                    });
-                }, 10000);
-                // sleep for 10 seconds and then set the activity to idle
-
+                    await defaultRPC(this.info.title_info.title,'Idle')
+                }, 60000);
             });
 
 

@@ -9,7 +9,7 @@
                 <div class="content" v-if="loaded">
                     <div class="media-metadata"><a class="poster-image-wrapper" :href="metadat.url"><span
                                 class="poster-hover-layer">to
-                                series</span><img :src="metadat.images?.poster_tall[image].source" class="c-content-image"
+                                series</span><img :src="metadat.title_info.images?.poster_tall[image].source" class="c-content-image"
                                 :alt="metadat.title"></a>
                         <div class="text-wrapper"><a class="episode-info" :href="metadat.url"><span class="series"><svg
                                         class="left-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 20"
@@ -45,11 +45,11 @@
     
 </template>
 <script>
-import { channel,getChannelinUse} from '../../scripts/channel_id';
+import { channel } from '../../scripts/channel_id';
 import { getVideos } from '../../scripts/crunchyroll.js';
 import Artplayer from "../../components/Artplayer.vue";
 import getMetadata from '../../scripts/getMetadata';
-import { invoke} from '@tauri-apps/api/tauri';
+import { defaultRPC } from '../../scripts/misc/rpc.js';
 export default {
     data() {
         return {
@@ -120,7 +120,7 @@ export default {
                 this.metadat.images.poster_tall = this.metadat.images.thumbnail ;
             }
             this.metadat.url = `/${channel.replace('-','')}/` + meta1.id;
-            this.image = Math.floor((this.metadat.images.poster_tall.length - 1) / 2);
+            this.image = Math.floor((this.metadat.title_info.images.poster_tall.length - 1) / 2);
             let sources = await getVideos(this.id);
             this.videos = sources.streams;
             this.subs = sources.subs;
@@ -130,13 +130,7 @@ export default {
             this.snackbar = true;
             console.log(e);
         }
-
-        await invoke('set_activity', {
-                    state: getChannelinUse(localStorage.getItem('channel')).short_label,
-                    page: `Waiting for ${this.metadat.title} to play`,
-                    channel: channel,
-                    doing: `Idle`
-        });
+        await defaultRPC(`Waiting for ${this.metadat.title} to play`,'Idle');
     }
 }
 </script>

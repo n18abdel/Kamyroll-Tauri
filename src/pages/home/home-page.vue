@@ -6,6 +6,7 @@
 <script>
 // load the component before the page is rendered
 import { defineAsyncComponent } from 'vue';
+import { defaultRPC } from '../../scripts/misc/rpc.js';
 const Trending = defineAsyncComponent(() => import('../../components/tendance.vue'),{
     timeout : 1000,
 });
@@ -22,6 +23,9 @@ export default {
   components: {
     Trending,
     LastEpisodes
+  },
+  mounted : async function (){
+     await defaultRPC('On Home Page','Looking at the home page')
   }
 }
 

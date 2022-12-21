@@ -340,7 +340,7 @@
                         <div class="erc-info-tags-group"></div>
                       </div>
                       <div class="h-thumbnail">
-                        <img v-if="season.episodes[0].images.thumbnail >= 1" :src="season.episodes[0].images.thumbnail[1].source"
+                        <img v-if="season.episodes[0].images.thumbnail.length >= 1" :src="season.episodes[0].images.thumbnail[season.episodes[0].images.thumbnail.length - 1].source"
                           class="c-content-image image" :alt="season.episodes[0].title">
                         <img v-else :src="season.episodes[0].images.thumbnail[0].source" class="c-content-image image"
                           :alt="season.episodes[0].title">
@@ -378,7 +378,7 @@
                         <div class="erc-info-tags-group"></div>
                       </div>
                       <div class="h-thumbnail">
-                        <img v-if="episode.images.thumbnail >= 1" :src="episode.images.thumbnail[1].source"
+                        <img v-if="episode.images.thumbnail.length >= 1" :src="episode.images.thumbnail[episode.images.thumbnail.length - 1].source"
                           class="c-content-image image" :alt="episode.title">
                         <img v-else :src="episode.images.thumbnail[0].source" class="c-content-image image"
                           :alt="episode.title">
@@ -464,8 +464,8 @@
 <script>
 import getMetadata from '../../scripts/getMetadata.js';
 import {getEpisodes} from '../../scripts/crunchyroll.js';
-import {channelPage,getChannelinUse } from '../../scripts/channel_id';
-import { invoke } from '@tauri-apps/api/tauri';
+import { channel, channelPage } from '../../scripts/channel_id';
+import { defaultRPC } from '../../scripts/misc/rpc';
 
   export default {
     data() {
@@ -521,13 +521,12 @@ import { invoke } from '@tauri-apps/api/tauri';
       this.type = this.meta.__class__;
       this.id = episodes.items[this.number].id;
       this.image = Math.floor((this.meta.images.poster_tall.length / 2 ) - 1);
+      console.log(this.meta.images.poster_tall);
+      if(channel == 'neko-sama'){
+        this.image = this.meta.images.poster_tall.length - 1;
+      }
       this.episodes = episodes; 
-      await invoke('set_activity', {
-        state : getChannelinUse(localStorage.getItem('channel')).short_label,
-        page : `Looking at ${this.meta.title}`,
-        channel : localStorage.getItem('channel'),
-        doing : `Looking at the info page for ${this.meta.title}`
-    })
+      await defaultRPC(`Looking at ${this.meta.title}`,`Looking at the info page for ${this.meta.title}`)
     }
 }
 </script>
