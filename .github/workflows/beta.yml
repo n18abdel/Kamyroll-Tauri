@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
+        platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout repository
@@ -61,7 +61,7 @@ jobs:
       - name : Get Changelog (Linux and MacOS)
         if: matrix.platform == 'macos-latest' || matrix.platform == 'ubuntu-latest'
         run : |
-          echo "CHANGELOG=${cat changelog.md}" >> $GITHUB_ENV"
+          echo "CHANGE_LOG=${cat changelog.md}" >> $GITHUB_ENV"
       - name : Get Changelog (Windows)
         if: matrix.platform == 'windows-latest'
         run: |
@@ -80,6 +80,6 @@ jobs:
             - __VERSION__-beta+${{env.SHORT_SHA}}
             - This is a beta release, please report any bugs you find.
             - Changelog:
-            ${{env.CHANGELOG}}
+            ${{env.CHANGE_LOG}}
           args: '--debug'
           prerelease: true
