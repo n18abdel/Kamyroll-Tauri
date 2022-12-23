@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ubuntu-latest]
+        platform: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout repository
@@ -61,7 +61,7 @@ jobs:
       - name : Get Changelog (Linux and MacOS)
         if: matrix.platform == 'macos-latest' || matrix.platform == 'ubuntu-latest'
         run : |
-          echo "CHANGE_LOG=${cat changelog.md}" >> $GITHUB_ENV"
+          echo "CHANGE_LOG=${cat changelog.md}" >> $GITHUB_ENV
       - name : Get Changelog (Windows)
         if: matrix.platform == 'windows-latest'
         run: |
