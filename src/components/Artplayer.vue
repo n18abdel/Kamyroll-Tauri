@@ -253,7 +253,7 @@
                     borderBlockColor: "white",
                     color: "black",
                     backgroundColor: "white",
-                    fontFamily : "Trebuc"
+                    fontFamily : "Trebuc Bold"
                 },
                 click : function(_,el){
                     art.seek = art.currentTime + 90;
