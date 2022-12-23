@@ -214,7 +214,7 @@
               playsInline: true,
               autoPlayback: true,
               airplay: true,
-              theme: '#f00',
+              theme: '#ffffff',
               icons: {
                   loading: `<img src="${loading}">`
               },
@@ -427,3 +427,9 @@
       },
   };
   </script>
+
+<style>
+.art-progress-played, .art-progress-indicator,.art-video-player .art-layer-miniProgressBar{
+    background-color: red !important;
+}
+</style>
