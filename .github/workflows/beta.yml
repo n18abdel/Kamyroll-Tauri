@@ -47,7 +47,6 @@ jobs:
           restore-keys: |
             ${{ matrix.platform }}-stable-cargo-cli-${{ hashFiles('src-tauri/Cargo.lock') }}
             ${{ matrix.platform }}-stable-cargo-cli-
-      
       - name : Build Web 
         run: npm i && npm run build:web
 
@@ -57,16 +56,6 @@ jobs:
       - name : Get commit hash (Windows)
         if: matrix.platform == 'windows-latest'
         run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
-      - name : Get Changelog (Linux and MacOS)
-        if: matrix.platform == 'macos-latest' || matrix.platform == 'ubuntu-latest'
-        run : |
-          echo "CHANGE_LOG=${cat changelog.md}" >> $GITHUB_ENV
-      - name : Get Changelog (Windows)
-        if: matrix.platform == 'windows-latest'
-        run: |
-          echo "CHANGELOG=${Get-Content -Path changelog.md -Raw}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
 
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
@@ -79,7 +68,5 @@ jobs:
           releaseBody: |
             - __VERSION__-beta+${{env.SHORT_SHA}}
             - This is a beta release, please report any bugs you find.
-            - Changelog:
-            ${{env.CHANGE_LOG}}
-          args: '--debug'
+          includeDebug: true
           prerelease: true
