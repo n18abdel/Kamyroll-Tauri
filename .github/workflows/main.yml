@@ -1,12 +1,12 @@
-name: Release
+name: Beta
 
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
-  release:
+  beta-release:
     strategy:
       fail-fast: false
       matrix:
@@ -31,8 +31,36 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
-      - run: npm i 
-      - run: npm run build:web
+
+      - name: Get current date
+        run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+        if: matrix.platform == 'macos-latest' || matrix.platform == 'ubuntu-latest'
+
+      - name: Get current date
+        if: matrix.platform == 'windows-latest'
+        run: echo "CURRENT_DATE=$(Get-Date -Format "yyyy-MM-dd")" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Cache CLI cargo target
+        uses: actions/cache@v2
+        with:
+          path: src-tauri/target
+          key: ${{ matrix.platform }}-stable-cargo-cli-${{ hashFiles('src-tauri/Cargo.lock') }}-${{ env.CURRENT_DATE }}
+          restore-keys: |
+            ${{ matrix.platform }}-stable-cargo-cli-${{ hashFiles('src-tauri/Cargo.lock') }}
+            ${{ matrix.platform }}-stable-cargo-cli-
+      
+      - name : Get Changelog (Linux and MacOS)
+        if: matrix.platform == 'macos-latest' || matrix.platform == 'ubuntu-latest'
+        run : |
+          echo "CHANGELOG=${cat changelog.md}" >> $GITHUB_ENV"
+      - name : Get Changelog (Windows)
+        if: matrix.platform == 'windows-latest'
+        run: |
+          echo "CHANGELOG=${Get-Content -Path changelog.md -Raw}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+        
+      - name : Build Web 
+        run: npm i && npm run build:web
 
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
@@ -42,3 +70,7 @@ jobs:
         with:
           tagName: v__VERSION__
           releaseName: v__VERSION__
+          releaseBody: |
+            ${{ env.CHANGELOG }}
+          includeDebug: true
+          prerelease: true
