@@ -41,6 +41,9 @@
           }
       },
       mounted: async function () {
+           async function sleep (time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+            }
           function artplayerPluginAss(options) {
               return art => {
                   const instance = new SubtitlesOctopus({
@@ -195,7 +198,23 @@
                           window.location.reload();
                           return !item.switch;
                       },
-                  }
+                  },{
+                //autoplay switch
+                html: 'Autoplay',
+                tooltip: localStorage.autoplay === 'false' ? 'Off' : 'On',
+                switch: localStorage.autoplay === 'false' ? false : true,
+                onSwitch: function (item) {
+                    item.tooltip = localStorage.autoplay ==='false' ? 'Off' : 'On';
+                    item.switch =  localStorage.autoplay === 'false' ? false : true;
+                    if(item.switch == false){
+                        localStorage.setItem('autoplay',true);
+                    } else {
+                        localStorage.setItem('autoplay',false);
+                    }
+                    window.location.reload();
+                    return !item.switch;
+                },
+              }
 
               ],
               container: this.$refs.artRef,
@@ -242,7 +261,7 @@
                   crossOrigin: 'anonymous',
               },
               layers: [{
-                html: '<button class="artplayer-layer__button">SKIP</button>',
+                html: '<button class="artplayer-skip__button">SKIP</button>',
                 style: {
                     position: "absolute",
                     padding: "1px 11px 1px 11px",
@@ -256,7 +275,7 @@
                     fontFamily : "Trebuc Bold"
                 },
                 click : function(_,el){
-                    art.seek = art.currentTime + 90;
+                    art.seek = art.currentTime + 85;
                     el.target.innerText = 'SKIPPED';
                     setTimeout(function(){
                         el.target.innerText  = 'SKIP';
@@ -352,6 +371,9 @@
                       }
                   })
               }
+              art.option.container.addEventListener('mouseover', function (event) {
+                  art.layers.layer0.style.display = 'block';
+              });
               await watchEvent(this.info.title_info.title, 'Video is about to start');
               setTimeout(async () => {
                   await watchEvent(this.info.title_info.title, 'Idle')
@@ -360,6 +382,10 @@
           });
 
           art.on('video:play', async () => {
+              art.option.container.addEventListener('mouseout', async function (event) {
+                    await sleep(3200);
+                    art.layers.layer0.style.display = 'none';
+              });
               let currentTimePlayer = art.currentTime;
               currentTimePlayer = currentTimePlayer / 60;
               let duration = art.duration;
@@ -381,6 +407,7 @@
                   await watchEvent(this.info.title_info.title, 'Turning to idle')
                   await watchEvent(this.info.title_info.title, 'Idle')
               }, 60000);
+              // 60 seconds in ms is : 
           })
 
           art.on('video:seeked', async () => {
@@ -406,6 +433,7 @@
           });
 
 
+
           art.on('fullscreen', async () => {
               await getState(art);
           });
@@ -413,8 +441,7 @@
 
           this.$nextTick(() => {
               this.$emit("get-instance", art);
-          });
-
+          }); 
 
           // when pushing the escape key on the keyboard check if the player is fullscreen and if it is, exit fullscreen
           document.addEventListener('keydown', async (event) => {
@@ -424,12 +451,13 @@
                   }
               }
           });
-      },
+      }
   };
-  </script>
+  </script> 
 
 <style>
 .art-progress-played, .art-progress-indicator,.art-video-player .art-layer-miniProgressBar{
     background-color: red !important;
 }
+
 </style>
