@@ -75,6 +75,7 @@
         "width": 1280,
         "height": 720,
         "center": true,
+        "visible": false,
         "resizable": true,
         "label": "main"
       },

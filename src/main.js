@@ -13,7 +13,6 @@ import 'vue-global-api/watch';
 import 'vue-global-api/watchEffect';
 import { appWindow } from '@tauri-apps/api/window';
 import { idleRPC } from './scripts/misc/rpc.js';
-import { invoke } from '@tauri-apps/api/tauri';
 
 
 if(appWindow.isFullscreen() && !window.location.href.includes('watch')){
@@ -32,10 +31,6 @@ if(!process.env.CHANNEL.includes('Dev')){
 app.use(routes);
 app.use(vuetify);
 app.mount('#app');
-
-
-
-await invoke('close_splashscreen');
 
 if (!window.location.href.includes('watch')){
     setInterval(async () => {
