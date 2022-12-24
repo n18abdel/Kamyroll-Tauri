@@ -1,12 +1,12 @@
-name: Beta
+name: Release
 
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
-  beta-release:
+  release:
     strategy:
       fail-fast: false
       matrix:
@@ -25,16 +25,12 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-
+  
       - name: Install Dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
-
-      - name: Get current date
-        run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-        if: matrix.platform == 'macos-latest' || matrix.platform == 'ubuntu-latest'
 
       - name: Get current date
         if: matrix.platform == 'windows-latest'
@@ -52,6 +48,8 @@ jobs:
         
       - name : Build Web 
         run: npm i && npm run build:web
+      - run: npm i 
+      - run: npm run build:web
 
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
