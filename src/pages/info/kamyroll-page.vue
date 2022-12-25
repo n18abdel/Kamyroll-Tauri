@@ -380,15 +380,17 @@
                       <div class="h-thumbnail">
                         <img v-if="episode.images.thumbnail.length >= 1" :src="episode.images.thumbnail[episode.images.thumbnail.length - 1].source"
                           class="c-content-image image" :alt="episode.title">
-                        <img v-else :src="episode.images.thumbnail[0].source" class="c-content-image image"
-                          :alt="episode.title">
-                        <div class="art-overlay"><svg class="art-overlay-icon icon c-svg-play-icon"
+                        <div v-else
+                          class="c-content-image image" :alt="episode.title"> </div>
+                        <div class="art-overlay">
+                          <svg class="art-overlay-icon icon c-svg-play-icon"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" data-t="play-icon-svg">
                             <circle class="circle" cx="30" cy="30" r="30"></circle>
                             <path class="play"
                               d="M22,20,42,30,22,40Zm8,36A26,26,0,1,0,4,30,26,26,0,0,0,30,56Zm0,4A30,30,0,1,1,60,30,30,30,0,0,1,30,60Z">
                             </path>
-                          </svg></div>
+                          </svg>
+                        </div>
                         <div class="c-duration episode-duration">{{episode.duration_ms}}m</div>
                       </div>
                       <section class="info">
@@ -493,6 +495,30 @@ import { defaultRPC } from '../../scripts/misc/rpc';
       showContent(el){
         this.id =  el.target.id;
         this.number = this.episodes.items.findIndex(item => item.id === el.target.id);
+        let lastShown = localStorage.getItem('keepTrack');
+        if(lastShown == null){
+          lastShown = {
+            [this.slug] : {
+              season : this.id
+            }
+          }
+        }else{
+          lastShown = JSON.parse(lastShown);
+          if(lastShown[this.slug] == null){
+             lastShown[this.slug] = {
+              season : this.id
+             }
+          } else{
+            lastShown[this.slug] = {
+              season : this.id
+            }
+          }
+        }
+        try {
+          localStorage.setItem('keepTrack', JSON.stringify(lastShown));
+        } catch(e){
+          console.log(e);
+        }
       },
       sortContentByNewest(){
         if(this.sort == 'episode_number_newest'){
@@ -526,6 +552,14 @@ import { defaultRPC } from '../../scripts/misc/rpc';
         this.image = this.meta.images.poster_tall.length - 1;
       }
       this.episodes = episodes; 
+      let lastShown = localStorage.getItem('keepTrack');
+      if(lastShown != null){
+        lastShown = JSON.parse(lastShown);
+        if(lastShown[slug] != null){
+          this.id = lastShown[slug].season;
+          this.number = this.episodes.items.findIndex(item => item.id === lastShown[slug].season);
+        }
+      }
       await defaultRPC(`Looking at ${this.meta.title}`,`Looking at the info page for ${this.meta.title}`)
     }
 }
