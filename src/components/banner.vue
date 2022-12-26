@@ -101,7 +101,7 @@ import kamyroll_logo from '/img/kamyroll_logo.svg';
                       </template>
                       <v-card>
                         <v-card-text>
-                          SAH JSP POUR L'INSTANT
+                          SETTINGS
                         </v-card-text>
                         <!-- make an option to disable the miniProgressBar on the localStorage -->
                         <v-card-text>
