@@ -137,6 +137,8 @@ import banner from './components/banner.vue'
 
      if(localStorage.getItem('discord_rpc') == null) {
        localStorage.setItem('discord_rpc', 'true');
+     } else if (localStorage.getItem('discord_rpc') == 'false') {
+       await invoke('disable_rpc');
      }
 
      await invoke('close_splashscreen');
