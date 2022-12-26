@@ -12,6 +12,69 @@
     src: url('/fonts/TREBUCBD.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: Rubik;
+    font-weight: 400;
+    src: url(/fonts/Rubik-Regular.ttf) format("truetype")
+}
+
+@font-face {
+    font-family: Rubik;
+    font-weight: 500;
+    src: url(/fonts/Rubik-Medium.ttf) format("truetype")
+}
+
+@font-face {
+    font-family: MarkPro;
+    font-weight: 200;
+    src: url(/fonts/MarkPro-Light.otf) format("opentype")
+}
+
+@font-face {
+    font-family: MarkPro;
+    font-style: italic;
+    font-weight: 200;
+    src: url(/fonts/MarkPro-LightItalic.otf) format("opentype")
+}
+
+@font-face {
+    font-family: MarkPro;
+    font-weight: 400;
+    src: url(/fonts/MarkPro.otf) format("opentype")
+}
+
+@font-face {
+    font-family: MarkPro;
+    font-style: italic;
+    font-weight: 400;
+    src: url(/fonts/MarkPro-Italic.otf) format("opentype")
+}
+
+@font-face {
+    font-family: MarkPro;
+    font-weight: 500;
+    src: url(/fonts/MarkPro-Medium.otf) format("opentype")
+}
+
+@font-face {
+    font-family: MarkPro;
+    font-style: italic;
+    font-weight: 500;
+    src: url(/fonts/MarkPro-MediumItalic.otf) format("opentype")
+}
+
+@font-face {
+    font-family: MarkPro;
+    font-weight: 700;
+    src: url(/fonts/MarkPro-Bold.otf) format("opentype")
+}
+
+@font-face {
+    font-family: MarkPro;
+    font-style: italic;
+    font-weight: 700;
+    src: url(/fonts/MarkPro-BoldItalic.otf) format("opentype")
+}
 
 
 body::-webkit-scrollbar {
