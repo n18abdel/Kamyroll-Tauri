@@ -211,7 +211,7 @@
                     } else {
                         localStorage.setItem('autoplay',false);
                     }
-                    window.location.reload();
+                    item.tooltip = localStorage.autoplay ==='false' ? 'Off' : 'On';
                     return !item.switch;
                 },
               }
@@ -371,9 +371,6 @@
                       }
                   })
               }
-              art.option.container.addEventListener('mouseover', function (event) {
-                  art.layers.layer0.style.display = 'block';
-              });
               await watchEvent(this.info.title_info.title, 'Video is about to start');
               setTimeout(async () => {
                   await watchEvent(this.info.title_info.title, 'Idle')
@@ -381,11 +378,15 @@
 
           });
 
+
           art.on('video:play', async () => {
-              art.option.container.addEventListener('mouseout', async function (event) {
+              art.option.container.addEventListener('mouseover', function showButton (event) {
+                  art.layers.layer0.style.display = 'block';
+              });
+              art.option.container.addEventListener('mouseout', async function removeButton (event) {
                     await sleep(3200);
                     art.layers.layer0.style.display = 'none';
-              });
+              },true);
               let currentTimePlayer = art.currentTime;
               currentTimePlayer = currentTimePlayer / 60;
               let duration = art.duration;
