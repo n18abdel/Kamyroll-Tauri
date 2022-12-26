@@ -144,6 +144,10 @@ img.loading {
     margin-bottom: 20%;
 }
 
+#player {
+
+    border-radius: 0px !important;
+}
 
 /*when the window is mobile sized */
 @media only screen and (max-width: 958px) {

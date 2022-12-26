@@ -9,6 +9,7 @@
 + Seasons now get saved so you won't to go back to the first season every time you go back and forth between episodes
 ## Design-wise 
 + On the player, all the color would be synced to the theme set now everything is the right color
++ No more rounded corners on the player
 + Fixed all the little weirdnesses that came up with rounded corners
 
 **Full Changelog**: https://github.com/kamyroll/Kamyroll-Tauri/compare/v1.0.4...dev
