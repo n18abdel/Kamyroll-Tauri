@@ -380,13 +380,16 @@
 
 
           art.on('video:play', async () => {
-              art.option.container.addEventListener('mouseover', function showButton (event) {
-                  art.layers.layer0.style.display = 'block';
-              });
-              art.option.container.addEventListener('mouseout', async function removeButton (event) {
+            art.on('hover', async (state) => {
+                // state for true, the mouse moves from the outside to the player
+                // state for false, the mouse moves from the player to the outside
+                if (state) {
+                    art.layers.layer0.style.display = 'block';
+                } else {
                     await sleep(3200);
                     art.layers.layer0.style.display = 'none';
-              },true);
+                }
+                });
               let currentTimePlayer = art.currentTime;
               currentTimePlayer = currentTimePlayer / 60;
               let duration = art.duration;
@@ -402,12 +405,14 @@
           });
 
           art.on('video:pause', async () => {
+              art.on('hover', async (state) => {});
+              art.layers.layer0.style.display = 'block';
+              // set the activity to "Paused"
               await watchEvent(this.info.title_info.title, 'Paused')
               // after 1 min, if the video is still paused, set the activity to "Idle"
-              setTimeout(async () => {
-                  await watchEvent(this.info.title_info.title, 'Turning to idle')
-                  await watchEvent(this.info.title_info.title, 'Idle')
-              }, 60000);
+              await sleep(60000);
+              await watchEvent(this.info.title_info.title, 'Turning to idle')
+              await watchEvent(this.info.title_info.title, 'Idle')
               // 60 seconds in ms is : 
           })
 
@@ -425,6 +430,7 @@
                   await watchRPC_film(this.info.title_info.title, endVideo)
               }
           });
+
 
           art.on('video:ended', async () => {
               await watchEvent(this.info.title_info.title, 'Video has ended, going to idle')
