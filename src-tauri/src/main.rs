@@ -114,6 +114,35 @@ fn set_activity_watch_timestamp (discord_ipc_client: State<'_, DeclarativeDiscor
   println!("Activity set to: {} - {} - {} - {} - {} - {}", state, page, channel, doing, start, end);
 }
 
+#[tauri::command]
+fn disable_rpc(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>) {
+  discord_ipc_client.disable();
+  println!("RPC disabled");
+}
+
+#[tauri::command]
+fn enable_rpc(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>) {
+  discord_ipc_client.enable();
+  if let Err(why) = discord_ipc_client.set_activity(
+    Activity::new()
+      .state("Idle")
+      .details("Nothing")
+      .assets(
+        Assets::new()
+            .large_image("cover")
+            .large_text("Kamyroll")
+            .small_image("crunchyroll")
+            .small_text("Watching anime")
+      ).buttons(vec![Button::new(
+        "Get Kamyroll".to_string(),
+        "https://github.com/kamyroll/Kamyroll-Tauri/releases".to_string(),
+    )])
+  ) {
+      println!("Failed to set presence: {}", why);
+  } 
+  println!("RPC enabled");
+}
+
 /*  #[tauri::command]
 async fn download_file <R: Runtime>(
   window: tauri::Window<R>,
@@ -180,9 +209,9 @@ fn main() {
   let tray_menu = SystemTrayMenu::new()
     .add_item(hide)
     .add_native_item(SystemTrayMenuItem::Separator)
-    .add_item(quit)
+    .add_item(show)
     .add_native_item(SystemTrayMenuItem::Separator)
-    .add_item(show);
+    .add_item(quit);
    tauri::Builder::default()
   .system_tray(SystemTray::new().with_menu(tray_menu))
   .on_system_tray_event(|app, event| match event {
@@ -270,7 +299,7 @@ fn main() {
     Ok(())
   })
     /* .plugin(tauri_plugin_window_state::Builder::default().build()) */
-    .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */,set_activity,set_activity_watch_notimestamp,set_activity_watch_timestamp])
+    .invoke_handler(tauri::generate_handler![close_splashscreen/* , download_file */,set_activity,set_activity_watch_notimestamp,set_activity_watch_timestamp, enable_rpc,disable_rpc])
     .run(tauri::generate_context!() )
     .expect("failed to run app");
    

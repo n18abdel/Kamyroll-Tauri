@@ -135,6 +135,10 @@ import banner from './components/banner.vue'
        await generateNewToken();
      }
 
+     if(localStorage.getItem('discord_rpc') == null) {
+       localStorage.setItem('discord_rpc', 'true');
+     }
+
      await invoke('close_splashscreen');
      await appWindow.show();
      document.addEventListener('keydown', (event) => {

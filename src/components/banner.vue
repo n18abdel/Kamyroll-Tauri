@@ -71,8 +71,7 @@ import kamyroll_logo from '/img/kamyroll_logo.svg';
           <li class="user-actions-item">
             <div class="erc-header-tile" v-if="!isSearch" @click="goToSearch">
               <div class="erc-header-svg">
-                <svg class="header-svg-icon" xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20" data-t="search-svg">
+                <svg class="header-svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" data-t="search-svg">
                   <path
                     d="M2,10.666V5.333L5.333,2h5.333L14,5.333v5.333L10.667,14H5.333ZM4.364,0,0,4.363v7.273L4.364,16h7.273l1.757-1.757L18,20h2V18l-5.757-4.606L16,11.637V4.363L11.637,0Z">
                   </path>
@@ -82,13 +81,61 @@ import kamyroll_logo from '/img/kamyroll_logo.svg';
             <ul class="erc-user-actions" v-else>
               <li class="user-actions-item">
                 <div class="erc-header-tile" @click="$router.go(-1)">
-                  <div class="erc-header-svg"><svg class="header-svg-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="white" d="M19 11H7.14l3.63-4.36a1 1 0 1 0-1.54-1.28l-5 6a1.19 1.19 0 0 0-.09.15c0 .05 0 .08-.07.13A1 1 0 0 0 4 12a1 1 0 0 0 .07.36c0 .05 0 .08.07.13a1.19 1.19 0 0 0 .09.15l5 6A1 1 0 0 0 10 19a1 1 0 0 0 .64-.23a1 1 0 0 0 .13-1.41L7.14 13H19a1 1 0 0 0 0-2Z"/></svg></div>
+                  <div class="erc-header-svg"><svg class="header-svg-icon" xmlns="http://www.w3.org/2000/svg"
+                      width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                      <path fill="white"
+                        d="M19 11H7.14l3.63-4.36a1 1 0 1 0-1.54-1.28l-5 6a1.19 1.19 0 0 0-.09.15c0 .05 0 .08-.07.13A1 1 0 0 0 4 12a1 1 0 0 0 .07.36c0 .05 0 .08.07.13a1.19 1.19 0 0 0 .09.15l5 6A1 1 0 0 0 10 19a1 1 0 0 0 .64-.23a1 1 0 0 0 .13-1.41L7.14 13H19a1 1 0 0 0 0-2Z" />
+                      </svg></div>
                 </div>
               </li>
             </ul>
           </li>
-        </ul>
-      </div>
+          <li class="user-actions-item">
+                <div class="erc-header-tile">
+                  <div class="text-center">
+                    <v-dialog v-model="dialog">
+                      <template v-slot:activator="{ props }">
+                        <v-btn color="#b0aebb" v-bind="props">
+                          Settings
+                        </v-btn>
+                      </template>
+                      <v-card>
+                        <v-card-text>
+                          SAH JSP POUR L'INSTANT
+                        </v-card-text>
+                        <!-- make an option to disable the miniProgressBar on the localStorage -->
+                        <v-card-text>
+                          <v-switch
+                            v-model="miniProgressBar"
+                            label="Mini Progress Bar"
+                            color="#fd0"
+                            @change="toggleMiniProgressBar"
+                          ></v-switch>
+                          <!-- same but for the autoplay -->
+                          <v-switch
+                            v-model="autoplay"
+                            label="Autoplay"
+                            color="#fd0"
+                            @change="toggleAutoplay"
+                          ></v-switch>
+                          <!-- now for Discord RPC -->
+                          <v-switch
+                            v-model="discordRPC"
+                            label="Discord RPC"
+                            color="#fd0"
+                            @change="toggleDiscordRPC"
+                          ></v-switch>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-btn color="black" block @click="dialog = false">Close Dialog</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </div>
+                </div>
+              </li>
+          </ul>
+          </div>
       <div class="erc-header-bar" :style="style"></div>
     </div>
     <div :class="isOuvert ? 'erc-page-overlay state-open':'erc-page-overlay'" @click="toggleMenu()"></div>
@@ -96,15 +143,20 @@ import kamyroll_logo from '/img/kamyroll_logo.svg';
 </template>
 
 <script>
+import {disableRPC,enableRPC} from '../scripts/misc/rpc.js';
 export default {
   data() {
     return {
       inRightPlace: false,
       style : '',
       isOuvert : false,
+      miniProgressBar : localStorage.getItem('miniProgressBar') == 'true' ? true : false,
+      autoplay : localStorage.getItem('autoplay') == 'true' ? true : false,
       channelInUse : getChannelinUse(localStorage.getItem('channel')),
       chan: localStorage.getItem('channel'),
       isSearch : false,
+      dialog: false,
+      discordRPC : localStorage.getItem('discord_rpc') == 'true' ? true : false,
     }
   },
   methods : {
@@ -128,7 +180,36 @@ export default {
                 this.$forceUpdate()
                 window.location.reload();
             }
-        }
+        },
+    toggleMiniProgressBar() {
+      if (localStorage.getItem('miniProgressBar') == 'true') {
+        localStorage.setItem('miniProgressBar', 'false')
+        this.miniProgressBar = false;
+      } else {
+        localStorage.setItem('miniProgressBar', 'true')
+        this.miniProgressBar = true;
+      }
+    },
+    toggleAutoplay() {
+      if (localStorage.getItem('autoplay') == 'true') {
+        localStorage.setItem('autoplay', 'false')
+        this.autoplay = false;
+      } else {
+        localStorage.setItem('autoplay', 'true')
+        this.autoplay = true;
+      }
+    },
+    async toggleDiscordRPC(){
+      if(localStorage.getItem('discord_rpc') == 'true'){
+        localStorage.setItem('discord_rpc', 'false')
+        await disableRPC()
+        this.discordRPC = false;
+      } else {
+        localStorage.setItem('discord_rpc', 'true')
+        await enableRPC();
+        this.discordRPC = true;
+      }
+    }
   },
   mounted: async function () {
     if(window.location.href.includes('/search') || window.location.href.split('/').pop().length == 0){

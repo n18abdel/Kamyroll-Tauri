@@ -53,4 +53,12 @@ async function watchEvent(title,message){
     });
 }
 
-export {defaultRPC,watchRPC_series,watchRPC_film,idleRPC,watchEvent}
+async function enableRPC(){
+    await invoke('enable_rpc');
+}
+
+async function disableRPC(){
+    await invoke('disable_rpc');
+}
+
+export {defaultRPC,watchRPC_series,watchRPC_film,idleRPC,watchEvent,enableRPC,disableRPC}
