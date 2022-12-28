@@ -439,23 +439,20 @@
               }, 60000);
           });
 
-
-
-          art.on('fullscreen', async () => {
+          art.on('video:fullscreen', async () => {
               await getState(art);
           });
-
 
           this.$nextTick(() => {
               this.$emit("get-instance", art);
           }); 
 
-          // when pushing the escape key on the keyboard check if the player is fullscreen and if it is, exit fullscreen
-          document.addEventListener('keydown', async (event) => {
-              if (event.key == 'Escape') {
-                  if (!art.fullscreen) {
-                      await appWindow.setFullscreen(false);
-                  }
+          document.addEventListener('fullscreenchange', async () => {             
+              if (document.fullscreenElement) {
+                  await getState(art);
+              } else {
+                  art.fullscreen = false;
+                  await getState(art);
               }
           });
       }
