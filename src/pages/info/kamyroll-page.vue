@@ -295,8 +295,8 @@
                     <div class="sort-title">Sort</div>
                   </div>
                   <div class="c-dropdown-content sort-dropdown-content">
-                    <div class="c-dropdown-item sort-dropdown-item" @click="sortContentByOldest">Oldest First</div>
-                    <div class="c-dropdown-item sort-dropdown-item" @click="sortContentByNewest">Newest First</div>
+                    <div class="c-dropdown-item sort-dropdown-item" :class="sort == 'episode_number_oldest' ? 'state-active' : ''" @click="sortContentByOldest">Oldest First</div>
+                    <div class="c-dropdown-item sort-dropdown-item" :class="sort == 'episode_number_newest' ? 'state-active' : ''" @click="sortContentByNewest">Newest First</div>
                   </div>
                   </div>
                 <div
@@ -488,7 +488,7 @@ import { defaultRPC } from '../../scripts/misc/rpc';
         number : 0,
         type : '',
         sortOpen: false,
-        sort: 'episode_number_oldest',
+        sort: localStorage.getItem('sort'),
       }
     },
     methods:{
@@ -527,6 +527,7 @@ import { defaultRPC } from '../../scripts/misc/rpc';
           this.episodes.items[this.number].episodes.reverse();
           this.sort = 'episode_number_newest';
         }
+        localStorage.setItem('sort', this.sort);
         
       },
       sortContentByOldest(){
@@ -536,6 +537,7 @@ import { defaultRPC } from '../../scripts/misc/rpc';
           this.episodes.items[this.number].episodes.reverse();
           this.sort = 'episode_number_oldest';
         } 
+        localStorage.setItem('sort', this.sort);
       },
     },
     beforeMount: async function () {     
@@ -560,7 +562,17 @@ import { defaultRPC } from '../../scripts/misc/rpc';
           this.number = this.episodes.items.findIndex(item => item.id === lastShown[slug].season);
         }
       }
-      await defaultRPC(`Looking at ${this.meta.title}`,`Looking at the info page for ${this.meta.title}`)
+      await defaultRPC(`Looking at ${this.meta.title}`,`Looking at the info page for ${this.meta.title}`);
+      let sort = localStorage.getItem('sort');
+      if (sort == null){
+        this.sort = 'episode_number_oldest';
+        localStorage.setItem('sort', sort);
+      } else if (sort == 'episode_number_oldest'){
+        this.sortContentByOldest()
+      } else if (sort == 'episode_number_newest'){
+        console.log('newest');
+        this.episodes.items[this.number].episodes.reverse();
+      }
     }
 }
 </script>
