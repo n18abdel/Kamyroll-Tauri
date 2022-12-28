@@ -2,13 +2,12 @@ import {
     finalData,Videos,Subs
 } from './constructor.js'
 import {
-    channel,channelPage, getChannelinUse
+    channel,channelPage
 } from './channel_id.js'
 import pStreamExtractor from './extractors/pstream.js'
 import streamtapeExtractor from './extractors/streamtape.js'
 import axios from 'axios';
 import axiosTauriApiAdapter from 'axios-tauri-api-adapter';
-import { invoke } from '@tauri-apps/api/tauri';
 import { defaultRPC } from './misc/rpc.js';
 const client = axios.create({ adapter: axiosTauriApiAdapter });
 

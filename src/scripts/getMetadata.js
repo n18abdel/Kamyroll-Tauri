@@ -1,5 +1,10 @@
 import { chan,channelPage } from "./channel_id.js";
 import { fetch } from '@tauri-apps/api/http';
+import axios from 'axios';
+import axiosTauriApiAdapter from 'axios-tauri-api-adapter';
+const client = axios.create({ adapter: axiosTauriApiAdapter });
+
+
 
 const TOKEN = localStorage.getItem('token');
 async function getMetadata(slug){
@@ -11,13 +16,14 @@ async function getMetadata(slug){
         'Authorization': `Bearer ${TOKEN}`,
       },
       method: "GET",
+      timeout: 5000
     }
-    let response = await fetch(url, options);
-    if (response.status != 200) {
-        console.log(response);
-        return;
-    }
-    let result = response.data;
+    
+    let result = await client.get(url, options).then((response) => {
+        return response.data;
+    }).catch((error) => {
+        console.log(error);
+    });
     return result;
 }
 export default getMetadata;
