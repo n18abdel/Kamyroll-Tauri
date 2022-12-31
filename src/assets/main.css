@@ -1341,7 +1341,8 @@ img {
     box-shadow: 0 0 .5rem 0 rgba(0, 0, 0, .5);
     height: 1rem;
     line-height: .6875rem;
-    padding: 0 .25rem
+    padding: 0 .25rem;
+    border-radius: 0px
 }
 
 .c-info-tag--primary {
@@ -1366,7 +1367,7 @@ img {
 }
 
 .c-info-tag__item {
-    font-size: .5rem;
+    font-size: .7rem;
     line-height: 1;
     text-transform: uppercase
 }
