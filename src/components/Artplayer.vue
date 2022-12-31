@@ -398,9 +398,9 @@
               let endVideo = currentTime.setMinutes(currentTime.getMinutes() + duration - currentTimePlayer);
               endVideo = currentTime.getTime();
               if (this.info.__type__ == 'series' && this.info.episode_number != null) {
-                  await watchRPC_series(this.info.title_info.title, this.info.episode_number, this.info.season_number, endVideo)
+                  await watchRPC_series(this.info.title_info.images.poster_tall[0].source,this.info.title_info.title, this.info.episode_number, this.info.season_number, endVideo)
               } else {
-                  await watchRPC_film(this.info.title_info.title, endVideo)
+                  await watchRPC_film(this.info.title_info.images.poster_tall[0].source,this.info.title_info.title, endVideo)
               }
           });
 
@@ -413,6 +413,9 @@
               await sleep(60000);
               await watchEvent(this.info.title_info.title, 'Turning to idle')
               await watchEvent(this.info.title_info.title, 'Idle')
+              setTimeout(async () => {
+                    await watchEvent(this.info.title_info.title, 'Idle')
+              }, 60000);
               // 60 seconds in ms is : 
           })
 
@@ -425,9 +428,9 @@
               let endVideo = currentTime.setMinutes(currentTime.getMinutes() + duration - currentTimePlayer);
               endVideo = currentTime.getTime();
               if (this.info.__type__ == 'series' && this.info.episode_number != null) {
-                  await watchRPC_series(this.info.title_info.title, this.info.episode_number, this.info.season_number, endVideo)
+                  await watchRPC_series(this.info.title_info.images.poster_tall[0].source,this.info.title_info.title, this.info.episode_number, this.info.season_number, endVideo)
               } else {
-                  await watchRPC_film(this.info.title_info.title, endVideo)
+                  await watchRPC_film(this.info.title_info.images.poster_tall[0].source,this.info.title_info.title, endVideo)
               }
           });
 

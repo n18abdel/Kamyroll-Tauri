@@ -10,8 +10,9 @@ async function defaultRPC(page, doing) {
     });
 }
 
-async function watchRPC_series(titleSeries,episode_number,season_number,endVideo) {
+async function watchRPC_series(poster,titleSeries,episode_number,season_number,endVideo) {
     await invoke('set_activity_watch_timestamp', {
+        img : poster,
         title: titleSeries,
         state: `Season ${season_number}, Episode ${episode_number}`,
         page: `${titleSeries} `,
@@ -22,8 +23,9 @@ async function watchRPC_series(titleSeries,episode_number,season_number,endVideo
     });
 }
 
-async function watchRPC_film(titleFilm,endVideo) {
+async function watchRPC_film(poster,titleFilm,endVideo) {
     await invoke('set_activity_watch_timestamp', {
+        img : poster,
         title: titleFilm,
         state: getChannelinUse(channel).short_label,
         page: `${titleFilm} `,
@@ -45,6 +47,7 @@ async function idleRPC() {
 
 async function watchEvent(title,message){
     await invoke('set_activity_watch_notimestamp', {
+        img : 'cover',
         title: title,
         state : message,
         page : title,
