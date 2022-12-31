@@ -12,6 +12,8 @@ jobs:
       matrix:
         platform: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.platform }}
+    outputs:
+      version: ${{ steps.version.outputs.current-version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -51,14 +53,29 @@ jobs:
       - run: npm i 
       - run: npm run build:web
 
+      - name: Get version from package.json
+        id: version
+        uses: martinbeentjes/npm-get-version-action@main
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
         with:
-          tagName: v__VERSION__
-          releaseName: v__VERSION__
+          tagName: v${{ steps.version.outputs.current-version }}
+          releaseName: v${{ steps.version.outputs.current-version }}
           releaseBody: |
            - Release version  __VERSION__ ,full changelog will be added later.    
            - Commit: [${{env.SHORT_SHA}}](https://github.com/kamyroll/kamyroll-tauri/commit/${{ env.SHORT_SHA }})
+
+  winget-releaser:
+    needs: release
+    runs-on: windows-latest # Action can only be run on windows
+
+    steps:
+      - uses: vedantmgoyal2009/winget-releaser@v1
+        with:
+          identifier: Kamyroll.Kamyroll-Tauri
+          version: v${{ needs.release.outputs.version }}
+          release-tag: v${{ needs.release.outputs.version }}
+          token: ${{ secrets.WINGET_TOKEN }}
