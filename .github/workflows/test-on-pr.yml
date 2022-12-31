@@ -42,18 +42,28 @@ jobs:
           restore-keys: |
             ${{ matrix.platform }}-stable-cargo-cli-${{ hashFiles('src-tauri/Cargo.lock') }}
             ${{ matrix.platform }}-stable-cargo-cli-    
+    
     - name: install app dependencies and build it
       run: npm i && npm run build:web
-      
+    
+    - name : Get commit hash (Linux and MacOS)
+      if: matrix.platform == 'macos-latest' || matrix.platform == 'ubuntu-latest'
+      run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+    - name : Get commit hash (Windows)
+      if: matrix.platform == 'windows-latest'
+      run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
     - uses: tauri-apps/tauri-action@v0
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
       with:
-          tagName: v__VERSION__-beta
-          releaseName: v__VERSION__-beta
+          tagName: v__VERSION__-PR+${{env.SHORT_SHA}}
+          releaseName: v__VERSION__-PR+${{env.SHORT_SHA}}
           releaseBody: |
-            - This was created to test the build that is created on a pull request, it's really early in development and will be improved over time.
+            - __VERSION__-PR+${{env.SHORT_SHA}}
+            - This is a pull_request release, please report any bugs you find. It's definitely not stable and shouldn't be used.
+            - You can find the changelog [here](https://github.com/kamyroll/Kamyroll-Tauri/blob/dev/changelog.md).
+            - **Full Changelog**: https://github.com/kamyroll/Kamyroll-Tauri/compare/v1.0.4...v__VERSION__-PR+${{env.SHORT_SHA}}
           includeDebug: true
-          releaseDraft: true
-          prerelease: false
+          prerelease: true
