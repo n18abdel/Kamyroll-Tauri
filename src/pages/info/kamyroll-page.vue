@@ -266,8 +266,8 @@
             <div class="erc-series-tags series-tags">
               <div class="c-meta-tags">
                 <span v-if="meta.is_subbed && meta.is_dubbed" class="c-meta-tags__language">Sub | Dub</span>
-                <span v-else-if="meta.is_dubbed" class="c-meta-tags__language">Dub</span>
-                <span v-else-if="meta.is_subbed" class="c-meta-tags__language">Sub</span>
+                <span v-else-if="meta.is_dubbed" class="c-meta-tags__language">Dubbed</span>
+                <span v-else-if="meta.is_subbed" class="c-meta-tags__language">Subtitled</span>
               </div>
             </div>
             <div class="erc-series-info">
@@ -278,7 +278,7 @@
                 </div>
               </div>
             </div>
-            <div class="action-buttons" v-if="episodes.items?.length > 1">
+            <div class="action-buttons" v-if="episodes.items.length >= 1">
               <a role="button" tabindex="0" class="action-button c-button -type-one" v-if="type=='movie_listing'" data-t="watching-btn" :href="episodes.items[number].url">
                 <svg class="" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-t="play-line-svg">
                   <path d="M0,0 L0,20 L20,10 L0,0 Z M2,3 L16,10 L2,17 L2,3 Z"></path>
@@ -496,6 +496,23 @@
                   </article>
                 </div>
               </div>
+              <div class="erc-season-navigation" v-if="type == 'series' && episodes.items.length > 1">
+                <hr class="erc-horizontal-rule season-divider">
+                <div class="season-controls">
+                  <button class="season-button" :class="episodes.items[number - 1] == undefined ? '' : ' state-active' " data-t="previous-season"  @click="episodes.items[number - 1] == undefined ? '' : number --; id = episodes.items[number].id; keepTrack() ">
+                    <svg class="icon left-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 20" data-t="left-arrow-svg">
+                      <path d="M10 .667L.667 10 10 19.332h1.333V18l-8-8 8-8V.667"></path>
+                    </svg>
+                    Previous<span class="state-hidden-mobile"> season</span>
+                  </button>
+                  <button class="season-button" :class="episodes.items[number + 1] == undefined ? '' : ' state-active' " data-t="next-season" @click="episodes.items[number + 1] == undefined ? '' : number ++; id = episodes.items[number].id;keepTrack() ">Next season
+                    <svg class="icon right-arrow"
+                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 20" data-t="right-arrow-svg">
+                      <path d="M2 .667L11.333 10 2 19.332H.667V18l8-8-8-8V.667"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -509,198 +526,246 @@
 </template>
 <script>
 import getMetadata from '../../scripts/getMetadata.js';
-import {getEpisodes} from '../../scripts/crunchyroll.js';
-import { channel, channelPage } from '../../scripts/channel_id';
-import { defaultRPC } from '../../scripts/misc/rpc';
-import {db} from '../../scripts/db.js';
-import { liveQuery } from "dexie";
-import { useObservable } from "@vueuse/rxjs";
+import {
+  getEpisodes
+} from '../../scripts/crunchyroll.js';
+import {
+  channel,
+  channelPage
+} from '../../scripts/channel_id';
+import {
+  defaultRPC
+} from '../../scripts/misc/rpc';
+import {
+  db
+} from '../../scripts/db.js';
+import {
+  liveQuery
+} from "dexie";
+import {
+  useObservable
+} from "@vueuse/rxjs";
 
-  export default {
-    data() {
-      return {
-        meta: {
-          images: {
-            poster_wide: [],
-            poster_tall: []
-          },
+export default {
+  data() {
+    return {
+      meta: {
+        images: {
+          poster_wide: [],
+          poster_tall: []
         },
-        episodes: {
-          items: []
-        },
-        slug : window.location.href.split('/').pop(),
-        isOpen: false,
-        image : 0,
-        id : null,
-        number : 0,
-        type : '',
-        sortOpen: false,
-        sort: localStorage.getItem('sort'),
-        isInWatchlist: false,
-        episodes_seen : useObservable(
-          liveQuery(() => db.anime_saved.where('prov_id').equals(window.location.href.split('/').pop()).toArray())
-        ),
-        times : useObservable(
-          liveQuery(() => db.anime_saved.where('prov_id').equals(window.location.href.split('/').pop()).toArray())
-        )
-      }
-    },
-    methods:{
-      async addToWatchlist(){
-        try{
-          console.log(this.meta.title);
-          const id = await db.anime_saved.add({
+      },
+      episodes: {
+        items: []
+      },
+      slug: window.location.href.split('/').pop(),
+      isOpen: false,
+      image: 0,
+      id: null,
+      number: 0,
+      type: '',
+      sortOpen: false,
+      sort: localStorage.getItem('sort'),
+      isInWatchlist: false,
+      episodes_seen: useObservable(
+        liveQuery(() => db.anime_saved.where('prov_id').equals(window.location.href.split('/').pop()).toArray())
+      ),
+      times: useObservable(
+        liveQuery(() => db.anime_saved.where('prov_id').equals(window.location.href.split('/').pop()).toArray())
+      )
+    }
+  },
+  methods: {
+    async addToWatchlist() {
+      try {
+        console.log(this.meta.title);
+        const id = await db.anime_saved.add({
           title: this.meta.title,
           prov_id: this.meta.id,
-          channel : localStorage.getItem('channel'),
-          episodes_seen : []
+          channel: localStorage.getItem('channel'),
+          episodes_seen: []
         });
         this.isInWatchlist = true;
-        } catch(e){
-          console.log(e);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async deleteFromWatchlist() {
+      try {
+        const id = await db.anime_saved.where('prov_id').equals(this.meta.id).delete();
+        this.isInWatchlist = false;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async inWatchlist() {
+      const id = await db.anime_saved.where('prov_id').equals(this.meta.id).count();
+      if (id >= 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    async addEpisode(el) {
+      const episode = await db.anime_saved.where('prov_id').equals(this.meta.id).modify(anime => {
+        if (this.getValueByKey(anime.episodes_seen, el.target.id) == undefined) {
+          anime.episodes_seen.push({
+            episode: el.target.id,
+            time: 0
+          });
         }
-      },
-      async deleteFromWatchlist(){
-        try{
-          const id = await db.anime_saved.where('prov_id').equals(this.meta.id).delete();
-          this.isInWatchlist = false;
-        } catch(e){
-          console.log(e);
-        }
-      },
-      async inWatchlist(){
-        const id = await db.anime_saved.where('prov_id').equals(this.meta.id).count();
-        if(id >= 1){
-          return true;
-        } else{
-          return false;
-        }
-      },
-      async addEpisode(el){
-        const episode = await db.anime_saved.where('prov_id').equals(this.meta.id).modify(anime =>
-          {
-            if(this.getValueByKey(anime.episodes_seen, el.target.id) == undefined){
-              anime.episodes_seen.push({
-                episode : el.target.id,
-                time : 0
-              });
-            }
-        }
-      ); 
+      });
     },
     getValueFromKey(obj, key) {
-            for (var x = 0; x < obj.length; x++) {
-                if (obj[x].html == key) {
-                    return obj[x];
-                }
-            }
-        },
-      hoverOnRemoveButton(){
-        document.querySelector('.remove-hover').innerText = 'Are you sure?';
-      },
-      leaveRemoveButton(){
-        document.querySelector('.remove-hover').innerText = 'REMOVE';
-      },
-      getValueByKey(keys, key) {
-        console.log(keys,'keys');
-        for (var x = 0; x < keys.length; x++) {
-          let tKey = keys[x];
-          console.log(tKey,'loop');
-          if (tKey.episode == key) {
-            console.log(tKey);
-            return tKey;
-          }
+      for (var x = 0; x < obj.length; x++) {
+        if (obj[x].html == key) {
+          return obj[x];
         }
-      },
-      showContent(el){
-        this.id =  el.target.id;
-        this.number = this.episodes.items.findIndex(item => item.id === el.target.id);
-        let lastShown = localStorage.getItem('keepTrack');
-        if(lastShown == null){
-          lastShown = {
-            [this.slug] : {
-              season : this.id
-            }
-          }
-        }else{
-          lastShown = JSON.parse(lastShown);
-          if(lastShown[this.slug] == null){
-             lastShown[this.slug] = {
-              season : this.id
-             }
-          } else{
-            lastShown[this.slug] = {
-              season : this.id
-            }
-          }
-        }
-        try {
-          localStorage.setItem('keepTrack', JSON.stringify(lastShown));
-        } catch(e){
-          console.log(e);
-        }
-      },
-      sortContentByNewest(){
-        if(this.sort == 'episode_number_newest'){
-          return
-        }else{
-          this.episodes.items[this.number].episodes.reverse();
-          this.sort = 'episode_number_newest';
-        }
-        localStorage.setItem('sort', this.sort);
-        
-      },
-      sortContentByOldest(){
-        if(this.sort == 'episode_number_oldest'){
-          return
-        } else{
-          this.episodes.items[this.number].episodes.reverse();
-          this.sort = 'episode_number_oldest';
-        } 
-        localStorage.setItem('sort', this.sort);
-      },
+      }
     },
-    beforeMount: async function () {     
-      channelPage();
-      const slug = this.slug;
-      console.log(slug);
-      this.meta = await getMetadata(slug);
-      let episodes = await getEpisodes(slug,this.meta.__class__);
-      this.type = this.meta.__class__;
-      this.id = episodes.items[this.number].id;
-      this.image = Math.floor((this.meta.images.poster_tall.length / 2 ) - 1);
-      if(channel == 'neko-sama'){
-        this.image = this.meta.images.poster_tall.length - 1;
-      }
-      this.episodes = episodes; 
-      let lastShown = localStorage.getItem('keepTrack');
-      if(lastShown != null){
-        lastShown = JSON.parse(lastShown);
-        if(lastShown[slug] != null){
-          this.id = lastShown[slug].season;
-          this.number = this.episodes.items.findIndex(item => item.id === lastShown[slug].season);
+    nextSeason(keys, key) {
+      console.log(this.number);
+      for (var x = 0; x < keys.length; x++) {
+        let tKey = keys[x];
+        if (tKey.id == key) {
+          let next = x + 1;
+          this.number = next < keys.length ? next : this.number;
+          return this.number;
         }
       }
-      await defaultRPC(`Looking at ${this.meta.title}`,`Looking at the info page for ${this.meta.title}`);
-      let sort = localStorage.getItem('sort');
-      if (sort == null){
-        this.sort = 'episode_number_oldest';
-        localStorage.setItem('sort', sort);
-      } else if (sort == 'episode_number_oldest'){
-        this.sortContentByOldest()
-      } else if (sort == 'episode_number_newest'){
-        console.log('newest');
+    },
+    hoverOnRemoveButton() {
+      document.querySelector('.remove-hover').innerText = 'Are you sure?';
+    },
+    leaveRemoveButton() {
+      document.querySelector('.remove-hover').innerText = 'REMOVE';
+    },
+    getValueByKey(keys, key) {
+      console.log(keys, 'keys');
+      for (var x = 0; x < keys.length; x++) {
+        let tKey = keys[x];
+        console.log(tKey, 'loop');
+        if (tKey.episode == key) {
+          console.log(tKey);
+          return tKey;
+        }
+      }
+    },
+    showContent(el) {
+      this.id = el.target.id;
+      this.number = this.episodes.items.findIndex(item => item.id === el.target.id);
+      let lastShown = localStorage.getItem('keepTrack');
+      if (lastShown == null) {
+        lastShown = {
+          [this.slug]: {
+            season: this.id
+          }
+        }
+      } else {
+        lastShown = JSON.parse(lastShown);
+        if (lastShown[this.slug] == null) {
+          lastShown[this.slug] = {
+            season: this.id
+          }
+        } else {
+          lastShown[this.slug] = {
+            season: this.id
+          }
+        }
+      }
+      try {
+        localStorage.setItem('keepTrack', JSON.stringify(lastShown));
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    keepTrack() {
+      let lastShown = localStorage.getItem('keepTrack');
+      if (lastShown == null) {
+        lastShown = {
+          [this.slug]: {
+            season: this.id
+          }
+        }
+      } else {
+        lastShown = JSON.parse(lastShown);
+        if (lastShown[this.slug] == null) {
+          lastShown[this.slug] = {
+            season: this.id
+          }
+        } else {
+          lastShown[this.slug] = {
+            season: this.id
+          }
+        }
+      }
+      try {
+        localStorage.setItem('keepTrack', JSON.stringify(lastShown));
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    sortContentByNewest() {
+      if (this.sort == 'episode_number_newest') {
+        return
+      } else {
         this.episodes.items[this.number].episodes.reverse();
+        this.sort = 'episode_number_newest';
       }
-      this.isInWatchlist = await this.inWatchlist();
-      if(this.episodes_seen.length == 0){
-        this.episodes_seen = [];
-      } else{
-        // take the array of object and replace each object with only the episode property
-        this.episodes_seen = this.episodes_seen[0].episodes_seen.map(item => item.episode);
+      localStorage.setItem('sort', this.sort);
+
+    },
+    sortContentByOldest() {
+      if (this.sort == 'episode_number_oldest') {
+        return
+      } else {
+        this.episodes.items[this.number].episodes.reverse();
+        this.sort = 'episode_number_oldest';
       }
+      localStorage.setItem('sort', this.sort);
+    },
+  },
+  beforeMount: async function () {
+    channelPage();
+    const slug = this.slug;
+    console.log(slug);
+    this.meta = await getMetadata(slug);
+    let episodes = await getEpisodes(slug, this.meta.__class__);
+    this.type = this.meta.__class__;
+    this.id = episodes.items[this.number].id;
+    this.image = Math.floor((this.meta.images.poster_tall.length / 2) - 1);
+    if (channel == 'neko-sama') {
+      this.image = this.meta.images.poster_tall.length - 1;
+    }
+    this.episodes = episodes;
+    let lastShown = localStorage.getItem('keepTrack');
+    if (lastShown != null) {
+      lastShown = JSON.parse(lastShown);
+      if (lastShown[slug] != null) {
+        this.id = lastShown[slug].season;
+        this.number = this.episodes.items.findIndex(item => item.id === lastShown[slug].season);
+      }
+    }
+    await defaultRPC(`Looking at ${this.meta.title}`, `Looking at the info page for ${this.meta.title}`);
+    let sort = localStorage.getItem('sort');
+    if (sort == null) {
+      this.sort = 'episode_number_oldest';
+      localStorage.setItem('sort', sort);
+    } else if (sort == 'episode_number_oldest') {
+      this.sortContentByOldest()
+    } else if (sort == 'episode_number_newest') {
+      console.log('newest');
+      this.episodes.items[this.number].episodes.reverse();
+    }
+    this.isInWatchlist = await this.inWatchlist();
+    if (this.episodes_seen.length == 0) {
+      this.episodes_seen = [];
+    } else {
+      // take the array of object and replace each object with only the episode property
+      this.episodes_seen = this.episodes_seen[0].episodes_seen.map(item => item.episode);
       this.times = this.times[0].episodes_seen;
     }
+  }
 }
 </script>
 <style>
