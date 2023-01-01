@@ -54,7 +54,7 @@ import neko_logo from '/img/neko-sama.svg';
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);">
                                 <img v-if="(Object.keys(episode.images).length == 3 && episode.images.thumbnail.length >= 2)" :src="episode.images.thumbnail[1].source" class="c-content-image image" :alt="episode.title">
                                 <img v-else :src="episode.images.poster_wide[1].source" class="c-content-image image" :alt="episode.title">
-                                <span class="erc-channel-icon">
+                                <span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
                                         <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
                                         <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
@@ -62,6 +62,9 @@ import neko_logo from '/img/neko-sama.svg';
                                         <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
                                         <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
                                         <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
                                 </span>
                             </div>
@@ -1638,6 +1641,16 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
                         this.episodes = [];
                     }
             },
+            setWidth(el){
+                if(this.channel=='adn'){
+                    el.target.style ='width:65px'
+                }else if(this.channel == 'neko-sama'){
+                    el.target.style ='width:112px'
+                }
+                else {
+                    el.target.style="width:132px"
+                }
+            }
             
         },
         beforeMount: function () {

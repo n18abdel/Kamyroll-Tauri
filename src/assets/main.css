@@ -10100,6 +10100,8 @@ screen and (min-width:35.5em) and (max-height:50rem) {
     opacity: 0;
     padding: 0 .625rem;
     position: relative;
+    bottom: 17px;
+    left: 20px;
     text-transform: uppercase;
     transition: all .3s ease-in-out
 }
