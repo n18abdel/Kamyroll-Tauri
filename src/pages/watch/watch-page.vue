@@ -91,6 +91,21 @@ export default {
                 }
             }
         },
+        getValueFromKey(obj, key) {
+            for (var x = 0; x < obj.length; x++) {
+                if (obj[x].html == key) {
+                    return obj[x];
+                }
+            }
+        },
+        getValueByKey(keys, key) {
+            for (var x = 0; x < keys.length; x++) {
+                let tKey = keys[x];
+                if (tKey.episode == key) {
+                    return tKey;
+                }
+            }
+        },
         findNextEpisode(id) {
             // go through localStorage.getItem('seasons'), find the id and take the i+1
             let seasons = JSON.parse(localStorage.getItem('episodes'));
@@ -129,21 +144,21 @@ export default {
             if (anime.length > 0) {
                 let episodes = anime[0].episodes_seen;
                 let isInArray = false;
-                const episode = await db.anime_saved.where('prov_id').equals(id).modify(anime => {
-                    console.log('updating db', !anime.episodes_seen.includes(this.id));
-                    for (let epi of episodes) {
-                        if (epi.episode == this.id) {
-                            isInArray = true;
-                            break
-                        }
+                for (let i = 0; i < episodes.length; i++) {
+                    if (episodes[i] == this.id) {
+                        isInArray = true;
                     }
-                    if (!isInArray) {
-                        episodes.push({
-                            episode: this.id,
-                            time: 0
-                        });
-                    }
-                });
+                }
+                if(!isInArray){
+                    const episode = await db.anime_saved.where('prov_id').equals(id).modify(anime => {
+                                if (this.getValueByKey(anime.episodes_seen, this.id) == undefined) {
+                                    anime.episodes_seen.push({
+                                        episode: this.id,
+                                        time: 0
+                                    });
+                                }
+                            });
+                }
             }
         } catch (e) {
             this.text = 'Error loading video :' + ' ' + e;
