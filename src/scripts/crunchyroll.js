@@ -52,7 +52,6 @@ async function getLastEpisodes(){
 
 async function getEpisodes(slug, type) {
     channelPage();
-    await defaultRPC('On Info Page', `Looking for ${type} : ${slug}`)
     if(token == null){
         token = localStorage.getItem('token');
     }

@@ -51,6 +51,9 @@ import { getVideos } from '../../scripts/crunchyroll.js';
 import Artplayer from "../../components/Artplayer.vue";
 import getMetadata from '../../scripts/getMetadata';
 import { defaultRPC } from '../../scripts/misc/rpc.js';
+import { liveQuery } from "dexie";
+import { useObservable } from "@vueuse/rxjs";
+import { db } from "../../scripts/db";
 export default {
     data() {
         return {
@@ -108,7 +111,7 @@ export default {
             return art;
         }
     },
-    mounted: async function () {
+    beforeMount: async function () {
         try {
             this.metadat = await getMetadata(this.id);
             var id = this.metadat.series_id == undefined ? this.metadat.listing_id : this.metadat.series_id;
@@ -122,12 +125,33 @@ export default {
             this.videos = sources.streams;
             this.subs = sources.subs;
             this.loaded = true;
+            let anime = await db.anime_saved.where('prov_id').equals(id).toArray();
+            if (anime.length > 0) {
+                let episodes = anime[0].episodes_seen;
+                let isInArray = false;
+                const episode = await db.anime_saved.where('prov_id').equals(id).modify(anime => {
+                    console.log('updating db', !anime.episodes_seen.includes(this.id));
+                    for (let epi of episodes) {
+                        if (epi.episode == this.id) {
+                            isInArray = true;
+                            break
+                        }
+                    }
+                    if (!isInArray) {
+                        episodes.push({
+                            episode: this.id,
+                            time: 0
+                        });
+                    }
+                });
+            }
         } catch (e) {
             this.text = 'Error loading video :' + ' ' + e;
             this.snackbar = true;
             console.log(e);
         }
         await defaultRPC(`Waiting for ${this.metadat.title} to play`,'Idle');
+        
     }
 }
 </script>

@@ -22,6 +22,19 @@
                 </svg>
                 <span>Start Watching</span>
               </div>
+              <div role="button" tabindex="0" class="erc-add-to-watchlist-button action-button c-button -type-one-weak"
+                data-t="watchlist-btn">
+                <div class="remove-hover">REMOVE</div><svg class="check-icon" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20" data-t="check-svg">
+                  <polygon
+                    points="17.33 3.67 7.33 13.67 2.67 9 1.33 9 1.33 10.33 7.33 16.33 18.67 5 18.67 3.67 17.33 3.67">
+                  </polygon>
+                </svg><svg class="watchlist-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  data-t="watchlist-svg">
+                  <path d="M9.6,12,16,15.2,9.6,18.4ZM3.2,21.6H20.8V8.8H3.2ZM6.4,4H17.6V2.4H6.4ZM4.8,7.2H19.2V5.6H4.8Z">
+                  </path>
+                </svg><span>Add To Watchlist</span>
+              </div>
             </div>
           </div>
         </div>
@@ -278,6 +291,29 @@
                 </svg>
                 <span>Start Watching</span>
               </a>
+              <div role="button" tabindex="0" class="erc-add-to-watchlist-button action-button c-button -type-one-weak"
+                data-t="watchlist-btn" v-if="!isInWatchlist" @click="addToWatchlist">
+                <div class="remove-hover">REMOVE</div><svg class="check-icon" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20" data-t="check-svg">
+                  <polygon
+                    points="17.33 3.67 7.33 13.67 2.67 9 1.33 9 1.33 10.33 7.33 16.33 18.67 5 18.67 3.67 17.33 3.67">
+                  </polygon>
+                </svg><svg class="watchlist-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  data-t="watchlist-svg">
+                  <path d="M9.6,12,16,15.2,9.6,18.4ZM3.2,21.6H20.8V8.8H3.2ZM6.4,4H17.6V2.4H6.4ZM4.8,7.2H19.2V5.6H4.8Z">
+                  </path>
+                </svg><span>Add To Watchlist</span>
+              </div>
+              <div role="button" tabindex="0" class="erc-remove-to-watchlist-button action-button c-button -type-one-weak"
+                data-t="watchlist-btn" @mouseenter="hoverOnRemoveButton" @mouseleave="leaveRemoveButton" v-else @click="deleteFromWatchlist">
+                <svg class="check-icon" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20" data-t="check-svg">
+                  <polygon
+                    points="17.33 3.67 7.33 13.67 2.67 9 1.33 9 1.33 10.33 7.33 16.33 18.67 5 18.67 3.67 17.33 3.67">
+                  </polygon>
+                </svg>
+                <div class="remove-hover">REMOVE</div>
+              </div>
             </div>
           </div>
         </div>
@@ -332,18 +368,22 @@
                 </div>
               </div>
               <div class="item-list" v-if="type == 'series'">
-                <div v-for="season in episodes.items" :id="season.id" :style="{'box-sizing': 'border-box', 'flex': '1 20 39%', 'padding': '.3125rem', 'display': 'flex', 'flex-wrap': 'wrap', 'flex-direction': 'row','display':`${id == season.id ? 'contents' : 'none'}`}">
-                  <div class="erc-series-media-list-element xl-card" v-if="id==season.id">
+                <div v-for="season in episodes.items" :style="{'box-sizing': 'border-box', 'flex': '1 20 39%', 'padding': '.3125rem', 'display': 'flex', 'flex-wrap': 'wrap', 'flex-direction': 'row','display':`${id == season.id ? 'contents' : 'none'}`}">
+                  <div class="erc-series-media-list-element xl-card" v-if="id==season.id" >
                     <article class="erc-episode-card xl-episode">
-                      <a :title="season.episodes[0].title" class="card-link" :href="season.episodes[0].url"></a>
+                      <a :title="season.episodes[0].title" class="card-link" :id="season.episodes[0].id" :href="season.episodes[0].url" @click="addEpisode($event)"></a>
                       <div class="watch-tag-list">
-                        <div class="erc-info-tags-group"></div>
+                        <div class="erc-info-tags-group">
+                          <div class="c-info-tag c-info-tag--primary tags-group-item premium-only" v-if="episodes_seen.includes(season.episodes[0].id)"><span
+                              class="c-info-tag__item">SEEN</span></div>
+                        </div>
                       </div>
-                      <div class="h-thumbnail">
+                      <div class="h-thumbnail" :class="episodes_seen.includes(season.episodes[0].id) ? ' -restricted' : ''">
                         <img v-if="season.episodes[0].images.thumbnail.length >= 1" :src="season.episodes[0].images.thumbnail[season.episodes[0].images.thumbnail.length - 1].source"
                           class="c-content-image image" :alt="season.episodes[0].title">
                         <img v-else :src="season.episodes[0].images.thumbnail[0].source" class="c-content-image image"
                           :alt="season.episodes[0].title">
+                        <div class="progress-bar" v-if="episodes_seen.includes(season.episodes[0].id)" :style="{'width' : `${Math.floor(getValueByKey(times,season.episodes[0].id).time)}%`}"></div>
                         <div class="art-overlay"><svg class="art-overlay-icon icon c-svg-play-icon"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" data-t="play-icon-svg">
                             <circle class="circle" cx="30" cy="30" r="30"></circle>
@@ -372,16 +412,20 @@
                   </div>
                   <div v-if="(season.episodes.length >= 1) && id==season.id" v-for="(episode) in (season.episodes.slice(1,season.episodes.length)) "
                     class="erc-series-media-list-element">
-                    <article class="erc-episode-card">
-                      <a :title="episode.title" class="card-link" :href="episode.url"></a>
+                    <article class="erc-episode-card" >
+                      <a :title="episode.title" class="card-link" :id="episode.id" :href="episode.url" @click="addEpisode($event)"></a>
                       <div class="watch-tag-list">
-                        <div class="erc-info-tags-group"></div>
+                        <div class="erc-info-tags-group">
+                          <div class="c-info-tag c-info-tag--primary tags-group-item premium-only" v-if="episodes_seen.includes(episode.id)"><span
+                              class="c-info-tag__item">SEEN</span></div>
+                        </div>
                       </div>
-                      <div class="h-thumbnail">
+                      <div class="h-thumbnail" :class="episodes_seen.includes(episode.id) ? ' -restricted' : ''">
                         <img v-if="episode.images.thumbnail.length >= 1" :src="episode.images.thumbnail[episode.images.thumbnail.length - 1].source"
                           class="c-content-image image" :alt="episode.title">
                         <div v-else
                           class="c-content-image image" :alt="episode.title"> </div>
+                        <div class="progress-bar" v-if="episodes_seen.includes(episode.id)" :style="{'width' : `${Math.floor(getValueByKey(times,episode.id).time)}%`}"></div>
                         <div class="art-overlay">
                           <svg class="art-overlay-icon icon c-svg-play-icon"
                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" data-t="play-icon-svg">
@@ -468,6 +512,9 @@ import getMetadata from '../../scripts/getMetadata.js';
 import {getEpisodes} from '../../scripts/crunchyroll.js';
 import { channel, channelPage } from '../../scripts/channel_id';
 import { defaultRPC } from '../../scripts/misc/rpc';
+import {db} from '../../scripts/db.js';
+import { liveQuery } from "dexie";
+import { useObservable } from "@vueuse/rxjs";
 
   export default {
     data() {
@@ -489,9 +536,82 @@ import { defaultRPC } from '../../scripts/misc/rpc';
         type : '',
         sortOpen: false,
         sort: localStorage.getItem('sort'),
+        isInWatchlist: false,
+        episodes_seen : useObservable(
+          liveQuery(() => db.anime_saved.where('prov_id').equals(window.location.href.split('/').pop()).toArray())
+        ),
+        times : useObservable(
+          liveQuery(() => db.anime_saved.where('prov_id').equals(window.location.href.split('/').pop()).toArray())
+        )
       }
     },
     methods:{
+      async addToWatchlist(){
+        try{
+          console.log(this.meta.title);
+          const id = await db.anime_saved.add({
+          title: this.meta.title,
+          prov_id: this.meta.id,
+          channel : localStorage.getItem('channel'),
+          episodes_seen : []
+        });
+        this.isInWatchlist = true;
+        } catch(e){
+          console.log(e);
+        }
+      },
+      async deleteFromWatchlist(){
+        try{
+          const id = await db.anime_saved.where('prov_id').equals(this.meta.id).delete();
+          this.isInWatchlist = false;
+        } catch(e){
+          console.log(e);
+        }
+      },
+      async inWatchlist(){
+        const id = await db.anime_saved.where('prov_id').equals(this.meta.id).count();
+        if(id >= 1){
+          return true;
+        } else{
+          return false;
+        }
+      },
+      async addEpisode(el){
+        const episode = await db.anime_saved.where('prov_id').equals(this.meta.id).modify(anime =>
+          {
+            if(this.getValueByKey(anime.episodes_seen, el.target.id) == undefined){
+              anime.episodes_seen.push({
+                episode : el.target.id,
+                time : 0
+              });
+            }
+        }
+      ); 
+    },
+    getValueFromKey(obj, key) {
+            for (var x = 0; x < obj.length; x++) {
+                if (obj[x].html == key) {
+                    return obj[x];
+                }
+            }
+        },
+      hoverOnRemoveButton(){
+        document.querySelector('.remove-hover').innerText = 'Are you sure?';
+      },
+      leaveRemoveButton(){
+        document.querySelector('.remove-hover').innerText = 'REMOVE';
+      },
+      getValueByKey(keys, key) {
+        console.log(keys,'keys');
+        for (var x = 0; x < keys.length; x++) {
+          let tKey = keys[x];
+          console.log(tKey,'loop');
+          if (tKey.episode == key) {
+            console.log(tKey);
+            return tKey;
+          }
+        }
+      },
       showContent(el){
         this.id =  el.target.id;
         this.number = this.episodes.items.findIndex(item => item.id === el.target.id);
@@ -549,7 +669,6 @@ import { defaultRPC } from '../../scripts/misc/rpc';
       this.type = this.meta.__class__;
       this.id = episodes.items[this.number].id;
       this.image = Math.floor((this.meta.images.poster_tall.length / 2 ) - 1);
-      console.log(this.meta.images.poster_tall);
       if(channel == 'neko-sama'){
         this.image = this.meta.images.poster_tall.length - 1;
       }
@@ -573,6 +692,25 @@ import { defaultRPC } from '../../scripts/misc/rpc';
         console.log('newest');
         this.episodes.items[this.number].episodes.reverse();
       }
+      this.isInWatchlist = await this.inWatchlist();
+      if(this.episodes_seen.length == 0){
+        this.episodes_seen = [];
+      } else{
+        // take the array of object and replace each object with only the episode property
+        this.episodes_seen = this.episodes_seen[0].episodes_seen.map(item => item.episode);
+      }
+      this.times = this.times[0].episodes_seen;
     }
 }
 </script>
+<style>
+.progress-bar {
+    border-bottom: 10px yellow solid;
+    border-radius : 0px;
+    height: -16px;
+    right: 0px;
+    /* top: 0px; */
+    bottom: 10px;
+    position: relative;
+}
+</style>

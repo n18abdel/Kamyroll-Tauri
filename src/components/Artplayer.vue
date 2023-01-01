@@ -14,6 +14,7 @@
   import backforward from '/img/back-forward-15.svg';
   import download from '/img/download-button.svg';
   import SubtitlesOctopus from "../scripts/subtitles-octopus.js";
+  import { db } from "../scripts/db";
   import { watchEvent,watchRPC_film,watchRPC_series,defaultRPC} from "../scripts/misc/rpc";
 
   export default {
@@ -380,6 +381,36 @@
 
 
           art.on('video:play', async () => {
+            setTimeout(async () => {
+                try {
+                let times = document.querySelector('#player .art-control.art-control-time').innerHTML.split(' / ');
+                let timer = times[0]; // 00:00
+                let duration = times[1]; // 24:35
+                // make a ratio of the time and duration in % by first turning them into seconds
+                let timerSeconds = timer.split(':').reduce((acc, time) => (60 * acc) + +time);
+                console.log('timerSeconds', timerSeconds);
+                let durationSeconds = duration.split(':').reduce((acc, time) => (60 * acc) + +time);
+                console.log('durationSeconds', durationSeconds);
+                if (timerSeconds == 0 && durationSeconds == 0) {
+                    return;
+                }
+                let ratio = Math.floor(timerSeconds / durationSeconds * 100);
+                console.log('ratio', ratio);
+                var id = this.info.id;
+                console.log('id', id);
+                let title_id = this.info.title_info.id == null ? this.info.title_info.title_id : this.info.title_info.id;
+                console.log('title_id', title_id);
+                await db.anime_saved.where('prov_id').equals(title_id).modify(anime => {
+                    for(let i = 0; i < anime.episodes_seen.length; i++) {
+                        if (anime.episodes_seen[i].episode == window.location.href.split('/').pop()) {
+                            anime.episodes_seen[i].time = ratio;
+                        }
+                    }
+                })
+            } catch (e) {
+                console.log(e);
+            }
+            }, 1000);
             art.on('hover', async (state) => {
                 // state for true, the mouse moves from the outside to the player
                 // state for false, the mouse moves from the player to the outside
@@ -405,6 +436,34 @@
           });
 
           art.on('video:pause', async () => {
+            try {
+                let times = document.querySelector('#player .art-control.art-control-time').innerHTML.split(' / ');
+                let timer = times[0]; // 00:00
+                let duration = times[1]; // 24:35
+                // make a ratio of the time and duration in % by first turning them into seconds
+                let timerSeconds = timer.split(':').reduce((acc, time) => (60 * acc) + +time);
+                console.log('timerSeconds', timerSeconds);
+                let durationSeconds = duration.split(':').reduce((acc, time) => (60 * acc) + +time);
+                console.log('durationSeconds', durationSeconds);
+                if (timerSeconds == 0 && durationSeconds == 0) {
+                    return;
+                }
+                let ratio = Math.floor(timerSeconds / durationSeconds * 100);
+                console.log('ratio', ratio);
+                var id = this.info.id;
+                console.log('id', id);
+                let title_id = this.info.title_info.id == null ? this.info.title_info.title_id : this.info.title_info.id;
+                console.log('title_id', title_id);
+                await db.anime_saved.where('prov_id').equals(title_id).modify(anime => {
+                    for(let i = 0; i < anime.episodes_seen.length; i++) {
+                        if (anime.episodes_seen[i].episode == window.location.href.split('/').pop()) {
+                            anime.episodes_seen[i].time = ratio;
+                        }
+                    }
+                })
+            } catch (e) {
+                console.log(e);
+            }
               art.on('hover', async (state) => {});
               art.layers.layer0.style.display = 'block';
               // set the activity to "Paused"
@@ -436,6 +495,19 @@
 
 
           art.on('video:ended', async () => {
+            try {
+                var id = this.info.id;
+                let title_id = this.info.title_info.id == null ? this.info.title_info.title_id : this.info.title_info.id;
+                await db.anime_saved.where('prov_id').equals(title_id).modify(anime => {
+                    for(let i = 0; i < anime.episodes_seen.length; i++) {
+                        if (anime.episodes_seen[i].episode == window.location.href.split('/').pop()) {
+                            anime.episodes_seen[i].time = 100;
+                        }
+                    }
+                })
+            } catch (e) {
+                console.log(e);
+            }
               await watchEvent(this.info.title_info.title, 'Video has ended, going to idle')
               setTimeout(async () => {
                   await defaultRPC(this.info.title_info.title, 'Idle')

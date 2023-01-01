@@ -68,14 +68,14 @@ fn set_activity(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, stat
   println!("Activity set to: {} - {} - {} - {}", state, page, channel, doing);
 }
 #[tauri::command]
-fn set_activity_watch_notimestamp(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, state : &str,page: &str, channel: &str, doing: &str, title : &str) {
+fn set_activity_watch_notimestamp(discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>,img: &str, state : &str,page: &str, channel: &str, doing: &str, title : &str) {
   if let Err(why) = discord_ipc_client.set_activity(
     Activity::new()
       .state(state)
       .details(page)
       .assets(
         Assets::new()
-            .large_image("cover")
+            .large_image(img)
             .large_text(title)
             .small_image(channel)
             .small_text(doing)
@@ -90,14 +90,14 @@ fn set_activity_watch_notimestamp(discord_ipc_client: State<'_, DeclarativeDisco
 }
 
 #[tauri::command]
-fn set_activity_watch_timestamp (discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>, state : &str,page: &str, channel: &str, doing: &str, title : &str, start: i64, end: i64) {
+fn set_activity_watch_timestamp (discord_ipc_client: State<'_, DeclarativeDiscordIpcClient>,img: &str, state : &str,page: &str, channel: &str, doing: &str, title : &str, start: i64, end: i64) {
   if let Err(why) = discord_ipc_client.set_activity(
     Activity::new()
       .state(state)
       .details(page)
       .assets(
         Assets::new()
-            .large_image("cover")
+            .large_image(img)
             .large_text(title)
             .small_image(channel)
             .small_text(doing)
