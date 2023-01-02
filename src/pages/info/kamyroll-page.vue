@@ -770,12 +770,12 @@ export default {
 </script>
 <style>
 .progress-bar {
-    border-bottom: 10px yellow solid;
+    border-bottom: 5px yellow solid;
     border-radius : 0px;
     height: -16px;
     right: 0px;
     /* top: 0px; */
-    bottom: 10px;
+    bottom: 6px;
     position: relative;
 }
 </style>
