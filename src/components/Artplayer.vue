@@ -175,6 +175,7 @@
           
           var art = new Artplayer({
               ...this.option,
+              id : window.location.href,
               url: this.videos[0].url,
               quality: this.videos,
               subtitle: subtitle,
