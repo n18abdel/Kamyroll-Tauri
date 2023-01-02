@@ -1,6 +1,8 @@
 <template>  
         <trending></trending>   
+        <continue></continue>
         <LastEpisodes></LastEpisodes>
+        
 </template>
 
 <script>
@@ -18,11 +20,17 @@ const LastEpisodes = defineAsyncComponent(() => import('../../components/lastepi
   suspend: true
 })
 
+const Continue = defineAsyncComponent(() => import('../../components/continue.vue'), {
+  delay: 3000,
+  timeout: 3000,
+  suspend: true
+})
 
 export default {
   components: {
     Trending,
-    LastEpisodes
+    LastEpisodes,
+    Continue
   },
   mounted : async function (){
      await defaultRPC('On Home Page','Looking at the home page')

@@ -1653,10 +1653,8 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
             }
             
         },
-        beforeMount: function () {
-            this.getEpisodes();
-        },
         mounted: function () {
+            this.getEpisodes();
             if (this.channel == 'crunchyroll') {
                 while (this.counter >= 5) {
                     setInterval(() => {
@@ -1666,5 +1664,4 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
             }
         },
     }
-    
 </script>
