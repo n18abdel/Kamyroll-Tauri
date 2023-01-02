@@ -33,7 +33,7 @@ async function getLastEpisodes(){
         console.log(error);
         return [];
     });
-    console.log(response);
+    
     for (let item of response) {
         item.url = '';
         let id = item.id;
