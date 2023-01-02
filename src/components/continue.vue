@@ -46,8 +46,7 @@ import neko_logo from '/img/neko-sama.svg';
                 <div class="card" v-for="episode of episodes">
                     <div>
                         <article class="erc-series-movie-card" :id="episode.id">
-                            <a :title="episode.title" class="card-link"
-                                :href="episode.url"></a>
+                            <a :title="episode.title" class="card-link" :href="episode.url"></a>
                             <div class="watch-tag-list">
                                 <div class="erc-info-tags-group"></div>
                             </div>
@@ -110,6 +109,10 @@ import getMetadata from '../scripts/getMetadata.js'
         },
         methods: {
             async getEpisodes() {
+                let channel = this.channel;
+                if(channel=='neko-sama'){
+                    channel == 'nekosama';
+                }
                 let series = await db.anime_saved.where('channel').equals(this.channel).toArray()
                 for(let serie of series){
                     let episodes = serie.episodes_seen;
@@ -121,6 +124,7 @@ import getMetadata from '../scripts/getMetadata.js'
                             metadata.images.poster_tall = series_info.images.poster_tall;
                             metadata.images.poster_wide = series_info.images.poster_wide;
                             metadata.time = epi.time;
+                            metadata.url = `${channel}/watch/${epi.episode}`;
                             this.episodes.push(metadata);
                         }
                     }
@@ -134,8 +138,7 @@ import getMetadata from '../scripts/getMetadata.js'
                     el.target.style ='width:65px'
                 }else if(this.channel == 'neko-sama'){
                     el.target.style ='width:112px'
-                }
-                else {
+                }else {
                     el.target.style="width:132px"
                 }
             }
