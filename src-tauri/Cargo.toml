@@ -25,6 +25,7 @@ command-group = {git="https://github.com/Bilnaa/command-group", version = "1.0.9
 system_uri = { version = "0.4.0", default-features = false }
 unwrap = "1.2.1"
 declarative-discord-rich-presence = { git = "https://github.com/KPidS/declarative-discord-rich-presence" }
+fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
 
 [features]
 default = [ "custom-protocol" ]

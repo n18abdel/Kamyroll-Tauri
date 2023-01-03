@@ -16,6 +16,7 @@
   import SubtitlesOctopus from "../scripts/subtitles-octopus.js";
   import { db } from "../scripts/db";
   import { watchEvent,watchRPC_film,watchRPC_series,defaultRPC} from "../scripts/misc/rpc";
+  import { Command } from '@tauri-apps/api/shell';
 
   export default {
       data() {
@@ -101,6 +102,7 @@
                   workerUrl: `/ass-sub/subtitles-octopus-worker.js`,
                   legacyWorkerUrl: `/ass-sub/subtitles-octopus-worker-legacy.js`
               })
+              localStorage.setItem('subUrl', this.subs[0].url);
               subtitle = {};
               subSetting = {
                   width: 200,
@@ -131,7 +133,7 @@
                   onSelect: async function (item) {
                       this.pause();
                       art.plugins.artplayerPluginAss.instance.setTrackByUrl(item.url);
-                      await this.play();
+                      localStorage.setItem('subUrl', item.url);
                       localStorage.setItem('preferredLanguage', item.html);
                       return item.html;
                   },
@@ -244,6 +246,7 @@
               },
               customType: {
                   m3u8: function (video, url) {
+                    localStorage.setItem("master_link", url);
                     if (Hls.isSupported()) {
                         hls = new Hls();
                         hls.loadSource(url);
@@ -287,11 +290,16 @@
               controls: [{
                       position: 'right',
                       html: `<img width="22" heigth="22" src="${download}">`,
-                      tooltip: 'Copy the video link to the clipboard',
-                      click: function (item) {
-                          let master_link = localStorage.getItem('master_link');
-                          navigator.clipboard.writeText(master_link);
-                          art.notice.show = 'Link copied to your clipboard';
+                      tooltip: 'Play in MPV',
+                      click: async function (item) {
+                          let args = [localStorage.master_link]
+                          if (art.subtitle.show) {
+                            args.push(`--sub-file=${localStorage.subUrl}`)
+                          }
+                          const command = new Command('mpv', args);
+                          
+                          await command.spawn();
+                          art.notice.show = 'MPV launched';
                       }
                   },
                   {

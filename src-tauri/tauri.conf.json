@@ -65,6 +65,11 @@
           {
             "name": "proxy/pstream/main",
             "sidecar": true
+          },
+          {
+            "name": "mpv",
+            "cmd": "mpv",
+            "args": true
           }
         ]
       },

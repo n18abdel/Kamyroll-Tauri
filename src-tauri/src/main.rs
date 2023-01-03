@@ -212,6 +212,7 @@ fn main() {
     .add_item(show)
     .add_native_item(SystemTrayMenuItem::Separator)
     .add_item(quit);
+   fix_path_env::fix();
    tauri::Builder::default()
   .system_tray(SystemTray::new().with_menu(tray_menu))
   .on_system_tray_event(|app, event| match event {
