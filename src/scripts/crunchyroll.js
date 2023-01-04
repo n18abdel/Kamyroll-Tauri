@@ -264,6 +264,13 @@ async function getVideos(id) {
             }
         }
 
+        preferredLanguage =
+            window.location.href.includes('/crunchyroll/') ? "en-US" :
+            window.location.href.includes('/adn/') ? "fr-FR" :
+            preferredLanguage
+
+        subtitles = subtitles.sort((a,_b) => a.html === preferredLanguage ? -1 : + 1)
+
         return {
             streams:videos.reverse(), 
             subs: subtitles
