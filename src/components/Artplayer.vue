@@ -178,8 +178,8 @@
           var art = new Artplayer({
               ...this.option,
               id : window.location.href,
-              url: this.videos[0].url,
-              quality: this.videos,
+              url: this.videos.find(e => e.html.trim() === "ja-JP")?.url ?? this.videos.f[0].url,
+              quality: this.videos.map(e => e.html.trim() === "ja-JP" ? {...e, default: true} : e),
               subtitle: subtitle,
               plugins: [
                   plugin 
