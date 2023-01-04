@@ -775,7 +775,7 @@ export default {
     height: -16px;
     right: 0px;
     /* top: 0px; */
-    bottom: 6px;
+    bottom: 0.3rem;
     position: relative;
 }
 </style>
