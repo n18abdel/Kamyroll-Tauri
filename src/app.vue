@@ -16,7 +16,7 @@ import banner from './components/banner.vue'
       :right="true"
       @error="snackbar = true"
     >
-      {{ text }} test
+      {{ text }}
 
       <template v-slot:actions>
         <v-btn
@@ -75,12 +75,10 @@ import banner from './components/banner.vue'
      async ctrlt() {
        let status = await generateNewToken();
        if (status == true) {
-         this.text = 'Token is generated, reloading the page';
-         this.snackbar = true;
+         toast('Token is generated, reloading the page');
          window.location.reload();
        } else {
-         this.text = `Token is not generated, please try again. (${status})`;
-         this.snackbar = true;
+         toast('Token is not generated, please try again. (' + status + ')');
        }
      }
    },
@@ -97,12 +95,15 @@ import banner from './components/banner.vue'
      if (token_expire != null) {
         if (currentDate > token_expire) {
           await generateNewToken();
-          toast('Token is expired, generating new token')
+          this.toast('Token is expired, generating new token')
         } else if (currentDate > token_valid) {
           let test = await testToken(localStorage.getItem('token'));
           if (test == false) {
             await generateNewToken();
-            toast('Token is not working anymore, generating new token')
+            this.toast('Token is not working anymore, generating new token')
+          } else {
+            localStorage.setItem('token_valid', currentDate + 21600);
+            this.toast('Token is valid, but will be tested again in 6 hours')
           }
         }
      } else {
