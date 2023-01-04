@@ -117,7 +117,7 @@ import getMetadata from '../scripts/getMetadata.js'
                 for(let serie of series){
                     let episodes = serie.episodes_seen;
                     for(let epi of episodes){
-                        if(epi.time <= 98){
+                        if(epi.time <= 98 && epi.time >= 1){
                             let metadata = await getMetadata(epi.episode);
                             let id = metadata.series_id == undefined ? metadata.id : metadata.series_id;
                             let series_info = await getMetadata(id);
