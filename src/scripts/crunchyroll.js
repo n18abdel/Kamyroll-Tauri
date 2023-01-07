@@ -209,86 +209,7 @@ async function getVideos(id) {
         'Content-Type': 'application/x-www-form-urlencoded',
         'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')} Tauri-Rust`
     };
-    try {
-        if (window.location.href.includes('/crunchyroll/')) {
-            let result = await client.get(url, {timeout: 5000, headers: headers }).then((response) => {
-                return response.data;
-            }).catch((error) => {
-                console.log(error);
-                return [];
-            });
-            for (let streams of result.streams) {
-                var quality = streams.audio_locale + ' ' + streams.hardsub_locale;
-                var link = streams.url;
-                videos.push(new Videos(quality, link));
-            }
-            if (result.subtitles.length >= 1) {
-                for (let subs of result.subtitles) {
-                    let lang = subs.locale;
-                    let link = subs.url;
-                    let type = subs.format;
-                    let finalData = new Subs(lang, link, style, type);
-                    subtitles.push(finalData);
-            }
-            } else {
-                subtitles.push(new Subs('No subtitles', '', {}, ''));
-            }
-            let preferredVideo = '';
-            for (let i = 1; i < videos.length; i++) {
-                let video = videos[i];
-                if (video.html.split(' ')[1].includes(preferredLanguage)) {
-                    preferredVideo = video.url;
-                    console.log('Preferred video found', preferredVideo);
-                }
-            }
-            if (preferredVideo == '') {
-                preferredVideo = videos[0].url;
-                localStorage.setItem('master_link', preferredVideo);
-            } else {
-                localStorage.setItem('master_link', preferredVideo);
-            }
-        } else if (window.location.href.includes('/adn/')) {
-            let firstVideo = '';
-            let result = await client.get(url, {timeout: 5000, headers: headers }).then((response) => {
-                return response.data;
-            }).catch((error) => {
-                console.log(error);
-                return [];
-            });
-            console.log(result);
-            for (let cpt = 0; cpt < result.streams.length; cpt++) {
-                let streams = result.streams[cpt];
-                let quality = streams.audio_locale + ' ' + streams.hardsub_locale;
-                let link = streams.url;
-                if(cpt == 0){
-                    firstVideo = link;
-                }
-                const video_url = link;
-                const file_extension = '.m3u8';
-                const hls_proxy_url  = `${proxy_url}/${ btoa(video_url) }${file_extension}`;
-                videos.push(new Videos(quality, hls_proxy_url));
-            }
-            if (result.subtitles.length >= 1) {
-                for (let subs of result.subtitles) {
-                    let lang = subs.locale;
-                    let link = subs.url;
-                    let type = subs.format;
-                    let finalData = new Subs(lang, link, style, type);
-                    subtitles.push(finalData);
-            }
-            } else {
-                subtitles.push(new Subs('No subtitles', '', style, ''));
-            }
-            //append the subs with preferredLanguage to the first video
-            let preferredSubs = subtitles.find((sub) => sub.html.includes(preferredLanguage));
-            if (preferredSubs == null) {
-                preferredSubs = subtitles[0];
-            }
-            if (preferredSubs.lang != 'No subtitles') {
-                firstVideo = `${firstVideo}?subs=${preferredSubs.url}`;
-            }
-            localStorage.setItem('master_link', firstVideo);
-        } else if (window.location.href.includes('/nekosama/')) {
+        if (window.location.href.includes('/nekosama/')) {
             let result = await client.get(url, { timeout: 5000,headers: headers }).then((response) => {
                 return response.data;
             }).catch((error) => {
@@ -302,15 +223,37 @@ async function getVideos(id) {
                 if(link.includes('pstream')){
                     link = link + '&key=clear';
                     console.log(link);
-                    localStorage.setItem('master_link', link);
                     link = `${proxy_url}/${ btoa(link) }${file_extension}`;
                 } else if (link.includes('streamtape')){
                     link = await streamtapeExtractor(link);
-                    localStorage.setItem('master_link', link);
                 }
                 videos.push(new Videos(quality, link));
             } 
             subtitles.push(new Subs('No subtitles', '', {}, ''));
+        } else {
+            let result = await client.get(url, {timeout: 5000, headers: headers }).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                console.log(error);
+                return [];
+            });
+            for (let streams of result.streams) {
+                var quality = streams.audio_locale + ' ' + streams.hardsub_locale;
+                var link = streams.url;
+                link = `${proxy_url}/${ btoa(link) }${file_extension}`;
+                videos.push(new Videos(quality, link));
+            }
+            if (result.subtitles.length >= 1) {
+                for (let subs of result.subtitles) {
+                    let lang = subs.locale;
+                    let link = subs.url;
+                    let type = subs.format;
+                    let finalData = new Subs(lang, link, style, type);
+                    subtitles.push(finalData);
+            }
+            } else {
+                subtitles.push(new Subs('No subtitles', '', {}, ''));
+            }
         }
 
         for(let i = 0; i < subtitles.length; i++){
@@ -325,9 +268,6 @@ async function getVideos(id) {
             streams:videos.reverse(), 
             subs: subtitles
         };
-    } catch (e) {
-        console.log(e);
-    }
 }
 
 export {getEpisodes,search,getVideos,getLastEpisodes};
