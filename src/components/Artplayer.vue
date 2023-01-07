@@ -292,7 +292,7 @@
                       html: `<img width="22" heigth="22" src="${download}">`,
                       tooltip: 'Play in MPV',
                       click: async function (item) {
-                          let args = [localStorage.master_link]
+                          let args = [localStorage.master_link, "--demuxer-max-bytes=5MiB", "--demuxer-max-back-bytes=8000MiB", "--no-resume-playback"]
                           if (art.subtitle.show) {
                             args.push(`--sub-file=${localStorage.subUrl}`)
                           }
