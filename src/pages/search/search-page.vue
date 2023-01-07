@@ -5,13 +5,13 @@
                 <div class="erc-search-field">
                     <div class="content">
                         <form class="search-input-wrapper state-narrow">
-                            <input type="text" placeholder="Rechercher" class="search-input crunchyroll" v-if="channel=='crunchyroll'" @keydown.enter.prevent="recherche">
-                            <input type="text" placeholder="Rechercher" class="search-input adn" v-else-if="channel=='adn'" @keydown.enter.prevent="recherche">
-                            <input type="text" placeholder="Rechercher" class="search-input neko" v-else-if="channel=='neko-sama'" @keydown.enter.prevent="recherche">
-                            <input type="text" placeholder="Rechercher" class="search-input" v-else @keydown.enter.prevent="recherche">
+                            <input type="text" name="query" placeholder="Search" class="search-input crunchyroll" v-if="channel=='crunchyroll'" @keydown.enter.prevent="recherche">
+                            <input type="text" name="query" placeholder="Search" class="search-input adn" v-else-if="channel=='adn'" @keydown.enter.prevent="recherche">
+                            <input type="text" name="query" placeholder="Search" class="search-input neko" v-else-if="channel=='neko-sama'" @keydown.enter.prevent="recherche">
+                            <input type="text" name="query" placeholder="Search" class="search-input" v-else @keydown.enter.prevent="recherche">
 
                             <div class="search-button" @click="recherche">
-                                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" style="border-radius: 0px;" viewBox="0 0 20 20"
                                     data-t="search-svg">
                                     <path
                                         d="M2,10.666V5.333L5.333,2h5.333L14,5.333v5.333L10.667,14H5.333ZM4.364,0,0,4.363v7.273L4.364,16h7.273l1.757-1.757L18,20h2V18l-5.757-4.606L16,11.637V4.363L11.637,0Z">
@@ -81,6 +81,11 @@ export default {
     },
     methods:{
         async recherche() {
+            if(document.querySelector('.search-input').value == '') return;
+            // change the query in the url
+            let url = new URL(window.location.href);
+            url.searchParams.set("q", document.querySelector('.search-input').value);
+            window.history.pushState({}, '', url);
             this.chan = getChannelinUse(channel).label;
             this.results = [];
             this.loading = true;
@@ -97,6 +102,13 @@ export default {
         this.style = 'border-color: #1cb9f4';
         } else {
         this.style = 'border-color: #0095ff';
+        }
+        // take out the query from the url
+        let url = new URL(window.location.href);
+        let query = url.searchParams.get("q");
+        if(query != null){
+            document.querySelector('.search-input').value = query;
+            this.recherche();
         }
     }
 }
