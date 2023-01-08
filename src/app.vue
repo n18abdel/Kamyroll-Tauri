@@ -3,9 +3,10 @@ import banner from './components/banner.vue'
 </script>
 
 <template>
-  <banner></banner>
   <v-app>
+    
     <v-main>
+      <banner></banner>
        <router-view/>
     </v-main>
     
@@ -14,7 +15,6 @@ import banner from './components/banner.vue'
       :timeout="timeout"
       :bottom="true"
       :right="true"
-      @error="snackbar = true"
     >
       {{ text }}
 
@@ -75,10 +75,10 @@ import banner from './components/banner.vue'
      async ctrlt() {
        let status = await generateNewToken();
        if (status == true) {
-         toast('Token is generated, reloading the page');
+         this.toast('Token is generated, reloading the page');
          window.location.reload();
        } else {
-         toast('Token is not generated, please try again. (' + status + ')');
+         this.toast('Token is not generated, please try again. (' + status + ')');
        }
      }
    },
