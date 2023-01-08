@@ -83,6 +83,8 @@ import banner from './components/banner.vue'
      }
    },
    mounted: async function () {
+     await new Promise(resolve => setTimeout(resolve, 8000));
+     await invoke('close_splashscreen');
      let token_expire = localStorage.getItem('token_expire');
      let token_valid = Number(localStorage.getItem('token_valid'));
      let currentDate = Math.floor(new Date().getTime() / 1000);
@@ -115,8 +117,6 @@ import banner from './components/banner.vue'
      } else if (localStorage.getItem('discord_rpc') == 'false') {
        await invoke('disable_rpc');
      }
-
-     await invoke('close_splashscreen');
      await appWindow.show();
      document.addEventListener('keydown', (event) => {
        // ctrl + t  || cmd + t => generate new token
