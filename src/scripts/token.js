@@ -39,8 +39,8 @@ async function getToken(){
         device_id = createRandomId();
         localStorage.setItem('device_id', device_id);
     }
-    let body = `device_id=${device_id}&device_type=${app_identifier}&access_token=${APP_TOKEN}`;
-    let response = await client.get(url, body, {
+    let body = `?device_id=${device_id}&device_type=${app_identifier}&access_token=${APP_TOKEN}`;
+    let response = await client.get(url+body, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`
