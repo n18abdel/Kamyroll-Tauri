@@ -7,20 +7,27 @@
         margin: 0;
       }
 
-      .splashscreen-image {
-        background-color: #1b1a26;
-        background-image: url('/img/kamyroll_logo.svg');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: 50%;
-        width: 100vw !important;
-        height: 100vh !important;
-        overflow: hidden;
+      #video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
       }
     </style>
   </head>
 
   <body>
-    <div class="splashscreen-image"></div>
+    <div id="video" style="display: block;">
+      <video id="video" autoplay loop muted>
+        <source src="/kamyroll_logo.webm" type="video/webm">
+      </video>
   </body>
+  <script>
+
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+  </script>
 </html>
