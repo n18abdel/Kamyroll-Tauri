@@ -80,11 +80,17 @@ import banner from './components/banner.vue'
        } else {
          this.toast('Token is not generated, please try again. (' + status + ')');
        }
+     },
+     async sleep(ms){
+        return new Promise(resolve => setTimeout(resolve, ms));
      }
    },
    mounted: async function () {
-     await new Promise(resolve => setTimeout(resolve, 8000));
-     await invoke('close_splashscreen');
+     setInterval(async ()=>{
+       await invoke('close_splashscreen')
+       await appWindow.show();
+     },15000)
+     
      let token_expire = localStorage.getItem('token_expire');
      let token_valid = Number(localStorage.getItem('token_valid'));
      let currentDate = Math.floor(new Date().getTime() / 1000);
@@ -94,15 +100,18 @@ import banner from './components/banner.vue'
      } else if (localStorage.getItem('autoplay') == null){
        localStorage.setItem('autoplay', 'false');
      }
+
      if (token_expire != null) {
         if (currentDate > token_expire) {
           await generateNewToken();
           this.toast('Token is expired, generating new token')
+          window.location.reload();
         } else if (currentDate > token_valid) {
           let test = await testToken(localStorage.getItem('token'));
           if (test == false) {
             await generateNewToken();
-            this.toast('Token is not working anymore, generating new token')
+            this.toast('Token is not working anymore, generating new token');
+            window.location.reload();
           } else {
             localStorage.setItem('token_valid', currentDate + 21600);
             this.toast('Token is valid, but will be tested again in 6 hours')
@@ -117,7 +126,7 @@ import banner from './components/banner.vue'
      } else if (localStorage.getItem('discord_rpc') == 'false') {
        await invoke('disable_rpc');
      }
-     await appWindow.show();
+
      document.addEventListener('keydown', (event) => {
        // ctrl + t  || cmd + t => generate new token
        if (event.ctrlKey && event.key === 't' || event.metaKey && event.key === 't') {
