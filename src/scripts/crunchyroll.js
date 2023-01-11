@@ -121,62 +121,67 @@ async function search(query){
     }
     await defaultRPC('On search page', `Looking for ${query}`);
     let results = [];
-    const options = {
-        method: 'GET',
-        timeout: 5000,
-        headers: {
-            'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
-            'Authorization': `Bearer ${token}`,
+    if(window.location.href.includes('?q=')){
+        const options = {
+            method: 'GET',
+            timeout: 5000,
+            headers: {
+                'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
+                'Authorization': `Bearer ${token}`,
+            }
+        };
+        console.log(query);
+        let url = `https://api.kamyroll.tech/content/v1/search?query=${query.replaceAll(' ','+')}&channel_id=${channel}`;
+        let data = await client.get(url,options).then((response) => {
+            console.log(response);
+            return response.data;
+        }).catch((error) => {
+            console.log(error);
+            return [];
+        });
+        for (let anime of data.items) {
+            for (let item of anime.items) {
+                let title = item.title;
+                let image = item.images.poster_tall[0].source;
+                let desc = item.descripion;
+                let type = item.media_type;
+                let metadata;
+                if (type == 'movie_listing'){
+                    metadata = item.movie_listing_metadata;
+                } else{
+                    metadata = item.series_metadata;
+                }
+                let link = "";
+                if(channel == "adn"){
+                    link = '/adn/' + item.id;
+                } else if (channel=="neko-sama"){
+                    link = '/nekosama/' + item.id;
+                } else if(channel=="crunchyroll"){
+                    link = '/crunchyroll/' + item.id;
+                }
+                let maturity_ratings = metadata.maturity_ratings;
+                let is_dubbed = metadata.is_dubbed;
+                let is_subbed = metadata.is_subbed;
+                let is_mature = metadata.is_mature;
+                let is_simulcast = '';
+                let season_count = '';
+                let episode_count = '';
+                try{
+                    is_simulcast = metadata.is_simulcast;
+                    season_count = metadata.season_count;
+                    episode_count = metadata.episode_count;
+                }catch(e){
+                    is_simulcast = false;
+                    season_count = 0;
+                    episode_count = 0;
+                }
+                results.push(new finalData(title, image, desc, type, maturity_ratings, link, is_dubbed, is_subbed, is_mature, is_simulcast,season_count,episode_count));
+            }
         }
-    };
-    console.log(query);
-    let url = `https://api.kamyroll.tech/content/v1/search?query=${query.replaceAll(' ','+')}&channel_id=${channel}`;
-    let data = await client.get(url,options).then((response) => {
-        return response.data;
-    }).catch((error) => {
-        console.log(error);
-        return [];
-    });
-    for (let anime of data.items) {
-        for (let item of anime.items) {
-            let title = item.title;
-            let image = item.images.poster_tall[0].source;
-            let desc = item.descripion;
-            let type = item.media_type;
-            let metadata;
-            if (type == 'movie_listing'){
-                metadata = item.movie_listing_metadata;
-            } else{
-                metadata = item.series_metadata;
-            }
-            let link = "";
-            if(channel == "adn"){
-                link = '/adn/' + item.id;
-            } else if (channel=="neko-sama"){
-                link = '/nekosama/' + item.id;
-            } else if(channel=="crunchyroll"){
-                link = '/crunchyroll/' + item.id;
-            }
-            let maturity_ratings = metadata.maturity_ratings;
-            let is_dubbed = metadata.is_dubbed;
-            let is_subbed = metadata.is_subbed;
-            let is_mature = metadata.is_mature;
-            let is_simulcast = '';
-            let season_count = '';
-            let episode_count = '';
-            try{
-                 is_simulcast = metadata.is_simulcast;
-                 season_count = metadata.season_count;
-                 episode_count = metadata.episode_count;
-            }catch(e){
-                 is_simulcast = false;
-                 season_count = 0;
-                 episode_count = 0;
-            }
-            results.push(new finalData(title, image, desc, type, maturity_ratings, link, is_dubbed, is_subbed, is_mature, is_simulcast,season_count,episode_count));
-        }
+        return results
+    } else {
+        window.location.href = window.location.href + '?q=' + query;
     }
-    return results
 }
 
 
@@ -190,10 +195,8 @@ async function getVideos(id) {
     } else{
         preferredLanguage = localStorage.getItem('preferredLanguage');
     }
-    const proxy_url = 'http://127.0.0.1:15411';
     let videos = [];
     let subtitles = [];
-    const file_extension = '.m3u8';
     const style = {
         /* filter : 'drop-shadow(2px 2px 1px black)',
         fontSize : '45px',
@@ -222,8 +225,6 @@ async function getVideos(id) {
                 let link = stream.url;
                 if(link.includes('pstream')){
                     link = link + '&key=clear';
-                    console.log(link);
-                    link = `${proxy_url}/${ btoa(link) }${file_extension}`;
                 } else if (link.includes('streamtape')){
                     link = await streamtapeExtractor(link);
                 }
@@ -240,7 +241,6 @@ async function getVideos(id) {
             for (let streams of result.streams) {
                 var quality = streams.audio_locale + ' ' + streams.hardsub_locale;
                 var link = streams.url;
-                link = `${proxy_url}/${ btoa(link) }${file_extension}`;
                 videos.push(new Videos(quality, link));
             }
             if (result.subtitles.length >= 1) {
