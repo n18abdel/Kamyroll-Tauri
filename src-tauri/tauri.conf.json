@@ -6,10 +6,11 @@
   "build": {
     "distDir": "../dist",
     "devPath": "http://localhost:3000",
-    "beforeDevCommand": "",
+    "beforeDevCommand": "npm run serve",
     "beforeBuildCommand": ""
   },
   "tauri": {
+    "macOSPrivateApi" : true,
     "systemTray": {
       "iconPath": "icons/32x32.png",
       "iconAsTemplate": true
@@ -26,7 +27,10 @@
         "icons/icon.ico"
       ],
       "resources": [],
-      "externalBin": ["proxy/pstream/main"],
+      "externalBin": [
+        "proxy/pstream/main",
+        "proxy/download/ytdlp"
+      ],
       "copyright": "Kamyroll OSS 2022",
       "category": "DeveloperTool",
       "shortDescription": "",
@@ -58,15 +62,12 @@
         "all": true,
         "scope": ["https://**", "http://**"]
       },
-      "shell": {
-        "sidecar": true,
-        "execute": true,
-        "scope": [
-          {
-            "name": "proxy/pstream/main",
-            "sidecar": true
-          }
-        ]
+      "path":{
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "scope": ["$VIDEO/Kamyroll","$VIDEO/Kamyroll/*"]
       },
       "window": {
         "all": true
@@ -84,10 +85,13 @@
       },
     {
       "label": "splashscreen",
+      "title": "",
       "width": 400,
-      "height": 200,
+      "height": 400,
       "decorations": false,
       "center": true,
+      "resizable": false,
+      "transparent" : true,
       "url": "splashscreen.html"
     }
     ],

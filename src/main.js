@@ -12,6 +12,7 @@ import 'vue-global-api/computed';
 import 'vue-global-api/watch';
 import 'vue-global-api/watchEffect';
 import { appWindow } from '@tauri-apps/api/window';
+/* import { exists, BaseDirectory, createDir } from '@tauri-apps/api/fs'; */
 import { idleRPC } from './scripts/misc/rpc.js';
 
 
@@ -27,6 +28,15 @@ if(!process.env.CHANNEL.includes('Dev')){
         console.log(`Error: ${err.toString()}\nInfo: ${info}`);
     }
 }
+
+/* await exists('Kamyroll', { dir: BaseDirectory.Video}).then(async (exists) => {
+    if(!exists){
+        await createDir('Kamyroll', { dir: BaseDirectory.Video});
+    }
+}); */
+
+
+
 
 app.use(routes);
 app.use(vuetify);
