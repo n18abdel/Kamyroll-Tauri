@@ -13,15 +13,36 @@
   import fastforward from '/img/fast-forward-15.svg';
   import backforward from '/img/back-forward-15.svg';
   import download from '/img/download-button.svg';
+  import nextbutton from '/img/skip-next.svg'
   import SubtitlesOctopus from "../scripts/subtitles-octopus.js";
   import { db } from "../scripts/db";
   import { watchEvent,watchRPC_film,watchRPC_series,defaultRPC} from "../scripts/misc/rpc";
+  /*   import { Command } from '@tauri-apps/api/shell'; */
+/*   import { BaseDirectory} from '@tauri-apps/api/fs';
+  import { videoDir } from '@tauri-apps/api/path'; */
 
   export default {
       data() {
           return {
 
           };
+      },
+      methods: {
+        getNextEpisode(id) {
+              let season = JSON.parse(localStorage.getItem('season'));
+              let next = null;
+              let found = false;
+              for (let i = 0; i < season.episodes.length; i++) {
+                  if (found) {
+                      next = season.episodes[i].id;
+                      break;
+                  }
+                  if (season.episodes[i].id == id) {
+                      found = true;
+                  }
+              }
+              return next
+          }
       },
       props: {
           option: {
@@ -45,7 +66,8 @@
            async function sleep (time) {
             return new Promise((resolve) => setTimeout(resolve, time));
             }
-          function artplayerPluginAss(options) {
+            localStorage.setItem('next_episode', this.getNextEpisode(window.location.href.split('/').pop()));
+            function artplayerPluginAss(options) {
               return art => {
                   const instance = new SubtitlesOctopus({
                       ...options,
@@ -133,6 +155,7 @@
                       art.plugins.artplayerPluginAss.instance.setTrackByUrl(item.url);
                       await this.play();
                       localStorage.setItem('preferredLanguage', item.html);
+                      localStorage.setItem('subUrl', item.url);
                       return item.html;
                   },
               }
@@ -168,11 +191,12 @@
                       art.subtitle.switch(item.url, {
                           name: item.html,
                       });
+                      localStorage.setItem('subUrl', item.url);
                       return item.html;
                   }
               }
             }
-          
+          localStorage.setItem('subUrl', this.subs[0].url);
           var art = new Artplayer({
               ...this.option,
               id : window.location.href,
@@ -245,6 +269,8 @@
               customType: {
                   m3u8: function (video, url) {
                     if (Hls.isSupported()) {
+                        localStorage.setItem('master_link', url);
+                        url = `http://127.0.0.1:15411/${ btoa(url) }.m3u8`;
                         hls = new Hls();
                         hls.loadSource(url);
                         hls.attachMedia(video);
@@ -288,10 +314,9 @@
                       position: 'right',
                       html: `<img width="22" heigth="22" src="${download}">`,
                       tooltip: 'Copy the video link to the clipboard',
-                      click: function (item) {
-                          let master_link = localStorage.getItem('master_link');
-                          navigator.clipboard.writeText(master_link);
-                          art.notice.show = 'Link copied to your clipboard';
+                      click: async function (item) {
+                          navigator.clipboard.writeText(localStorage.getItem('master_link'));
+                          art.notice.show = 'Link Copied';
                       }
                   },
                   {
@@ -373,6 +398,16 @@
                       }
                   })
               }
+              if(localStorage.getItem('next_episode') != 'null'){
+                art.controls.add({
+                    position :'right',
+                    html : `<img width="22" heigth="22" src="${nextbutton}">`,
+                    tooltip : 'Next Episode',
+                    click : function(){
+                        window.location.href = window.location.href.replace(window.location.href.split('/').pop(),localStorage.getItem('next_episode'))
+                    }
+                  })
+              }
               await watchEvent(this.info.title_info.title, 'Video is about to start');
               setTimeout(async () => {
                   await watchEvent(this.info.title_info.title, 'Idle')
@@ -382,162 +417,177 @@
 
 
           art.on('video:play', async () => {
-            setTimeout(async () => {
-                try {
-                let times = document.querySelector('#player .art-control.art-control-time').innerHTML.split(' / ');
-                let timer = times[0]; // 00:00
-                let duration = times[1]; // 24:35
-                // make a ratio of the time and duration in % by first turning them into seconds
-                let timerSeconds = timer.split(':').reduce((acc, time) => (60 * acc) + +time);
-                console.log('timerSeconds', timerSeconds);
-                let durationSeconds = duration.split(':').reduce((acc, time) => (60 * acc) + +time);
-                console.log('durationSeconds', durationSeconds);
-                if (timerSeconds == 0 && durationSeconds == 0) {
-                    return;
-                }
-                let ratio = Math.floor(timerSeconds / durationSeconds * 100);
-                console.log('ratio', ratio);
-                var id = this.info.id;
-                console.log('id', id);
-                let title_id = this.info.title_info.id == null ? this.info.title_info.title_id : this.info.title_info.id;
-                console.log('title_id', title_id);
-                await db.anime_saved.where('prov_id').equals(title_id).modify(anime => {
-                    for(let i = 0; i < anime.episodes_seen.length; i++) {
-                        if (anime.episodes_seen[i].episode == window.location.href.split('/').pop()) {
-                            anime.episodes_seen[i].time = ratio;
-                        }
-                    }
-                })
-            } catch (e) {
-                console.log(e);
-            }
-            }, 1000);
             art.on('hover', async (state) => {
                 // state for true, the mouse moves from the outside to the player
                 // state for false, the mouse moves from the player to the outside
-                if (state) {
+                // if true when mouse outside player hide the layer
+                if(state){
                     art.layers.layer0.style.display = 'block';
-                } else {
-                    await sleep(3200);
+                }else if(!state && art.fullscreen && art.playing){
+                    art.layers.layer0.style.display = 'block';
+                }
+                 else {
+                    await sleep(3200)
                     art.layers.layer0.style.display = 'none';
                 }
-                });
-              let currentTimePlayer = art.currentTime;
-              currentTimePlayer = currentTimePlayer / 60;
-              let duration = art.duration;
-              let currentTime = new Date();
-              duration = duration / 60;
-              let endVideo = currentTime.setMinutes(currentTime.getMinutes() + duration - currentTimePlayer);
-              endVideo = currentTime.getTime();
-              if (this.info.__type__ == 'series' && this.info.episode_number != null) {
-                  await watchRPC_series(this.info.title_info.images.poster_tall[0].source,this.info.title_info.title, this.info.episode_number, this.info.season_number, endVideo)
-              } else {
-                  await watchRPC_film(this.info.title_info.images.poster_tall[0].source,this.info.title_info.title, endVideo)
-              }
-          });
-
-          art.on('video:pause', async () => {
-            try {
-                let times = document.querySelector('#player .art-control.art-control-time').innerHTML.split(' / ');
-                let timer = times[0]; // 00:00
-                let duration = times[1]; // 24:35
-                // make a ratio of the time and duration in % by first turning them into seconds
-                let timerSeconds = timer.split(':').reduce((acc, time) => (60 * acc) + +time);
-                console.log('timerSeconds', timerSeconds);
-                let durationSeconds = duration.split(':').reduce((acc, time) => (60 * acc) + +time);
-                console.log('durationSeconds', durationSeconds);
-                if (timerSeconds == 0 && durationSeconds == 0) {
-                    return;
+            });
+            setTimeout(async () => {
+                try {
+                    let times = document.querySelector('#player .art-control.art-control-time').innerHTML.split(' / ');
+                    let timer = times[0]; // 00:00
+                    let duration = times[1]; // 24:35
+                    // make a ratio of the time and duration in % by first turning them into seconds
+                    let timerSeconds = timer.split(':').reduce((acc, time) => (60 * acc) + +time);
+                    console.log('timerSeconds', timerSeconds);
+                    let durationSeconds = duration.split(':').reduce((acc, time) => (60 * acc) + +time);
+                    console.log('durationSeconds', durationSeconds);
+                    if (timerSeconds == 0 && durationSeconds == 0) {
+                        return;
+                    }
+                    let ratio = Math.floor(timerSeconds / durationSeconds * 100);
+                    console.log('ratio', ratio);
+                    var id = this.info.id;
+                    console.log('id', id);
+                    let title_id = this.info.title_info.id == null ? this.info.title_info.title_id : this.info.title_info.id;
+                    console.log('title_id', title_id);
+                    await db.anime_saved.where('prov_id').equals(title_id).modify(anime => {
+                        for (let i = 0; i < anime.episodes_seen.length; i++) {
+                            if (anime.episodes_seen[i].episode == window.location.href.split('/').pop()) {
+                                anime.episodes_seen[i].time = ratio;
+                            }
+                        }
+                    })
+                } catch (e) {
+                    console.log(e);
                 }
-                let ratio = Math.floor(timerSeconds / durationSeconds * 100);
-                console.log('ratio', ratio);
-                var id = this.info.id;
-                console.log('id', id);
-                let title_id = this.info.title_info.id == null ? this.info.title_info.title_id : this.info.title_info.id;
-                console.log('title_id', title_id);
-                await db.anime_saved.where('prov_id').equals(title_id).modify(anime => {
-                    for(let i = 0; i < anime.episodes_seen.length; i++) {
-                        if (anime.episodes_seen[i].episode == window.location.href.split('/').pop()) {
-                            anime.episodes_seen[i].time = ratio;
-                        }
-                    }
-                })
-            } catch (e) {
-                console.log(e);
+            }, 1000);
+            let currentTimePlayer = art.currentTime;
+            currentTimePlayer = currentTimePlayer / 60;
+            let duration = art.duration;
+            let currentTime = new Date();
+            duration = duration / 60;
+            let endVideo = currentTime.setMinutes(currentTime.getMinutes() + duration - currentTimePlayer);
+            endVideo = currentTime.getTime();
+            if (this.info.__type__ == 'series' && this.info.episode_number != null) {
+                await watchRPC_series(this.info.title_info.images.poster_tall[0].source, this.info.title_info.title, this.info.episode_number, this.info.season_number, endVideo)
+            } else {
+                await watchRPC_film(this.info.title_info.images.poster_tall[0].source, this.info.title_info.title, endVideo)
             }
-              art.on('hover', async (state) => {});
-              art.layers.layer0.style.display = 'block';
-              // set the activity to "Paused"
-              await watchEvent(this.info.title_info.title, 'Paused')
-              // after 1 min, if the video is still paused, set the activity to "Idle"
-              await sleep(60000);
-              await watchEvent(this.info.title_info.title, 'Turning to idle')
-              await watchEvent(this.info.title_info.title, 'Idle')
-              setTimeout(async () => {
+            });
+
+            art.on('video:pause', async () => {
+                art.on('hover',()=>{})
+                art.layers.layer0.style.display = 'block';
+                try {
+                    let times = document.querySelector('#player .art-control.art-control-time').innerHTML.split(' / ');
+                    let timer = times[0]; // 00:00
+                    let duration = times[1]; // 24:35
+                    // make a ratio of the time and duration in % by first turning them into seconds
+                    let timerSeconds = timer.split(':').reduce((acc, time) => (60 * acc) + +time);
+                    console.log('timerSeconds', timerSeconds);
+                    let durationSeconds = duration.split(':').reduce((acc, time) => (60 * acc) + +time);
+                    console.log('durationSeconds', durationSeconds);
+                    if (timerSeconds == 0 && durationSeconds == 0) {
+                        return;
+                    }
+                    let ratio = Math.floor(timerSeconds / durationSeconds * 100);
+                    console.log('ratio', ratio);
+                    var id = this.info.id;
+                    console.log('id', id);
+                    let title_id = this.info.title_info.id == null ? this.info.title_info.title_id : this.info.title_info.id;
+                    console.log('title_id', title_id);
+                    await db.anime_saved.where('prov_id').equals(title_id).modify(anime => {
+                        for (let i = 0; i < anime.episodes_seen.length; i++) {
+                            if (anime.episodes_seen[i].episode == window.location.href.split('/').pop()) {
+                                anime.episodes_seen[i].time = ratio;
+                            }
+                        }
+                    })
+                } catch (e) {
+                    console.log(e);
+                }
+                
+                // set the activity to "Paused"
+                await watchEvent(this.info.title_info.title, 'Paused')
+                // after 1 min, if the video is still paused, set the activity to "Idle"
+                await sleep(60000);
+                await watchEvent(this.info.title_info.title, 'Turning to idle')
+                await watchEvent(this.info.title_info.title, 'Idle')
+                setTimeout(async () => {
                     await watchEvent(this.info.title_info.title, 'Idle')
-              }, 60000);
-              // 60 seconds in ms is : 
-          })
+                }, 60000);
+                // 60 seconds in ms is : 
+            })
 
-          art.on('video:seeked', async () => {
-              let currentTimePlayer = art.currentTime;
-              currentTimePlayer = currentTimePlayer / 60;
-              let duration = art.duration;
-              let currentTime = new Date();
-              duration = duration / 60;
-              let endVideo = currentTime.setMinutes(currentTime.getMinutes() + duration - currentTimePlayer);
-              endVideo = currentTime.getTime();
-              if (this.info.__type__ == 'series' && this.info.episode_number != null) {
-                  await watchRPC_series(this.info.title_info.images.poster_tall[0].source,this.info.title_info.title, this.info.episode_number, this.info.season_number, endVideo)
-              } else {
-                  await watchRPC_film(this.info.title_info.images.poster_tall[0].source,this.info.title_info.title, endVideo)
-              }
-          });
+            art.on('video:seeked', async () => {
+                let currentTimePlayer = art.currentTime;
+                currentTimePlayer = currentTimePlayer / 60;
+                let duration = art.duration;
+                let currentTime = new Date();
+                duration = duration / 60;
+                let endVideo = currentTime.setMinutes(currentTime.getMinutes() + duration - currentTimePlayer);
+                endVideo = currentTime.getTime();
+                if (this.info.__type__ == 'series' && this.info.episode_number != null) {
+                    await watchRPC_series(this.info.title_info.images.poster_tall[0].source, this.info.title_info.title, this.info.episode_number, this.info.season_number, endVideo)
+                } else {
+                    await watchRPC_film(this.info.title_info.images.poster_tall[0].source, this.info.title_info.title, endVideo)
+                }
+            });
 
+            art.on('fullscreen', () => {
+                if (art.fullscreen) {
+                    art.layers.layer0.style.display = 'none';
+                } else {
+                    art.layers.layer0.style.display = 'block';
+                }
+            })
 
-          art.on('video:ended', async () => {
-            try {
-                var id = this.info.id;
-                let title_id = this.info.title_info.id == null ? this.info.title_info.title_id : this.info.title_info.id;
-                await db.anime_saved.where('prov_id').equals(title_id).modify(anime => {
-                    for(let i = 0; i < anime.episodes_seen.length; i++) {
-                        if (anime.episodes_seen[i].episode == window.location.href.split('/').pop()) {
-                            anime.episodes_seen[i].time = 100;
+            art.on('video:ended', async () => {
+                try {
+                    let title_id = this.info.title_info.id == null ? this.info.title_info.title_id : this.info.title_info.id;
+                    await db.anime_saved.where('prov_id').equals(title_id).modify(anime => {
+                        for (let i = 0; i < anime.episodes_seen.length; i++) {
+                            if (anime.episodes_seen[i].episode == window.location.href.split('/').pop()) {
+                                anime.episodes_seen[i].time = 100;
+                            }
                         }
-                    }
-                })
-            } catch (e) {
-                console.log(e);
+                    })
+                } catch (e) {
+                    console.log(e);
+                }
+                await watchEvent(this.info.title_info.title, 'Video has ended, going to idle')
+                setTimeout(async () => {
+                    await defaultRPC(this.info.title_info.title, 'Idle')
+                }, 60000);
+            });
+
+            this.$nextTick(() => {
+                this.$emit("get-instance", art);
+            });
+
+            document.addEventListener('fullscreenchange', async () => {
+                if (document.fullscreenElement) {
+                    await getState(art);
+                } else {
+                    art.fullscreen = false;
+                    await getState(art);
+                }
+            });
             }
-              await watchEvent(this.info.title_info.title, 'Video has ended, going to idle')
-              setTimeout(async () => {
-                  await defaultRPC(this.info.title_info.title, 'Idle')
-              }, 60000);
-          });
-
-          art.on('video:fullscreen', async () => {
-              await getState(art);
-          });
-
-          this.$nextTick(() => {
-              this.$emit("get-instance", art);
-          }); 
-
-          document.addEventListener('fullscreenchange', async () => {             
-              if (document.fullscreenElement) {
-                  await getState(art);
-              } else {
-                  art.fullscreen = false;
-                  await getState(art);
-              }
-          });
-      }
-  };
+            };
   </script> 
 
-<style>
+<style scoped>
 .art-progress-played, .art-progress-indicator,.art-video-player .art-layer-miniProgressBar{
     background-color: red !important;
+}
+
+.art-video-player .art-bottom .art-progress .art-control-progress {
+    height: 9px !important;
+}
+
+#app {
+    border-radius: 0px !important;
 }
 
 </style>

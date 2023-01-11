@@ -172,6 +172,9 @@ export default {
 </script>
 
 <style scoped>
+*, ::before, ::after{
+    border-radius: 0px !important;
+}
 .erc-header .header-content {
     position: none !important;
 }
@@ -180,11 +183,6 @@ img.loading {
     margin: auto;
     margin-top: 17%;
     margin-bottom: 20%;
-}
-
-#player {
-
-    border-radius: 0px !important;
 }
 
 /*when the window is mobile sized */

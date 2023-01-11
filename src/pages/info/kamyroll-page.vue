@@ -630,6 +630,7 @@ export default {
         if (tKey.id == key) {
           let next = x + 1;
           this.number = next < keys.length ? next : this.number;
+          localStorage.setItem('season', JSON.stringify(this.episodes.items[this.number]))
           return this.number;
         }
       }
@@ -654,6 +655,7 @@ export default {
     showContent(el) {
       this.id = el.target.id;
       this.number = this.episodes.items.findIndex(item => item.id === el.target.id);
+      localStorage.setItem('season', JSON.stringify(this.episodes.items[this.number]))
       let lastShown = localStorage.getItem('keepTrack');
       if (lastShown == null) {
         lastShown = {
@@ -680,6 +682,7 @@ export default {
       }
     },
     keepTrack() {
+      localStorage.setItem('season', JSON.stringify(this.episodes.items[this.number]))
       let lastShown = localStorage.getItem('keepTrack');
       if (lastShown == null) {
         lastShown = {
@@ -765,17 +768,17 @@ export default {
       this.episodes_seen = this.episodes_seen[0].episodes_seen.map(item => item.episode);
       this.times = this.times[0].episodes_seen;
     }
+    localStorage.setItem('season', JSON.stringify(this.episodes.items[this.number]));
   }
 }
 </script>
-<style>
-.progress-bar {
-    border-bottom: 5px yellow solid;
-    border-radius : 0px;
-    height: -16px;
-    right: 0px;
-    /* top: 0px; */
-    bottom: 0.3rem;
-    position: relative;
+<style scoped >
+
+*, ::before, ::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
+    border-radius: 10px;
 }
 </style>

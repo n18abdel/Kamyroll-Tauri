@@ -1665,3 +1665,13 @@ import {getLastEpisodes} from '../scripts/crunchyroll.js';
         },
     }
 </script>
+
+<style scoped>
+*, ::before, ::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
+    border-radius: 10px;
+}
+</style>

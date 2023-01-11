@@ -204,14 +204,6 @@ img {
     border-radius: 0px !important;
 }
 
-*, ::before, ::after {
-    box-sizing: border-box;
-    border-width: 0;
-    border-style: solid;
-    border-color: #e5e7eb;
-    border-radius: 10px;
-}
-
 svg:not(:root) {
     overflow: hidden
 }
@@ -8323,6 +8315,15 @@ screen and (min-width:35.5em) and (max-height:50rem) {
 .erc-episode-card .episode-duration {
     bottom: .625rem;
     right: .625rem
+}
+.progress-bar {
+    border-bottom: 5px yellow solid;
+    border-radius : 0px;
+    height: -16px;
+    right: 0px;
+    /* top: 0px; */
+    bottom: 0.3rem;
+    position: relative;
 }
 
 .erc-episode-card .episode-progress-bar {

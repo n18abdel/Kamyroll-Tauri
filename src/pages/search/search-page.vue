@@ -116,6 +116,19 @@ export default {
 </script>
 
 <style scoped>
+
+*, ::before, ::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
+    border-radius: 10px;
+}
+
+.search-input {
+    border-radius: 0px !important;
+}
+
 .erc-search::-webkit-scrollbar {
     width: 12px !important;
    

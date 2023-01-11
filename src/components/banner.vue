@@ -97,7 +97,7 @@ import kamyroll_logo from '/img/kamyroll_logo.svg';
                   </div>
                   <div class="text-center">
                     <v-dialog v-model="dialog">
-                      <v-card style="background-color: #1b1a26; color: white">
+                      <v-card style="background-color: #302e42; color: white">
                         <v-card-text>
                           SETTINGS
                         </v-card-text>
@@ -265,6 +265,10 @@ export default {
 
 .erc-nav-dropdown-item{
   cursor: pointer;
+}
+
+.header-right {
+  border-radius: 0px !important;
 }
 
 </style>
