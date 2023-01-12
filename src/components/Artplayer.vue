@@ -24,7 +24,8 @@
   export default {
       data() {
           return {
-
+            proxy : 'http://127.0.0.1:15411/',
+            extension : '.m3u8'
           };
       },
       methods: {
@@ -269,8 +270,13 @@
               customType: {
                   m3u8: function (video, url) {
                     if (Hls.isSupported()) {
-                        localStorage.setItem('master_link', url);
-                        url = `http://127.0.0.1:15411/${ btoa(url) }.m3u8`;
+                        let master_link = '';
+                        if(!url.split('/')[4] == undefined){
+                            master_link = url.split('/')[3] +'/'+ url.split('/')[4].split('.m3u8')[0];
+                        } else {
+                            master_link = url.split('/')[3].split('.m3u8')[0];
+                        }
+                        localStorage.setItem('master_link',atob(master_link));
                         hls = new Hls();
                         hls.loadSource(url);
                         hls.attachMedia(video);
