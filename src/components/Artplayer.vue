@@ -30,7 +30,7 @@
       },
       methods: {
           getNextEpisode(id) {
-              if (localStorage.getItem('season') != null) {
+              if (localStorage.getItem('season') != 'null') {
                   let season = JSON.parse(localStorage.getItem('season'));
                   let next = null;
                   let found = false;
@@ -99,6 +99,9 @@
                   console.info('not fullscreen');
               }
           }
+          if(this.info.images.thumbnail){
+                    this.option.poster = this.info.images.thumbnail[this.info.images.thumbnail.length - 1].source;
+            }
           if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
               this.option.fullscreenWeb = true;
               this.option.fullscreen = false;
@@ -419,6 +422,7 @@
                     }
                   })
               }
+   
               await watchEvent(this.info.title_info.title, 'Video is about to start');
               setTimeout(async () => {
                   await watchEvent(this.info.title_info.title, 'Idle')
