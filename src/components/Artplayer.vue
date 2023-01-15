@@ -29,20 +29,25 @@
           };
       },
       methods: {
-        getNextEpisode(id) {
-              let season = JSON.parse(localStorage.getItem('season'));
-              let next = null;
-              let found = false;
-              for (let i = 0; i < season.episodes.length; i++) {
-                  if (found) {
-                      next = season.episodes[i].id;
-                      break;
+          getNextEpisode(id) {
+              if (localStorage.getItem('season') != null) {
+                  let season = JSON.parse(localStorage.getItem('season'));
+                  let next = null;
+                  let found = false;
+                  for (let i = 0; i < season.episodes.length; i++) {
+                      if (found) {
+                          next = season.episodes[i].id;
+                          break;
+                      }
+                      if (season.episodes[i].id == id) {
+                          found = true;
+                      }
                   }
-                  if (season.episodes[i].id == id) {
-                      found = true;
-                  }
+                  return next
+              } else {
+                localStorage.season = 'null';
+                return null
               }
-              return next
           }
       },
       props: {
@@ -586,10 +591,6 @@
 <style scoped>
 .art-progress-played, .art-progress-indicator,.art-video-player .art-layer-miniProgressBar{
     background-color: red !important;
-}
-
-.art-video-player .art-bottom .art-progress .art-control-progress {
-    height: 9px !important;
 }
 
 #app {
