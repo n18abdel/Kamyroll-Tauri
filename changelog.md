@@ -6,7 +6,8 @@
 + added Snackbars that will be used to show errors and other stuff
 + Added Discord RPC (Rich Presence) to the app 
 + Added a SKIP button (+90 seconds for now) and Autoplay feature
-+ Seasons now get saved so you won't to go back to the first season every time you go back and forth between episodes
++ Seasons now get saved so you won't to go back to the first season every time you go back and forth between episodes.
++ Added continue watching to the main page.
 ## Design-wise 
 + On the player, all the color would be synced to the theme set now everything is the right color
 + No more rounded corners on the player
