@@ -35,6 +35,10 @@ if(!process.env.CHANNEL.includes('Dev')){
     }
 }); */
 
+if(localStorage.getItem('season') == null){
+    localStorage.setItem('season', 'null');
+}
+
 
 
 
