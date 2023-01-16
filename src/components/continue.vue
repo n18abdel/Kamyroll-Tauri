@@ -40,7 +40,7 @@ import neko_logo from '/img/neko-sama.svg';
             </div>
         </div>
     </div>
-    <div class="erc-shelf-feed-item" id="continue-watching" v-else-if="episodes.length >= 1 && episodes[0] != 'nothing'">
+    <div class="erc-shelf-feed-item" id="continue_watching" v-else-if="episodes.length >= 1 && episodes[0] != 'nothing'">
             <h1 class="feed-title">Continue Watching</h1>
             <div class="erc-cards-collection">
                 <div class="card" v-for="episode of episodes">
@@ -51,8 +51,15 @@ import neko_logo from '/img/neko-sama.svg';
                                 <div class="erc-info-tags-group"></div>
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);">
-                                <img v-if="(Object.keys(episode.images).length == 3 && episode.images.thumbnail.length >= 2)" :src="episode.images.thumbnail[1].source" class="c-content-image image" :alt="episode.title">
-                                <img v-else :src="episode.images.poster_wide[1].source" class="c-content-image image" :alt="episode.title">
+                                <img v-if="(Object.keys(episode.images).length == 3 && episode.images.thumbnail.length >= 2)" :src="episode.images.thumbnail[1].source" class="c-content-image image" style="border-bottom-left-radius: 0px !important;border-bottom-right-radius: 0px !important" :alt="episode.title">
+                                <img v-else :src="episode.images.poster_wide[1].source" class="c-content-image image" style="border-bottom-left-radius: 0px !important;border-bottom-right-radius: 0px !important" :alt="episode.title">
+                                <div class="art-overlay"><svg class="art-overlay-icon icon c-svg-play-icon"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" data-t="play-icon-svg">
+                                        <circle class="circle" cx="30" cy="30" r="30"></circle>
+                                        <path class="play"
+                                            d="M22,20,42,30,22,40Zm8,36A26,26,0,1,0,4,30,26,26,0,0,0,30,56Zm0,4A30,30,0,1,1,60,30,30,30,0,0,1,30,60Z">
+                                        </path>
+                                    </svg></div>
                                 <span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
                                         <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
@@ -66,11 +73,14 @@ import neko_logo from '/img/neko-sama.svg';
                                         <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
                                 </span>
-                                <div class="progress-bar" :style="{'width':`${episode.time}%`}"></div>
+                                <div class="c-duration episode-duration">{{episode.time}}%</div>
+                                <div class="c-progress-bar episode-progress-bar">
+                                    <div class="c-progress-bar__progress" :style="{'width':`${episode.time}%`}"></div>
+                                </div>
                             </div>
                             <div class="body-section">
                                 <div class="poster-image">
-                                    <img :src="episode.images.poster_tall[2].source" class="c-content-image" :alt="episode.series_title">
+                                    <img :src="episode.images.poster_tall[2].source" class="c-content-image"  :alt="episode.series_title">
                                 </div>
                                 <div class="info">
                                     <div class="description-metadata">
@@ -78,7 +88,7 @@ import neko_logo from '/img/neko-sama.svg';
                                     </div>
                                     <div class="details-metadata">
                                         <div class="c-meta-tags media-tag-group">
-                                            <span class="c-meta-tags__type">{{episode.time}}% Ep.{{episode.episode}}</span>
+                                            <span class="c-meta-tags__type">Ep.{{episode.episode}}</span>
                                             <span class="c-meta-tags__language" v-if="episode.is_subbed && episode.is_dubbed">Sub | Dub</span>
                                             <span class="c-meta-tags__language" v-else-if="episode.is_subbed">Sub</span>
                                             <span class="c-meta-tags__language" v-else>Dub</span>
@@ -165,5 +175,9 @@ import getMetadata from '../scripts/getMetadata.js'
     border-style: solid;
     border-color: #e5e7eb;
     border-radius: 10px;
+}
+.c-duration.episode-duration {
+    bottom: .625rem;
+    right: .625rem;
 }
 </style>

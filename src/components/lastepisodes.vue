@@ -7,7 +7,7 @@ import neko_logo from '/img/neko-sama.svg';
 <div class="erc-feed-container">
     <div class="erc-shelf-feed-item" v-if="!(episodes.length >= 1)" id="last-episodes-placeholder">
         <h1 class="feed-title">Last Episodes</h1>
-        <div class="erc-cards-collection" >
+        <div class="erc-cards-collection">
             <div class="erc-cards-collection">
                 <div class="card placeholder" v-for="anime in 12">
                     <article class="erc-series-movie-card placeholder">
@@ -18,12 +18,18 @@ import neko_logo from '/img/neko-sama.svg';
                         <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><a class="erc-channel-icon"
                                 href="#">
                                 <div class="channel-mask">
-                                    <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
-                                    <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
-                                    <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
-                                    <img class="channel-icon" v-if="channel == 'crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
-                                    <img class="channel-icon" v-else-if="channel == 'adn'" :src="adn_logo" alt="Anime Digital Network icon">
-                                    <img class="channel-icon" v-else-if="channel == 'neko-sama'" :src="neko_logo" alt="Neko-sama icon">
+                                    <div class="channel-background" v-if="channel=='crunchyroll'"
+                                        style="background-color: rgb(244, 117, 33);"></div>
+                                    <div class="channel-background" v-else-if="channel=='adn'"
+                                        style="background-color: #0095ff;"></div>
+                                    <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                        style="background-color: #1cb9f4;"></div>
+                                    <img class="channel-icon" v-if="channel == 'crunchyroll'" :src="crunchyroll_logo"
+                                        alt="Crunchyroll icon">
+                                    <img class="channel-icon" v-else-if="channel == 'adn'" :src="adn_logo"
+                                        alt="Anime Digital Network icon">
+                                    <img class="channel-icon" v-else-if="channel == 'neko-sama'" :src="neko_logo"
+                                        alt="Neko-sama icon">
                                 </div>
                             </a></div>
                         <div class="body-section">
@@ -41,57 +47,74 @@ import neko_logo from '/img/neko-sama.svg';
         </div>
     </div>
     <div class="erc-shelf-feed-item" id="last-episodes" v-else>
-            <h1 class="feed-title">Last Episodes</h1>
-            <div class="erc-cards-collection">
-                <div class="card" v-for="episode of episodes">
-                    <div>
-                        <article class="erc-series-movie-card" :id="episode.id">
-                            <a :title="episode.title" class="card-link"
-                                :href="episode.url"></a>
-                            <div class="watch-tag-list">
-                                <div class="erc-info-tags-group"></div>
+        <h1 class="feed-title">Last Episodes</h1>
+        <div class="erc-cards-collection">
+            <div class="card" v-for="episode of episodes">
+                <div>
+                    <article class="erc-series-movie-card" :id="episode.id">
+                        <a :title="episode.title" class="card-link" :href="episode.url"></a>
+                        <div class="watch-tag-list">
+                            <div class="erc-info-tags-group"></div>
+                        </div>
+                        <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);">
+                            <img v-if="(Object.keys(episode.images).length == 3 && episode.images.thumbnail.length >= 2)"
+                                :src="episode.images.thumbnail[1].source" class="c-content-image image"
+                                :alt="episode.title">
+                            <img v-else :src="episode.images.poster_wide[1].source" class="c-content-image image"
+                                :alt="episode.title">
+                            <div class="art-overlay"><svg class="art-overlay-icon icon c-svg-play-icon"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" data-t="play-icon-svg">
+                                    <circle class="circle" cx="30" cy="30" r="30"></circle>
+                                    <path class="play"
+                                        d="M22,20,42,30,22,40Zm8,36A26,26,0,1,0,4,30,26,26,0,0,0,30,56Zm0,4A30,30,0,1,1,60,30,30,30,0,0,1,30,60Z">
+                                    </path>
+                                </svg>
                             </div>
-                            <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);">
-                                <img v-if="(Object.keys(episode.images).length == 3 && episode.images.thumbnail.length >= 2)" :src="episode.images.thumbnail[1].source" class="c-content-image image" :alt="episode.title">
-                                <img v-else :src="episode.images.poster_wide[1].source" class="c-content-image image" :alt="episode.title">
-                                <span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
-                                    <div class="channel-mask">
-                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
-                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
-                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
-                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
-                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
-                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
-                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
-                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
-                                        <span class="channel-name" v-else>Neko-sama</span>
-                                    </div>
-                                </span>
-                            </div>
-                            <div class="body-section">
-                                <div class="poster-image">
-                                    <img :src="episode.images.poster_tall[2].source" class="c-content-image" :alt="episode.series_title">
+                            <span class="erc-channel-icon" @mouseenter="setWidth($event)"
+                                @mouseleave="$event.target.style=''">
+                                <div class="channel-mask">
+                                    <div class="channel-background" v-if="channel=='crunchyroll'"
+                                        style="background-color: rgb(244, 117, 33);"></div>
+                                    <div class="channel-background" v-else-if="channel=='adn'"
+                                        style="background-color: #0095ff;"></div>
+                                    <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                        style="background-color: #1cb9f4;"></div>
+                                    <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
+                                        alt="Crunchyroll icon">
+                                    <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                    <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                    <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                    <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                    <span class="channel-name" v-else>Neko-sama</span>
                                 </div>
-                                <div class="info">
-                                    <div class="description-metadata">
-                                        <h1>{{episode.series_title}}</h1>
-                                    </div>
-                                    <div class="details-metadata">
-                                        <div class="c-meta-tags media-tag-group">
-                                            <span class="c-meta-tags__type">Ep.{{episode.episode}}</span>
-                                            <span class="c-meta-tags__language" v-if="episode.is_subbed && episode.is_dubbed">Sub | Dub</span>
-                                            <span class="c-meta-tags__language" v-else-if="episode.is_subbed">Sub</span>
-                                            <span class="c-meta-tags__language" v-else>Dub</span>
-                                            </div>
+                            </span>
+                        </div>
+                        <div class="body-section">
+                            <div class="poster-image">
+                                <img :src="episode.images.poster_tall[2].source" class="c-content-image"
+                                    :alt="episode.series_title">
+                            </div>
+                            <div class="info">
+                                <div class="description-metadata">
+                                    <h1>{{episode.series_title}}</h1>
+                                </div>
+                                <div class="details-metadata">
+                                    <div class="c-meta-tags media-tag-group">
+                                        <span class="c-meta-tags__type">Ep.{{episode.episode}}</span>
+                                        <span class="c-meta-tags__language"
+                                            v-if="episode.is_subbed && episode.is_dubbed">Sub | Dub</span>
+                                        <span class="c-meta-tags__language" v-else-if="episode.is_subbed">Sub</span>
+                                        <span class="c-meta-tags__language" v-else>Dub</span>
                                     </div>
                                 </div>
                             </div>
-                        </article>
-                    </div>
+                        </div>
+                    </article>
                 </div>
             </div>
         </div>
-        <div v-if="((episodes.length > 1 || counter >= 5) && channel=='crunchyroll')">
+    </div>
+    <div v-if="((episodes.length > 1 || counter >= 5) && channel=='crunchyroll')">
         <div class="erc-shelf-feed-item" id="browse_popular">
             <h1 class="feed-title">Most Popular</h1>
             <div class="erc-cards-collection">
@@ -104,15 +127,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/236f44583009506b8d9d012c4d3119a5.jpeg"
-                                    class="c-content-image image" alt="One Piece"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="One Piece"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/2239c7b46b2e491ae33b33ff980e9fb1.jpeg"
@@ -140,15 +173,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/98662d1c546c4e74de58fbc52679ac6c.jpeg"
-                                    class="c-content-image image" alt="JUJUTSU KAISEN"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="JUJUTSU KAISEN"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/47efe819e954f83cf0b8e022c39488ce.jpeg"
@@ -176,15 +219,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/7add01c632a7aaf883a90d75b0154ab8.jpeg"
-                                    class="c-content-image image" alt="Naruto Shippuden"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Naruto Shippuden"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/d5f15f87bf61d845b53fea64ee6f63f3.jpeg"
@@ -212,15 +265,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/30b75ec805a6083356a94dfe68c2caac.jpeg"
-                                    class="c-content-image image" alt="Mob Psycho 100"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Mob Psycho 100"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/eeaaec512f71989a66f853270c08c6b2.jpeg"
@@ -248,15 +311,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/0273e80242d80b0218f640e038269c18.jpeg"
-                                    class="c-content-image image" alt="Black Clover"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Black Clover"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/e108ae17d8d0407417cac40eb52d849a.jpeg"
@@ -284,15 +357,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/db4769f7108e7c1e43d1549e0d4ff9c5.jpeg"
-                                    class="c-content-image image" alt="My Hero Academia"><a class="erc-channel-icon"
-                                    href="/crunchyroll" style="">
+                                    class="c-content-image image" alt="My Hero Academia"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/dbdff189a7b97afadbe73b778583de83.jpeg"
@@ -311,10 +394,10 @@ import neko_logo from '/img/neko-sama.svg';
                         </article>
                     </div>
                 </div>
-                
+
             </div>
         </div>
-        
+
         <div class="erc-shelf-feed-item" id="GYXM79M56">
             <h1 class="feed-title">DRAGON QUEST The Adventure of Dai</h1>
             <div class="erc-cards-collection">
@@ -327,15 +410,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/11c6b367ea0fa9fe2cd570c90811f953.jpeg"
-                                    class="c-content-image image" alt="DRAGON QUEST The Adventure of Dai"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="DRAGON QUEST The Adventure of Dai"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/cba230badc3a1559995f8f7503af4788.jpeg"
@@ -366,8 +453,8 @@ import neko_logo from '/img/neko-sama.svg';
                 </div>
             </div>
         </div>
-        
-        
+
+
         <div class="erc-shelf-feed-item" id="G8DHV7W3N">
             <h1 class="feed-title">CUE!</h1>
             <div class="erc-cards-collection">
@@ -380,15 +467,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/6eed2d7a686544c88c2f53acbdcb325a.jpeg"
-                                    class="c-content-image image" alt="CUE!"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="CUE!"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/915602f701a9a0c19feb0257e7e9b044.jpeg"
@@ -423,8 +520,8 @@ import neko_logo from '/img/neko-sama.svg';
                 </div>
             </div>
         </div>
-        
-        
+
+
         <div class="erc-shelf-feed-item" id="browse_newly">
             <h1 class="feed-title">Just Updated</h1>
             <div class="erc-cards-collection">
@@ -437,15 +534,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/6a2835dce2872f4c7d2cbbb2d5cb3c43.jpeg"
-                                    class="c-content-image image" alt="The Great Jahy Will Not Be Defeated!"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="The Great Jahy Will Not Be Defeated!"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/099c77141e6be1a3c882ede49300773d.jpeg"
@@ -466,22 +567,26 @@ import neko_logo from '/img/neko-sama.svg';
                 </div>
                 <div class="card">
                     <div>
-                        <article class="erc-series-movie-card"><a title="SING YESTERDAY; FOR ME"
-                                class="card-link" href="/crunchyroll/GYVDV1N0Y"></a>
+                        <article class="erc-series-movie-card"><a title="SING YESTERDAY; FOR ME" class="card-link"
+                                href="/crunchyroll/GYVDV1N0Y"></a>
                             <div class="watch-tag-list">
                                 <div class="erc-info-tags-group"></div>
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/88f36cfc79bbdc313b5495e5d24736c2.jpeg"
-                                    class="c-content-image image" alt="SING YESTERDAY; FOR ME"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="SING YESTERDAY; FOR ME"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/6a08d40c6e817c508fb8537347dbd548.jpeg"
@@ -509,15 +614,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/3a084c93f7e062b3ce211a426474b17d.jpeg"
-                                    class="c-content-image image" alt="The Prince of Tennis II U-17 World Cup"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="The Prince of Tennis II U-17 World Cup"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/7b9bb3ff8dbb4d52ef4411f5a157d2aa.jpeg"
@@ -545,15 +654,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/a07f932b819930bfa0f4048a4ee22384.jpeg"
-                                    class="c-content-image image" alt="Remake Our Life!"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Remake Our Life!"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/f890fa41100faa3b92fbd304209e40b1.jpeg"
@@ -581,15 +700,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/466890243539541e499d8ba38ee6fe68.jpeg"
-                                    class="c-content-image image" alt="Smile of the Arsnotoria the Animation"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="Smile of the Arsnotoria the Animation"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/a12aa96558664f4c482677e9ec083fba.jpeg"
@@ -617,15 +740,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/d919dc52f7e58912bad2a6df7a83e7a9.jpeg"
-                                    class="c-content-image image" alt="Do It Yourself!!"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Do It Yourself!!"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/8ba96e71fd40d92bb2b3942c362fe250.jpeg"
@@ -644,10 +777,10 @@ import neko_logo from '/img/neko-sama.svg';
                         </article>
                     </div>
                 </div>
-                
+
             </div>
-        </div> 
-        
+        </div>
+
         <div class="erc-shelf-feed-item" id="G64PEME0R">
             <h1 class="feed-title">Historical figures but not really</h1>
             <div class="erc-cards-collection">
@@ -660,15 +793,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/7efdd1bb367a62467fb641691bf17013.jpeg"
-                                    class="c-content-image image" alt="Meow Meow Japanese History"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="Meow Meow Japanese History"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/6cf28f1893eef82286c919f9ad95b254.jpeg"
@@ -698,15 +835,26 @@ import neko_logo from '/img/neko-sama.svg';
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/60385671a804aa4e097eea1e9d8b88f7.jpeg"
                                     class="c-content-image image"
-                                    alt="Fate/Grand Order Absolute Demonic Front: Babylonia"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    alt="Fate/Grand Order Absolute Demonic Front: Babylonia"><span
+                                    class="erc-channel-icon" @mouseenter="setWidth($event)"
+                                    @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/5e2029d2c96cf5f92af034feec6e72c9.jpeg"
@@ -735,15 +883,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/fdc0dff409f19dfd8ffff5037257ac98.jpeg"
-                                    class="c-content-image image" alt="Fate/Zero"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Fate/Zero"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/2ee05df6e44530437069955b71f09daf.jpeg"
@@ -771,15 +929,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/363816b7e73c294ec1f26942b6ab5b23.jpeg"
-                                    class="c-content-image image" alt="Oda Cinnamon Nobunaga"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="Oda Cinnamon Nobunaga"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/b5fa363e489980d695acaac385aacbf3.jpeg"
@@ -800,8 +962,8 @@ import neko_logo from '/img/neko-sama.svg';
                 </div>
             </div>
         </div>
-    
-    
+
+
         <div class="erc-shelf-feed-item" id="G0XHWM380">
             <h1 class="feed-title">Seirei Gensouki: Spirit Chronicles</h1>
             <div class="erc-cards-collection">
@@ -814,15 +976,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/2b2f015ed1adf726347dd4df8bc41df3.jpeg"
-                                    class="c-content-image image" alt="Seirei Gensouki: Spirit Chronicles"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="Seirei Gensouki: Spirit Chronicles"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/b660009a87462001a52ff9aa8d114726.jpeg"
@@ -852,7 +1018,7 @@ import neko_logo from '/img/neko-sama.svg';
                 </div>
             </div>
         </div>
-    
+
         <div class="erc-shelf-feed-item" id="GY8VEQ95Y">
             <h1 class="feed-title">DARLING in the FRANXX</h1>
             <div class="erc-cards-collection">
@@ -865,15 +1031,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/626b30dc8203a0e263bba0a191a8f7be.jpeg"
-                                    class="c-content-image image" alt="DARLING in the FRANXX"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="DARLING in the FRANXX"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/3fa31250f0604ff16ef6cb0a12dea63d.jpeg"
@@ -902,8 +1072,8 @@ import neko_logo from '/img/neko-sama.svg';
                     </div>
                 </div>
             </div>
-        </div>  
-    
+        </div>
+
         <div class="erc-shelf-feed-item" id="GYG53DGDY">
             <h1 class="feed-title">Not saying it was aliens... but it was ALIENS</h1>
             <div class="erc-cards-collection">
@@ -916,15 +1086,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/5d1c34b8f9491d82bf62391f7ac4e4a3.jpeg"
-                                    class="c-content-image image" alt="Gintama"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Gintama"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/4fadd5f113c28de1b22d4ef67a78890b.jpeg"
@@ -952,15 +1132,26 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/a1b9e0783210f940b383626b224e8827.jpeg"
-                                    class="c-content-image image" alt="Parasyte -the maxim-"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Parasyte -the maxim-"><span
+                                    class="erc-channel-icon" @mouseenter="setWidth($event)"
+                                    @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/7d31dfaf49397a8cc1e490ccedea04e2.jpeg"
@@ -988,15 +1179,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/ccfd7b9ad6d78e42a273a105bbfe3160.jpeg"
-                                    class="c-content-image image" alt="TERRAFORMARS"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="TERRAFORMARS"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/4f3815ec979014aa5a281278b1edbbd7.jpeg"
@@ -1024,15 +1225,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/42ba5e60876342de5c5a933d56b96748.jpeg"
-                                    class="c-content-image image" alt="Space Brothers"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Space Brothers"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/9b11916ae9d5d8e53323ea072fd6157e.jpeg"
@@ -1060,15 +1271,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/e0716c3a240d572c329ff56d1b9bf120.jpeg"
-                                    class="c-content-image image" alt="Star Blazers: Space Battleship Yamato"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="Star Blazers: Space Battleship Yamato"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/ced799cac17d0138c72f710de19d9f94.jpeg"
@@ -1096,15 +1311,26 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/2f7dae8185c48de7d4ba0c3229c2e4b3.jpeg"
-                                    class="c-content-image image" alt="SPACE PATROL LULUCO"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="SPACE PATROL LULUCO"><span
+                                    class="erc-channel-icon" @mouseenter="setWidth($event)"
+                                    @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/c37c375a5bb578d9c5a2a2066a432ee7.jpeg"
@@ -1123,10 +1349,10 @@ import neko_logo from '/img/neko-sama.svg';
                         </article>
                     </div>
                 </div>
-                
+
             </div>
-        </div> 
-        
+        </div>
+
         <div class="erc-shelf-feed-item" id="GRDQN479Y">
             <h1 class="feed-title">Haven’t You Heard? I’m Sakamoto</h1>
             <div class="erc-cards-collection">
@@ -1139,15 +1365,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/70d0dd053ca9916296c56e7cb4594e23.jpeg"
-                                    class="c-content-image image" alt="Haven’t You Heard? I’m Sakamoto"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="Haven’t You Heard? I’m Sakamoto"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/c836efd49dded6ba59d4aa9e162222c6.jpeg"
@@ -1174,7 +1404,7 @@ import neko_logo from '/img/neko-sama.svg';
                 </div>
             </div>
         </div>
-        
+
         <div class="erc-shelf-feed-item" id="GYP8DP1MY">
             <h1 class="feed-title">JoJo's Bizarre Adventure</h1>
             <div class="erc-cards-collection">
@@ -1187,15 +1417,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/aaeca3e651bebe79fe808085d079feea.jpeg"
-                                    class="c-content-image image" alt="JoJo's Bizarre Adventure"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="JoJo's Bizarre Adventure"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/2423e59e70fab2f873cbe48c9dac0d21.jpeg"
@@ -1226,8 +1460,8 @@ import neko_logo from '/img/neko-sama.svg';
                 </div>
             </div>
         </div>
-    
-    
+
+
         <div class="erc-shelf-feed-item" id="G6EXQQGGR">
             <h1 class="feed-title">A Whole New World</h1>
             <div class="erc-cards-collection">
@@ -1240,15 +1474,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/a05f3e4b27485d33c5bf2b0e80c6d3c6.jpeg"
-                                    class="c-content-image image" alt="The Rising of the Shield Hero"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="The Rising of the Shield Hero"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/c73bc7c503920b61c100eab128e70d5e.jpeg"
@@ -1276,15 +1514,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/2afcd3a9eb8cd351328bcae8d5d7dc4a.jpeg"
-                                    class="c-content-image image" alt="That Time I Got Reincarnated as a Slime"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="That Time I Got Reincarnated as a Slime"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/8a94435b1ba75c09126441f41f5f497d.jpeg"
@@ -1312,15 +1554,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/089567220a1fb7b5a9752d9227848650.jpeg"
-                                    class="c-content-image image" alt="Isekai Cheat Magician"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="Isekai Cheat Magician"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/641f1b360dca7b98d9c7e503feda4bae.jpeg"
@@ -1350,15 +1596,26 @@ import neko_logo from '/img/neko-sama.svg';
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/ccfcc995823a0bac58f924b9ed19cf63.jpeg"
                                     class="c-content-image image"
-                                    alt="KONOSUBA -God's blessing on this wonderful world!"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    alt="KONOSUBA -God's blessing on this wonderful world!"><span
+                                    class="erc-channel-icon" @mouseenter="setWidth($event)"
+                                    @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/9b4ab6da6eda68a105831ca27aaaf4d5.jpeg"
@@ -1387,15 +1644,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/653fb1c89ecec17dc6947308819d702b.jpeg"
-                                    class="c-content-image image" alt="Re:ZERO -Starting Life in Another World-"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="Re:ZERO -Starting Life in Another World-"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/291c6c3b60857afabe46899f848079a4.jpeg"
@@ -1423,15 +1684,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/5b65797ccc7305b99cd8f1922d66d777.jpeg"
-                                    class="c-content-image image" alt="Overlord"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Overlord"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/59dd9785564f46c3cf2a18b38149f5a1.jpeg"
@@ -1450,11 +1721,11 @@ import neko_logo from '/img/neko-sama.svg';
                         </article>
                     </div>
                 </div>
-                
+
             </div>
         </div>
-    
-    
+
+
         <div class="erc-shelf-feed-item" id="GRVNXWQZY">
             <h1 class="feed-title">March comes in like a lion</h1>
             <div class="erc-cards-collection">
@@ -1467,15 +1738,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/3d6d42e2df6177df1c60edc4328072a7.jpeg"
-                                    class="c-content-image image" alt="March comes in like a lion"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="March comes in like a lion"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/85872591d4a019caf31d07dafdc27efe.jpeg"
@@ -1504,8 +1779,8 @@ import neko_logo from '/img/neko-sama.svg';
                 </div>
             </div>
         </div>
-    
-    
+
+
         <div class="erc-shelf-feed-item" id="GRKEQXWWR">
             <h1 class="feed-title">Space Oddity</h1>
             <div class="erc-cards-collection">
@@ -1518,15 +1793,26 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/2f7dae8185c48de7d4ba0c3229c2e4b3.jpeg"
-                                    class="c-content-image image" alt="SPACE PATROL LULUCO"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="SPACE PATROL LULUCO"><span
+                                    class="erc-channel-icon" @mouseenter="setWidth($event)"
+                                    @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/c37c375a5bb578d9c5a2a2066a432ee7.jpeg"
@@ -1554,15 +1840,19 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/c66009303664356077150bc8f8c71f71.jpeg"
-                                    class="c-content-image image" alt="Space Battleship Tiramisu"><a
-                                    class="erc-channel-icon" href="/crunchyroll">
+                                    class="c-content-image image" alt="Space Battleship Tiramisu"><span class="erc-channel-icon" @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
-                                            alt="Crunchyroll icon">
+                                        <div class="channel-background" v-if="channel=='crunchyroll'" style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'" style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'" style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo" alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo" alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/735f9bd127f8bf4b464e5cf9a335dd41.jpeg"
@@ -1590,15 +1880,25 @@ import neko_logo from '/img/neko-sama.svg';
                             </div>
                             <div class="h-thumbnail" style="border-color: rgb(244, 117, 33);"><img
                                     src="https://static.vrv.co/imgsrv/display/thumbnail/800x450/catalog/crunchyroll/1a2b839f14271f8bb1bb23804400adbe.jpeg"
-                                    class="c-content-image image" alt="Captain Harlock"><a class="erc-channel-icon"
-                                    href="/crunchyroll">
+                                    class="c-content-image image" alt="Captain Harlock"><span class="erc-channel-icon"
+                                    @mouseenter="setWidth($event)" @mouseleave="$event.target.style=''">
                                     <div class="channel-mask">
-                                        <div class="channel-background" style="background-color: rgb(244, 117, 33);">
-                                        </div><img class="channel-icon"
-                                            :src="crunchyroll_logo"
+                                        <div class="channel-background" v-if="channel=='crunchyroll'"
+                                            style="background-color: rgb(244, 117, 33);"></div>
+                                        <div class="channel-background" v-else-if="channel=='adn'"
+                                            style="background-color: #0095ff;"></div>
+                                        <div class="channel-background" v-else-if="channel=='neko-sama'"
+                                            style="background-color: #1cb9f4;"></div>
+                                        <img class="channel-icon" v-if="channel=='crunchyroll'" :src="crunchyroll_logo"
                                             alt="Crunchyroll icon">
+                                        <img class="channel-icon" v-else-if="channel=='adn'" :src="adn_logo"
+                                            alt="ADN icon">
+                                        <img class="channel-icon" v-else :src="neko_logo" alt="Neko-sama icon">
+                                        <span class="channel-name" v-if="channel=='crunchyroll'">Crunchyroll</span>
+                                        <span class="channel-name" v-else-if="channel=='adn'">ADN</span>
+                                        <span class="channel-name" v-else>Neko-sama</span>
                                     </div>
-                                </a></div>
+                                </span></div>
                             <div class="body-section">
                                 <div class="poster-image"><img
                                         src="https://static.vrv.co/imgsrv/display/thumbnail/240x360/catalog/crunchyroll/47cc4e9d26d596ba7c3c389aa0290337.jpeg"
@@ -1618,9 +1918,9 @@ import neko_logo from '/img/neko-sama.svg';
                     </div>
                 </div>
             </div>
-        </div> 
         </div>
     </div>
+</div>
 </template>
 
 <script>

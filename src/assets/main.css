@@ -1540,7 +1540,7 @@ img {
 }
 
 .c-progress-bar__progress {
-    background: #44c3ab;
+    background: #fd0;
     height: 100%
 }
 
@@ -1592,6 +1592,11 @@ img {
     opacity: 0;
     position: absolute;
     top: 0
+}
+
+.erc-series-movie-card .c-content-image {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important
 }
 
 .c-radio-button__input:checked~.c-radio-button__checkmark {
