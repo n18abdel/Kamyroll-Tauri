@@ -436,13 +436,13 @@
                 // state for true, the mouse moves from the outside to the player
                 // state for false, the mouse moves from the player to the outside
                 // if true when mouse outside player hide the layer
-                if(state){
+                console.log('state', state);
+                if (state){
                     art.layers.layer0.style.display = 'block';
-                }else if(!state && art.fullscreen && art.playing){
-                    art.layers.layer0.style.display = 'block';
-                }
-                 else {
-                    await sleep(3200)
+                    if(art.fullscreen){
+                        art.layers.layer0.style.display = 'none';
+                    }
+                }else {
                     art.layers.layer0.style.display = 'none';
                 }
             });
@@ -596,6 +596,8 @@
 .art-progress-played, .art-progress-indicator,.art-video-player .art-layer-miniProgressBar{
     background-color: red !important;
 }
+
+
 
 #app {
     border-radius: 0px !important;
