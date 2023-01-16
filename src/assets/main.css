@@ -405,6 +405,10 @@ img {
     -ms-user-select: none
 }
 
+.art-video-player .art-bottom .art-progress .art-control-progress {
+    height : 9px !important;
+}
+
 .c-badge {
     background-color: #302e42;
     display: inline-flex;
