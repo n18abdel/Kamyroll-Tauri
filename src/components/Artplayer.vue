@@ -125,9 +125,9 @@
           let subSetting;
           // if we are on windows macos or linux we use the subtitles-octopus plugin
           if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('LINUX') >= 0 || navigator.platform.toUpperCase().indexOf('WIN') >= 0) {
-              plugin = artplayerPluginAss({
+            plugin = artplayerPluginAss({
                   debug: true,
-                  fonts: [`/fonts/TREBUCBD.ttf`],
+                  fonts: [`/fonts/TREBUCBD.ttf`,`/fonts/trebuc.ttf`,'/fonts/arial.woff'],
                   subUrl: this.subs[0].url,
                   workerUrl: `/ass-sub/subtitles-octopus-worker.js`,
                   legacyWorkerUrl: `/ass-sub/subtitles-octopus-worker-legacy.js`
@@ -422,7 +422,6 @@
                     }
                   })
               }
-   
               await watchEvent(this.info.title_info.title, 'Video is about to start');
               setTimeout(async () => {
                   await watchEvent(this.info.title_info.title, 'Idle')
