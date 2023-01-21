@@ -62,7 +62,7 @@ async function getEpisodes(slug, type) {
         url = `https://api.kamyroll.tech/content/v1/seasons?id=${slug}&channel_id=${channel}`;
     }
     const options = {
-        timeout: 5000,
+        timeout: 20000,
         headers: {
             'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
             'Authorization': `Bearer ${token}`,
@@ -221,11 +221,11 @@ async function getVideos(id) {
                 let quality = stream.audio_locale + ' ' + stream.hardsub_locale;
                 let link = stream.url;
                 if(link.includes('pstream')){
-                    link = link + '&key=clear';
+                    link = link;/* + '&key=clear'; */
+                    /* link = `${proxy_url}/${ btoa(link) }${file_extension}`; */
                 } else if (link.includes('streamtape')){
                     link = await streamtapeExtractor(link);
                 }
-                link = `${proxy_url}/${ btoa(link) }${file_extension}`;
                 videos.push(new Videos(quality, link));
             } 
             subtitles.push(new Subs('No subtitles', '', {}, ''));
