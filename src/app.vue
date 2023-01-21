@@ -102,24 +102,26 @@ import banner from './components/banner.vue'
      }
 
      if (token_expire != null) {
-       if (currentDate > token_expire) {
-         await generateNewToken();
-         this.toast('Token is expired, generating new token')
-         window.location.reload();
-       } else if (currentDate > token_valid) {
-         let test = await testToken(localStorage.getItem('token'));
-         if (test == false) {
-           await generateNewToken();
-           this.toast('Token is not working anymore, generating new token');
-           window.location.reload();
+       if (currentDate > token_expire || currentDate > token_valid) {
+         if (localStorage.getItem('token') != null) {
+           let test = await testToken(localStorage.getItem('token'));
+           if (test == false) {
+             await generateNewToken();
+             this.toast('Token is not working anymore, generating new token');
+             window.location.reload();
+           } else {
+             localStorage.setItem('token_valid', currentDate + 21600);
+             this.toast('Token is valid, but will be tested again in 6 hours')
+           }
          } else {
-           localStorage.setItem('token_valid', currentDate + 21600);
-           this.toast('Token is valid, but will be tested again in 6 hours')
+          await generateNewToken();
+          this.toast('Token is expired, generating new token');
          }
+         window.location.reload();
        }
-
      } else {
        await generateNewToken();
+       window.location.reload();
      }
 
      if (localStorage.getItem('discord_rpc') == null) {
