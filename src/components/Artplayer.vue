@@ -14,6 +14,7 @@
   import backforward from '/img/back-forward-15.svg';
   import download from '/img/download-button.svg';
   import nextbutton from '/img/skip-next.svg'
+  import clipboard from '/img/clipboard-multiple.svg';
   import SubtitlesOctopus from "../scripts/subtitles-octopus.js";
   import { db } from "../scripts/db";
   import { watchEvent,watchRPC_film,watchRPC_series,defaultRPC} from "../scripts/misc/rpc";
@@ -24,7 +25,7 @@
   export default {
       data() {
           return {
-            proxy : 'http://127.0.0.1:15411/',
+            proxy : '',
             extension : '.m3u8'
           };
       },
@@ -278,20 +279,35 @@
               customType: {
                   m3u8: function (video, url) {
                     if (Hls.isSupported()) {
+                        const proxy_url = 'http://127.0.0.1:15411';
+                        const file_extension = url.includes('.ts') ? '.ts' : '.m3u8';
                         let master_link = '';
-                        if(!url.split('/')[4] == undefined){
-                            master_link = url.split('/')[3] +'/'+ url.split('/')[4].split('.m3u8')[0];
+                        if(url.includes('127.0')){
+                            console.log('here')
+                            if(!(url.split('/')[4] == undefined)){
+                                console.log('here1')
+                                master_link = url.split('/')[3] +'/'+ url.split('/')[4].split('.m3u8')[0];
+                            } else {
+                                console.log(url)
+                                master_link = url.split('/')[3].split('.m3u8')[0];
+                            }
+                            localStorage.setItem('master_link',atob(master_link));
                         } else {
-                            master_link = url.split('/')[3].split('.m3u8')[0];
+                            master_link = url;
+                            localStorage.setItem('master_link',master_link);
                         }
-                        localStorage.setItem('master_link',atob(master_link));
-                        hls = new Hls();
-                        hls.loadSource(url);
+                        hls = new Hls({
+                            xhrSetup: function (xhr,url){
+                                url = `${proxy_url}/${ btoa(url) }${file_extension}`;
+                                xhr.open('GET', url, true);
+                            }
+                        });
+                        hls.loadSource(`${proxy_url}/${ btoa(url) }${file_extension}`);
                         hls.attachMedia(video);
                     } else {
                         const canPlay = video.canPlayType('application/vnd.apple.mpegurl');
                         if (canPlay === 'probably' || canPlay == 'maybe') {
-                            video.src = url;
+                            video.src = `http://127.0.0.1:15411/${ btoa(url) }.m3u8`;
                         } else {
                             art.notice.show = 'Does not support playback of m3u8';
                         }
@@ -326,7 +342,7 @@
               }],
               controls: [{
                       position: 'right',
-                      html: `<img width="22" heigth="22" src="${download}">`,
+                      html: `<img width="22" heigth="22" src="${clipboard}">`,
                       tooltip: 'Copy the video link to the clipboard',
                       click: async function (item) {
                           navigator.clipboard.writeText(localStorage.getItem('master_link'));
