@@ -13,21 +13,23 @@ const client = axios.create({ adapter: axiosTauriApiAdapter });
 
 var token = localStorage.getItem('token');
 
+const OPTIONS = {
+        method: 'GET',
+        timeout: 20000,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
+            'Content-Type': 'application/x-www-form-urlencoded'    
+        }
+};
+
 async function getLastEpisodes(){
     if(token == null){
         token = localStorage.getItem('token');
     }
     let url = `https://api.kamyroll.tech/content/v1/updated?channel_id=${channel}&locale=en-US&limit=20`;
-    const options = {
-        timeout: 20000,
-        headers: {
-             'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
-            'Authorization': `Bearer ${token}`,
-        },
-        method: "GET",
-    }
     let episodes = [];
-    let response = await client.get(url, options).then((response) => {
+    let response = await client.get(url, OPTIONS).then((response) => {
         return response.data.items;
     }).catch((error) => {
         console.log(error);
@@ -61,15 +63,7 @@ async function getEpisodes(slug, type) {
     } else {
         url = `https://api.kamyroll.tech/content/v1/seasons?id=${slug}&channel_id=${channel}`;
     }
-    const options = {
-        timeout: 20000,
-        headers: {
-            'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
-            'Authorization': `Bearer ${token}`,
-        },
-        method: "GET",
-    }
-    let result = await client.get(url, options).then((response) => {
+    let result = await client.get(url, OPTIONS).then((response) => {
         return response.data;
     }).catch((error) => {
         console.log(error);
@@ -121,17 +115,9 @@ async function search(query){
     }
     await defaultRPC('On search page', `Looking for ${query}`);
     let results = [];
-    const options = {
-        method: 'GET',
-        timeout: 5000,
-        headers: {
-            'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')}-${process.env.CHANNEL.replaceAll('"','')} Tauri-Rust`,
-            'Authorization': `Bearer ${token}`,
-        }
-    };
     console.log(query);
     let url = `https://api.kamyroll.tech/content/v1/search?query=${query.replaceAll(' ','+')}&channel_id=${channel}`;
-    let data = await client.get(url,options).then((response) => {
+    let data = await client.get(url,OPTIONS).then((response) => {
         return response.data;
     }).catch((error) => {
         console.log(error);
@@ -204,13 +190,8 @@ async function getVideos(id) {
         'padding-bottom' : '20px', */
     };
     const url = `https://api.kamyroll.tech/videos/v1/streams?channel_id=${channel}&id=${id}&type=adaptive_hls&format=ass`;
-    const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': `Kamyroll/${process.env.APP_VERSION.replaceAll('"','')} Tauri-Rust`
-    };
         if (window.location.href.includes('/nekosama/')) {
-            let result = await client.get(url, { timeout: 5000,headers: headers }).then((response) => {
+            let result = await client.get(url, OPTIONS).then((response) => {
                 return response.data;
             }).catch((error) => {
                 console.log(error);
@@ -230,7 +211,7 @@ async function getVideos(id) {
             } 
             subtitles.push(new Subs('No subtitles', '', {}, ''));
         } else {
-            let result = await client.get(url, {timeout: 5000, headers: headers }).then((response) => {
+            let result = await client.get(url, OPTIONS).then((response) => {
                 return response.data;
             }).catch((error) => {
                 console.log(error);
