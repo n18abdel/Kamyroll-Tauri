@@ -48,9 +48,6 @@ import banner from './components/banner.vue'
  import {
    invoke
  } from '@tauri-apps/api/tauri';
- import {
-   appWindow
- } from '@tauri-apps/api/window';
  export default {
    data() {
      return {
@@ -82,16 +79,12 @@ import banner from './components/banner.vue'
        } else {
          this.toast('Token is not generated, please try again. (' + status + ')');
        }
-     },
-     async sleep(ms) {
-       return new Promise(resolve => setTimeout(resolve, ms));
      }
    },
    mounted: async function () {
-     await this.sleep(3500).then(async () => {
-       await invoke('close_splashscreen');
-       await appWindow.show();
-     });
+     setTimeout(() => {
+       invoke('close_splashscreen');
+     }, 3500);
      let token_expire = localStorage.getItem('token_expire');
      let token_valid = Number(localStorage.getItem('token_valid'));
      let currentDate = Math.floor(new Date().getTime() / 1000);
